@@ -1,25 +1,51 @@
 <script>
 import { computed } from "vue";
+import { logInFirebase } from "../models/firebase/auth.js";
 
 export default {
   data() {
-    return {};
+    return {
+      user: {
+        email: null,
+        password: null,
+      },
+      showPassword: false,
+    };
   },
   components: {},
   methods: {
+    togglePasswordVisibility() {
+      this.showPassword = !this.showPassword; // Invertir el valor de showPassword al hacer clic en el botón
+    },
     goHome() {
       this.$router.push("/");
     },
     handleContacts() {
       //   this.$router.push("/contacts");
     },
-    async signOut() {
-      //   try {
-      //     await logOutGoogle();
-      //     window.location.reload();
-      //   } catch (error) {
-      //     console.log(error);
-      //   }
+    async signIn() {
+      //Iniciamos y guardamos sesión
+      const response = await logInFirebase({
+        email: this.user.email,
+        password: this.user.password,
+      });
+
+      if (!response) {
+        await this.$swal({
+          title: "¡Error al intentar iniciar sesión!",
+          icon: "error",
+          showCancelButton: false,
+          confirmButtonText: "OK",
+        });
+      } else {
+        console.log("response.isAdmin: ", response.isAdmin);
+        //Si el responde.admin es true quiere decir que es administrador entonces se le redirecciona al dashboard
+        if (response.isAdmin === true) {
+          this.$router.push("/homeAdmin");
+        } else {
+          this.$router.push("/");
+        }
+      }
     },
   },
   mounted() {
@@ -41,20 +67,26 @@ export default {
           <div class="row justify-content-center my-auto">
             <div class="col-md-12 col-12 my-5">
               <div class="row justify-content-center px-3 mb-3">
-                <img id="logo" src="../assets/images/kvmi-en-blanco_redes-AzGj93a4EkuxVrkB.avif" />
+                <img
+                  id="logo"
+                  src="../assets/images/kvmi-en-blanco_redes-AzGj93a4EkuxVrkB.avif"
+                />
               </div>
               <h3 class="mb-5 text-center heading">Somos Chocolate</h3>
 
               <h6 class="msg-info">Por favor, ingrese a su cuenta</h6>
 
               <div class="form-group">
-                <label class="form-control-label text-muted">Nombre de usuario</label>
+                <label class="form-control-label text-muted"
+                  >Nombre de usuario</label
+                >
                 <input
                   type="text"
                   id="email"
                   name="email"
                   placeholder="Phone no or email id"
                   class="form-control"
+                  v-model="user.email"
                 />
               </div>
 
@@ -66,11 +98,12 @@ export default {
                   name="psw"
                   placeholder="Password"
                   class="form-control"
+                  v-model="user.password"
                 />
               </div>
 
               <div class="row justify-content-center my-3 px-3">
-                <button class="btn-block btn-color">Ingresar a KVMI</button>
+                <button class="btn-block btn-color" @click="signIn()">Ingresar a KVMI</button>
               </div>
 
               <div class="row justify-content-center my-2">
@@ -93,40 +126,39 @@ export default {
           <div class="my-auto mx-md-5 px-md-5 right">
             <h3 class="text-white">KVMI, más que solo chocolate</h3>
             <small class="text-white"
-              >Marca de chocolates de lujo elaborados con un raro grano de cacao amazónico. Creadores de mezclas exclusivas de temporada y experiencias alucinantes para tus cinco sentidos.</small
+              >Marca de chocolates de lujo elaborados con un raro grano de cacao
+              amazónico. Creadores de mezclas exclusivas de temporada y
+              experiencias alucinantes para tus cinco sentidos.</small
             >
           </div>
         </div>
-
       </div>
     </div>
   </div>
 </template>
 
 <style>
-
-
 .card {
-    border-radius: 0;
-    border: none;
+  border-radius: 0;
+  border: none;
 }
 
 .card1 {
-    width: 50%;
-    padding: 40px 30px 10px 30px;
+  width: 50%;
+  padding: 40px 30px 10px 30px;
 }
 
 .card2 {
-    width: 50%;
-    background-image: linear-gradient(to right, #ac9759, #675e36);
+  width: 50%;
+  background-image: linear-gradient(to right, #ac9759, #675e36);
 }
 
 #logo {
-    width: 200px;
-    height: 120px;
+  width: 200px;
+  height: 120px;
 }
 
 .heading {
-    margin-bottom: 60px !important;
+  margin-bottom: 60px !important;
 }
 </style>
