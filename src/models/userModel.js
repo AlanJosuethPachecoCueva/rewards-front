@@ -43,6 +43,41 @@ async function registerWithFirebase(userData) {
   }
 }
 
+async function saveUserDataInFirebase(userData) {
+  try {
+    const { email, name, surname, birthdate, city, isAdmin, uid } =
+      userData;
+
+    //Cambiar ruta de api
+    const response = await fetch(`${RUTA_SERVIDOR}/users/saveUserData`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        name,
+        surname,
+        birthdate,
+        city,
+        isAdmin,
+        uid
+      }),
+    });
+
+    //Si la respuesta no es satisfactoria
+    console.log("response: ", response);
+    if (!response.ok) {
+      throw new Error("Error saving user data in firebase.");
+    }
+
+    const user = await response.json();
+    return user;
+  } catch (error) {
+    throw error;
+  }
+}
+
 async function sendEmail(to, subject, text) {
   try {
     console.log("TOOO: ", to);
@@ -138,4 +173,5 @@ export {
   updateUser,
   deleteUserById,
   sendEmail,
+  saveUserDataInFirebase
 };

@@ -3,6 +3,8 @@ import {
   getAuth,
   onAuthStateChanged,
   signInWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup
 } from "firebase/auth";
 // import router from "../../router/index.js";
 
@@ -16,11 +18,33 @@ const firebaseConfig = {
   measurementId: `${import.meta.env.VITE_FB_MEASUREMENT_ID}`,
 };
 
+
+
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
 // Initialize Firebase Authentication and get a reference to the service
 const authFirebase = getAuth(app);
+
+// Para inicio de sesión con google
+const provider = new GoogleAuthProvider();
+
+function checkAuthState() {
+  const user = authFirebase.currentUser;
+
+  if (user) {
+    console.log('Usuario autenticado:', user);
+    return true;
+    // Aquí puedes realizar acciones basadas en que el usuario está autenticado
+  } else {
+    console.log('No hay usuario autenticado');
+    return false;
+    // Aquí puedes realizar acciones basadas en que no hay usuario autenticado
+  }
+}
+
+
 
 onAuthStateChanged(authFirebase, async (user) => {
   // if (user) {
@@ -56,4 +80,4 @@ onAuthStateChanged(authFirebase, async (user) => {
   
 });
 
-export { app, authFirebase, signInWithEmailAndPassword };
+export { checkAuthState, app, authFirebase, provider, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, onAuthStateChanged };

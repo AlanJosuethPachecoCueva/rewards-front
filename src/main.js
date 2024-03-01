@@ -3,6 +3,8 @@ import './assets/main.css'
 import { createApp } from 'vue'
 import App from './App.vue'
 
+import { createPinia } from 'pinia'
+
 import router from "./router";
 
 // Boostrap
@@ -20,6 +22,7 @@ import 'sweetalert2/dist/sweetalert2.min.css';
 app.use(VueSweetalert2);
 
 app.use(router)
+app.use(createPinia())
 // Registrar bootstrap-vue-3
 app.use(bootstrap);
 

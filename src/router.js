@@ -1,9 +1,15 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 import home from "./views/home.vue";
-import register from "./components/register.vue";
-import login from "./components/login.vue";
+import registerComponent from "./components/registerComponent.vue";
+import loginComponent from "./components/loginComponent.vue";
 import auth from "./views/auth.vue";
+import manageKits from "./views/admins/manageKits.vue";
+import createKit from "./views/admins/createKit.vue";
+
+// import firebase from 'firebase/app';
+// import 'firebase/auth';
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -16,12 +22,12 @@ const router = createRouter({
         {
           path: "/register",
           name: "register",
-          component: register,
+          component: registerComponent,
         },
         {
           path: "/login",
           name: "login",
-          component: login,
+          component: loginComponent,
         },
       ],
     },
@@ -30,7 +36,36 @@ const router = createRouter({
       name: "home",
       component: home,
     },
+    //Admins
+    {
+      path: "/admin/manageKits",
+      name: "manageKits",
+      component: manageKits,
+    },
+    {
+      path: "/createKit",
+      name: "createKit",
+      component: createKit
+    }
   ],
 });
+
+
+
+// Guardia de navegación para verificar el estado de autenticación
+
+// Hacer que esta redirección forzosa solo se active cuando el usuario no autenticado quiera ir a alguna pestaña que requiera de los
+// datos del usuario
+// router.beforeEach((to, from, next) => {
+//   const currentUser = firebase.auth().currentUser;
+//   const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+
+//   if (requiresAuth && !currentUser) {
+//     next('/login'); // Si la ruta requiere autenticación y el usuario no está autenticado, redirige a la página de inicio de sesión
+//   } else {
+//     next(); // De lo contrario, permite que el usuario acceda a la ruta solicitada
+//   }
+// });
+
 
 export default router;
