@@ -1,6 +1,7 @@
 <script>
 // import 'bootstrap/dist/css/bootstrap.min.css';
-import createKitComponent from "@/components/admin/createKitComponent.vue";
+// import createKitComponent from "@/components/admin/createKitComponent.vue";
+import { generateKitWithAIController } from "../../controllers/kitsController.js";
 export default {
   data() {
     return {
@@ -20,10 +21,11 @@ export default {
       finalDateTouched: false,
       //emailTouched: false, // Indica si el usuario ha interactuado con el campo de email
       slogansTouched: false, // Indica si el usuario ha interactuado con el campo de título de trabajo
+      aiPrompt: null,
+      animate: false,
     };
   },
   components: {
-    createKitComponent,
   },
   computed: {
     nameValid() {
@@ -46,9 +48,9 @@ export default {
       selectedDateObj.setDate(selectedDateObj.getDate() + 1); // Suma un día a la fecha actual
       selectedDateObj.setHours(0, 0, 0, 0);
       this.formattedSelectedDate = selectedDateObj.toLocaleDateString('en-GB');
-      console.log("----Inicial");
-      console.log("currentDate: ", currentDate);
-      console.log("selectedDateObj: ", selectedDateObj);
+      // console.log("----Inicial");
+      // console.log("currentDate: ", currentDate);
+      // console.log("selectedDateObj: ", selectedDateObj);
 
       var isPrevious = false;
       if (selectedDateObj < currentDate) {
@@ -56,15 +58,15 @@ export default {
       }
       return this.initialDateTouched ? this.initialDate && !isPrevious : true;
     },
-    finalDateValid(){
+    finalDateValid() {
       var initialDateObj = new Date(this.initialDate);
       initialDateObj.setDate(initialDateObj.getDate() + 1); // Suma un día a la fecha actual
 
       const finalDateObj = new Date(this.finalDate);
       finalDateObj.setDate(finalDateObj.getDate() + 1); // Suma un día a la fecha actual
-      console.log("----Final");
-      console.log("initialDateObj: ", initialDateObj);
-      console.log("finalDateObj: ", finalDateObj);
+      // console.log("----Final");
+      // console.log("initialDateObj: ", initialDateObj);
+      // console.log("finalDateObj: ", finalDateObj);
 
       var isPrevious = false;
       if (finalDateObj <= initialDateObj) {
@@ -78,10 +80,27 @@ export default {
   methods: {
     checkForm() {
       this.errors = [];
-      if (!this.nameValid) this.errors.push("Name required.");
-      if (!this.descriptionValid) this.errors.push("Description required.");
-      // if (!this.emailValid) this.errors.push("Please Enter Correct Email.");
-      if (!this.slogansValid) this.errors.push("Slogans required.");
+      if (!this.nameValid || this.name == null) {
+        this.errors.push("Se requiere un nombre válido.");
+      } 
+      if (!this.descriptionValid || this.description == null) {
+        this.errors.push("Se requiere una descripción válida.");
+      } 
+      if (!this.slogansValid || this.slogans == null) {
+        this.errors.push("Se requiere slogans válidos.");
+      } 
+      if (!this.finalDateValid || this.finalDate == null) {
+        this.errors.push("Se requiere una fecha de finaliazación válida.");
+      } 
+      if (!this.initialDateValid || this.initialDate == null) {
+        this.errors.push("Se requiere una fecha de inicialización válida.");
+      }
+      
+
+      console.log("errors: ", this.error);
+
+
+
 
       if (this.errors.length === 0) {
         // Procesa el formulario si no hay errores
@@ -89,8 +108,28 @@ export default {
         // Aquí puedes agregar la lógica para procesar el formulario
       }
     },
+    animateBorder() {
+      this.animate = true;
+      setTimeout(() => {
+        this.animate = false;
+      }, 1500); // Asegúrate de que este tiempo coincida con la duración de la animación
+    },
+    async generateTextOpenAI() {
 
-  },
+      try {
+        
+        const response = await generateKitWithAIController(this.aiPrompt);
+        this.animateBorder();
+
+        this.name = response.title.replace( /"/g, "");
+        this.description = response.description.replace(/"/g, "");
+        this.slogans = response.slogans;
+        
+      } catch (error) {
+        console.error('Error al generar texto:', error);
+      }
+    },
+  }
 };
 </script>
 
@@ -101,21 +140,24 @@ export default {
       <div class="createKitContainerLeft">
         <div class="containerLeft">
           <form id="formCreateKit" @submit.prevent="checkForm" action="" method="post">
-            <p v-if="errors.length" class="text-danger">
-              <b>Please correct the following error(s):</b>
+            <div class="errorsContainer">
+              <p v-if="errors.length" class="text-danger">
+              <b>Por favor, corrija lo siguiente:</b>
             <ul>
-              <li v-for="error in errors" :key="error">{{ error }}</li>
+              <li v-for="error in errors" :key="error" >{{ error }}</li>
             </ul>
             </p>
+            </div>
+            
             <div class="form-group group">
               <label class="label" for="name">Nombre</label>
-              <input type="text" class="form-control" :class="{ 'is-invalid': nameTouched && !nameValid }"
+              <input type="text" class="form-control" :class="{ 'is-invalid': nameTouched && !nameValid, 'animate-border': animate}"
                 placeholder="Ingrese el nombre del material publicitario" id="name" v-model="name"
                 @blur="nameTouched = true">
             </div>
             <div class="form-group group">
               <label class="label" for="description">Descripción</label>
-              <textarea class="form-control" :class="{ 'is-invalid': descriptionTouched && !descriptionValid }" rows="3"
+              <textarea class="form-control" :class="{ 'is-invalid': descriptionTouched && !descriptionValid, 'animate-border': animate}" rows="3"
                 placeholder="Ingrese una descripción para su material publicitario" id="description"
                 v-model="description" @blur="descriptionTouched = true"></textarea>
             </div>
@@ -128,7 +170,7 @@ export default {
 
             <div class="form-group group">
               <label class="label" for="slogans">Slogans</label>
-              <textarea class="form-control" :class="{ 'is-invalid': slogansTouched && !slogansValid }" rows="3"
+              <textarea class="form-control" :class="{ 'is-invalid': slogansTouched && !slogansValid , 'animate-border': animate}" rows="3"
                 placeholder="Cada slogan debe estar separado por el símbolo '|'" id="slogans" v-model="slogans"
                 @blur="slogansTouched = true"></textarea>
             </div>
@@ -141,12 +183,13 @@ export default {
 
             <div class="form-group group">
               <label for="datePicker" class="label">Fecha fin</label>
-              <input type="date" class="form-control" id="datePicker" :class="{ 'is-invalid': finalDateTouched && !finalDateValid }"
-                @blur="finalDateTouched = true" v-model="finalDate">
+              <input type="date" class="form-control" id="datePicker"
+                :class="{ 'is-invalid': finalDateTouched && !finalDateValid }" @blur="finalDateTouched = true"
+                v-model="finalDate">
             </div>
 
             <button type="submit" class="btn btn-primary mb-3 btnGenerateKit"
-              :style="{ 'margin-left': 10 + '%' }">Crear</button>
+              :style="{ 'margin-left': 10 + '%' }" @click="checkForm()">Crear</button>
 
           </form>
         </div>
@@ -156,12 +199,13 @@ export default {
         <div class="card cardContainer">
           <div class="form-group generateKitIA">
             <label class="label" for="exampleFormControlTextarea1">Generar con inteligencia artificial</label>
-            <textarea class="form-control" id="textAreaGenerateWithAI" rows="3"
+            <textarea v-model="aiPrompt" class="form-control" id="textAreaGenerateWithAI" rows="3"
               placeholder="Describa en máximo 400 palabras de que trata la campaña, el enfoque que debe tener; el público objetivo (Edad, género y ubicación geográfica de su audiencia), características del producto.
             - Beneficios clave que ofrece el producto.
             - ¿Cuál es el problema que resuelve el producto?
             - ¿Cuál es el propósito principal de la campaña? (aumentar ventas, conciencia de marca, lanzamiento de un nuevo producto, etc.)"></textarea>
-            <button type="button" class="btn btn-primary btnGenerateKit">Generar con IA </button>
+            <button type="button" class="btn btn-primary btnGenerateKit" @click="generateTextOpenAI()">Generar con IA
+            </button>
           </div>
         </div>
       </div>
@@ -170,6 +214,33 @@ export default {
 </template>
 
 <style>
+.errorsContainer{
+  width: 100%;
+  display: flex;
+  justify-content:left;
+  padding-left: 10%;
+}
+.animate-border {
+  animation: border-change 1s forwards;
+}
+
+@keyframes border-change {
+  0% {
+    /* border-color: #007bff; Color inicial */
+  }
+
+  50% {
+    border: 2px solid #72e78d;
+    /* Color intermedio */
+  }
+
+  100% {
+    border: 2px solid #00ff3c;
+    /* Color final */
+  }
+}
+
+
 #description {
   height: 100px;
 }

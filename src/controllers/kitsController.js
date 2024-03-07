@@ -1,4 +1,4 @@
-import { getAllKits, getKit, } from "../models/kitsModel";
+import { getAllKits, getKit, generateKitWithAI, } from "../models/kitsModel";
 
 // const createAProject = async (userData) => {
 //     try {
@@ -51,6 +51,23 @@ const getKitByIdController = async (id) => {
 
 }
 
+const generateKitWithAIController = async (prompt) => {
+    try {
+        const generatedKit = await generateKitWithAI(prompt);
+
+        if (!generatedKit) {
+            console.error("Error generatin kit with AI.");
+            return false;
+        }
+
+        return generatedKit;
+    } catch (error) {
+        console.error(error);
+        return false;
+    }
+
+}
+
 
 // const deleteProject = async (id) => {
 //     try {
@@ -78,4 +95,4 @@ const getKitByIdController = async (id) => {
     
 // }
 
-export { getKitsController, getKitByIdController };
+export { getKitsController, getKitByIdController, generateKitWithAIController };

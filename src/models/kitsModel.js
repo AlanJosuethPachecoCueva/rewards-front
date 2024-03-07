@@ -64,6 +64,19 @@ const getKit = async (id) => {
   }
 };
 
+const generateKitWithAI = async (prompt) => {
+  try {
+    const response = await fetch(`${RUTA_SERVIDOR}/kits/generateKitAI/${prompt}`);
+    if (!response.ok) {
+      throw new Error(`Unable to generate kit with AI ${id}`);
+    }
+    const generatedKitwithAI = await response.json();
+    return generatedKitwithAI;
+  } catch (error) {
+    throw error;
+  }
+};
+
 // async function deleteProjectById(id) {
 //   try {
 //     const response = await fetch(`${RUTA_SERVIDOR}/projects/delete/${id}`, {
@@ -121,4 +134,5 @@ const getKit = async (id) => {
 export {
   getAllKits,
   getKit,
+  generateKitWithAI
 };
