@@ -1,7 +1,11 @@
 <script>
-// import 'bootstrap/dist/css/bootstrap.min.css';
-// import createKitComponent from "@/components/admin/createKitComponent.vue";
-import { generateKitWithAIController } from "../../controllers/kitsController.js";
+import { generateKitWithAIController, createKitController } from "../../controllers/kitsController.js";
+import { useUserStore } from "../../stores/userStore.js"
+
+//Alertas
+import VueSweetalert2 from 'vue-sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
+
 export default {
   data() {
     return {
@@ -26,6 +30,7 @@ export default {
     };
   },
   components: {
+    VueSweetalert2,
   },
   computed: {
     nameValid() {
@@ -47,7 +52,7 @@ export default {
       const selectedDateObj = new Date(this.initialDate);
       selectedDateObj.setDate(selectedDateObj.getDate() + 1); // Suma un día a la fecha actual
       selectedDateObj.setHours(0, 0, 0, 0);
-      this.formattedSelectedDate = selectedDateObj.toLocaleDateString('en-GB');
+
       // console.log("----Inicial");
       // console.log("currentDate: ", currentDate);
       // console.log("selectedDateObj: ", selectedDateObj);
@@ -64,6 +69,7 @@ export default {
 
       const finalDateObj = new Date(this.finalDate);
       finalDateObj.setDate(finalDateObj.getDate() + 1); // Suma un día a la fecha actual
+
       // console.log("----Final");
       // console.log("initialDateObj: ", initialDateObj);
       // console.log("finalDateObj: ", finalDateObj);
@@ -78,53 +84,100 @@ export default {
   },
 
   methods: {
-    checkForm() {
-      this.errors = [];
-      if (!this.nameValid || this.name == null) {
-        this.errors.push("Se requiere un nombre válido.");
-      } 
-      if (!this.descriptionValid || this.description == null) {
-        this.errors.push("Se requiere una descripción válida.");
-      } 
-      if (!this.slogansValid || this.slogans == null) {
-        this.errors.push("Se requiere slogans válidos.");
-      } 
-      if (!this.finalDateValid || this.finalDate == null) {
-        this.errors.push("Se requiere una fecha de finaliazación válida.");
-      } 
-      if (!this.initialDateValid || this.initialDate == null) {
-        this.errors.push("Se requiere una fecha de inicialización válida.");
+    getUserId() {
+      const store = useUserStore();
+      const user = store.getUser;
+      console.log("User at navBar: ", user);
+      return user.id;
+    },
+    async checkForm() {
+      try {
+        const selectedDateObj = new Date(this.initialDate);
+        selectedDateObj.setDate(selectedDateObj.getDate() + 1); // Suma un día a la fecha actual
+        selectedDateObj.setHours(0, 0, 0, 0);
+        this.formattedInitialDate = selectedDateObj.toLocaleDateString('en-GB');
+        const finalDateObj = new Date(this.finalDate);
+        finalDateObj.setDate(finalDateObj.getDate() + 1); // Suma un día a la fecha actual
+        this.formattedFinalDate = finalDateObj.toLocaleDateString('en-GB');
+
+        this.errors = [];
+        if (!this.nameValid || this.name == null) {
+          this.errors.push("Se requiere un nombre válido.");
+        }
+        if (!this.descriptionValid || this.description == null) {
+          this.errors.push("Se requiere una descripción válida.");
+        }
+        if (!this.slogansValid || this.slogans == null) {
+          this.errors.push("Se requiere slogans válidos.");
+        }
+        if (!this.finalDateValid || this.finalDate == null) {
+          this.errors.push("Se requiere una fecha de finaliazación válida.");
+        }
+        if (!this.initialDateValid || this.initialDate == null) {
+          this.errors.push("Se requiere una fecha de inicialización válida.");
+        }
+
+        if (this.errors.length === 0) {
+          // Procesa el formulario si no hay errores
+          const userId = this.getUserId();
+          const kit = {
+            author: userId,
+            description: this.description,
+            startDate: this.formattedInitialDate,
+            endDate: this.formattedFinalDate,
+            images: [],
+            mainImageUrl: "",
+            title: this.name,
+            slogans: this.slogans
+          }
+          const kitId = await createKitController(kit);
+          console.log("kitId: ", kitId);
+          await this.$swal({
+            title: "¡El kit ha sido creado con éxito!",
+            icon: "success",
+            showCancelButton: false,
+            confirmButtonText: "OK",
+          });
+
+          // this.$router.push("/createKitMaterial");
+          this.$router.push({ name: "createKitMaterial", params: { kitId } });
+
+          //     const result = await this.$swal({
+          //     title: '¿Do you want to register?',
+          //     icon: 'question',
+          //     showCancelButton: true,
+          //     confirmButtonText: 'Yes',
+          //     cancelButtonText: "Not",
+          // });
+          // if (result.isConfirmed) {
+        }
+      } catch (error) {
+        await this.$swal({
+          title: "Las sugerencias no se completaron de la manera esperada o ocurrió un error, por favor, vuelve a intentar.",
+          icon: "error",
+          showCancelButton: false,
+          confirmButtonText: "OK",
+        });
       }
-      
 
-      console.log("errors: ", this.error);
-
-
-
-
-      if (this.errors.length === 0) {
-        // Procesa el formulario si no hay errores
-        console.log("Formulario enviado");
-        // Aquí puedes agregar la lógica para procesar el formulario
-      }
     },
     animateBorder() {
       this.animate = true;
       setTimeout(() => {
         this.animate = false;
-      }, 1500); // Asegúrate de que este tiempo coincida con la duración de la animación
+      }, 1500);
     },
     async generateTextOpenAI() {
 
       try {
-        
+
         const response = await generateKitWithAIController(this.aiPrompt);
         this.animateBorder();
 
-        this.name = response.title.replace( /"/g, "");
+        this.name = response.title.replace(/"/g, "");
         this.description = response.description.replace(/"/g, "");
-        this.slogans = response.slogans;
-        
+        this.slogans = response.slogans.join(' | ');
+
       } catch (error) {
         console.error('Error al generar texto:', error);
       }
@@ -142,22 +195,24 @@ export default {
           <form id="formCreateKit" @submit.prevent="checkForm" action="" method="post">
             <div class="errorsContainer">
               <p v-if="errors.length" class="text-danger">
-              <b>Por favor, corrija lo siguiente:</b>
-            <ul>
-              <li v-for="error in errors" :key="error" >{{ error }}</li>
-            </ul>
-            </p>
+                <b>Por favor, corrija lo siguiente:</b>
+              <ul>
+                <li v-for="error in errors" :key="error">{{ error }}</li>
+              </ul>
+              </p>
             </div>
-            
+
             <div class="form-group group">
               <label class="label" for="name">Nombre</label>
-              <input type="text" class="form-control" :class="{ 'is-invalid': nameTouched && !nameValid, 'animate-border': animate}"
+              <input type="text" class="form-control"
+                :class="{ 'is-invalid': nameTouched && !nameValid, 'animate-border': animate }"
                 placeholder="Ingrese el nombre del material publicitario" id="name" v-model="name"
                 @blur="nameTouched = true">
             </div>
             <div class="form-group group">
               <label class="label" for="description">Descripción</label>
-              <textarea class="form-control" :class="{ 'is-invalid': descriptionTouched && !descriptionValid, 'animate-border': animate}" rows="3"
+              <textarea class="form-control"
+                :class="{ 'is-invalid': descriptionTouched && !descriptionValid, 'animate-border': animate }" rows="3"
                 placeholder="Ingrese una descripción para su material publicitario" id="description"
                 v-model="description" @blur="descriptionTouched = true"></textarea>
             </div>
@@ -170,7 +225,8 @@ export default {
 
             <div class="form-group group">
               <label class="label" for="slogans">Slogans</label>
-              <textarea class="form-control" :class="{ 'is-invalid': slogansTouched && !slogansValid , 'animate-border': animate}" rows="3"
+              <textarea class="form-control"
+                :class="{ 'is-invalid': slogansTouched && !slogansValid, 'animate-border': animate }" rows="3"
                 placeholder="Cada slogan debe estar separado por el símbolo '|'" id="slogans" v-model="slogans"
                 @blur="slogansTouched = true"></textarea>
             </div>
@@ -188,8 +244,8 @@ export default {
                 v-model="finalDate">
             </div>
 
-            <button type="submit" class="btn btn-primary mb-3 btnGenerateKit"
-              :style="{ 'margin-left': 10 + '%' }" @click="checkForm()">Crear</button>
+            <button type="submit" class="btn btn-primary mb-3 btnGenerateKit" :style="{ 'margin-left': 10 + '%' }"
+              @click="checkForm()">Crear</button>
 
           </form>
         </div>
@@ -214,12 +270,13 @@ export default {
 </template>
 
 <style>
-.errorsContainer{
+.errorsContainer {
   width: 100%;
   display: flex;
-  justify-content:left;
+  justify-content: left;
   padding-left: 10%;
 }
+
 .animate-border {
   animation: border-change 1s forwards;
 }

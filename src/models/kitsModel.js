@@ -1,42 +1,48 @@
 //Ruta para la api
 const RUTA_SERVIDOR = `${import.meta.env.VITE_APP_RUTA_API}`;
 
-// async function createKit(kitData) {
-//   try {
-//     const {
-//       author,
-//       teamName,
-//       name,
-//       description,
-//       teamMembers,
-//       estimatedEndDate,
-//     } = projectData;
+async function createKit(kitData) {
+  try {
+    const {
+      author,
+      description,
+      startDate,
+      endDate,
+      images,
+      mainImageUrl,
+      title,
+      slogans
+    } = kitData;
 
-//     const response = await fetch(`${RUTA_SERVIDOR}/projects/create`, {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify({
-//         author,
-//         teamName,
-//         name,
-//         description,
-//         teamMembers,
-//         estimatedEndDate,
-//       }),
-//     });
+    const response = await fetch(`${RUTA_SERVIDOR}/kits/create`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        author,
+        description,
+        startDate,
+        endDate,
+        images,
+        mainImageUrl,
+        title,
+        slogans
+      }),
+    });
 
-//     if (!response.ok) {
-//       throw new Error("Error creating project");
-//     }
-
-//     const project = response;
-//     return project;
-//   } catch (error) {
-//     throw error;
-//   }
-// }
+    if (!response.ok) {
+      throw new Error("Error creating project");
+    }
+    console.log("response: ", response);
+    const kit = await response.json();
+    
+    console.log("Kit respuesta: ", kit);
+    return kit;
+  } catch (error) {
+    throw error;
+  }
+}
 
 const getAllKits = async () => {
   try {
@@ -59,19 +65,36 @@ const getKit = async (id) => {
     }
     const user = await response.json();
     return user;
-  } catch (error) {
+  } catch (error) { 
     throw error;
   }
 };
 
 const generateKitWithAI = async (prompt) => {
   try {
-    const response = await fetch(`${RUTA_SERVIDOR}/kits/generateKitAI/${prompt}`);
+    const response = await fetch(
+      `${RUTA_SERVIDOR}/kits/generateKitAI/${prompt}`
+    );
     if (!response.ok) {
       throw new Error(`Unable to generate kit with AI ${id}`);
     }
     const generatedKitwithAI = await response.json();
     return generatedKitwithAI;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const generateImageWithAI = async (prompt) => {
+  try {
+    const response = await fetch(
+      `${RUTA_SERVIDOR}/kits/generateImageAI/${prompt}`
+    );
+    if (!response.ok) {
+      throw new Error(`Unable to generate image with AI ${id}`);
+    }
+    const generatedImagewithAI = await response.json();
+    return generatedImagewithAI;
   } catch (error) {
     throw error;
   }
@@ -131,8 +154,4 @@ const generateKitWithAI = async (prompt) => {
 //   }
 // };
 
-export {
-  getAllKits,
-  getKit,
-  generateKitWithAI
-};
+export { getAllKits, getKit, generateKitWithAI, generateImageWithAI, createKit };

@@ -79,7 +79,7 @@ export default {
 <template>
   <div class="container px-4 py-5 mx-auto">
     <div class="card card0">
-      <div class="d-flex flex-lg-row flex-column-reverse">
+      <div class="d-flex flex-lg-row flex-column-reverse" id="dispositionCorrect">
         <div class="card card1">
           <div class="row justify-content-center my-auto">
             <div class="col-md-12 col-12 my-5">
@@ -192,19 +192,32 @@ export default {
 </template>
 
 <style>
+
 .card {
   border-radius: 0;
   border: none;
+  background-color: red;
 }
 
 .card1 {
   width: 50%;
   padding: 40px 30px 10px 30px;
+  background-color: yellow;
 }
 
 .card2 {
+
   width: 50%;
   background-image: linear-gradient(to right, rgb(89, 76, 66), rgb(65, 39, 39));
+}
+
+@media screen and (max-width: 992px) {
+  .card1 {
+    width:100%;
+  }
+  .card2 {
+    width:100%;
+  }
 }
 
 #logo {

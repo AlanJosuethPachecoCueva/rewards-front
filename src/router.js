@@ -6,6 +6,7 @@ import loginComponent from "./components/loginComponent.vue";
 import auth from "./views/auth.vue";
 import manageKits from "./views/admins/manageKits.vue";
 import createKit from "./views/admins/createKit.vue";
+import createKitMaterial from "./views/admins/createKitMaterial.vue";
 
 // import firebase from 'firebase/app';
 // import 'firebase/auth';
@@ -46,9 +47,22 @@ const router = createRouter({
       path: "/createKit",
       name: "createKit",
       component: createKit
+    },
+    {
+      path: "/createKitMaterial/:kitId",
+      name: "createKitMaterial",
+      component: createKitMaterial,
+      props: true
     }
   ],
 });
+
+// {
+//   path: '/admin/edit/:id',
+//   name: 'editUser',
+//   component: editUser,
+//   props: true
+// },
 
 
 

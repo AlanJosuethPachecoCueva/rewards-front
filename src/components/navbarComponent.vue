@@ -1,8 +1,6 @@
 <script>
 import { computed } from "vue";
 import { colors } from "../assets/colors.js";
-import { authFirebase, onAuthStateChanged } from "../models/firebase/config.js";
-import { ref, watchEffect } from "vue";
 import { useUserStore } from "../stores/userStore.js";
 import { logOut } from "../models/firebase/auth.js";
 export default {

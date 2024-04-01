@@ -1,20 +1,20 @@
-import { getAllKits, getKit, generateKitWithAI, } from "../models/kitsModel";
+import { getAllKits, getKit, generateKitWithAI, generateImageWithAI, createKit } from "../models/kitsModel";
 
-// const createAProject = async (userData) => {
-//     try {
-//         const res = await createProject(userData);
+const createKitController = async (kitData) => {
+    try {
+        const res = await createKit(kitData);
 
-//         if (!res) {
-//             console.error("Error creating project.");
-//             return false;
-//         }
-//         return res;
-//     } catch (error) {
-//         console.error(error);
-//         return false;
-//     }
+        if (!res) {
+            console.error("Error creating kit.");
+            return false;
+        }
+        return res;
+    } catch (error) {
+        console.error(error);
+        return false;
+    }
 
-// }
+}
 
 const getKitsController = async () => {
     try {
@@ -56,11 +56,28 @@ const generateKitWithAIController = async (prompt) => {
         const generatedKit = await generateKitWithAI(prompt);
 
         if (!generatedKit) {
-            console.error("Error generatin kit with AI.");
+            console.error("Error generating kit with AI.");
             return false;
         }
 
         return generatedKit;
+    } catch (error) {
+        console.error(error);
+        return false;
+    }
+
+}
+
+const generateImageWithAIController = async (prompt) => {
+    try {
+        const generatedImage = await generateImageWithAI(prompt);
+
+        if (!generatedImage) {
+            console.error("Error generating image with AI.");
+            return false;
+        }
+
+        return generatedImage;
     } catch (error) {
         console.error(error);
         return false;
@@ -95,4 +112,4 @@ const generateKitWithAIController = async (prompt) => {
     
 // }
 
-export { getKitsController, getKitByIdController, generateKitWithAIController };
+export { getKitsController, getKitByIdController, generateKitWithAIController, createKitController, generateImageWithAIController };
