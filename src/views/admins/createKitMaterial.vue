@@ -6,16 +6,16 @@
       <div class="createKitContainerLeft">
         <div class="containerLeft">
           <carousel :items-to-show="cardsToShow" :paginationEnabled="true">
-            <Slide v-for="kit in kits" :key="kit.title" class="carousel-slide p-2">
+            <Slide v-for="kit in kitsImages" :key="kit" class="carousel-slide p-2">
               <div class="card" style="width: 18rem">
-                <img :src="kit.mainImageUrl" class="card-img-top imageCard" alt="Image" />
-                <div class="card-body">
+                <img :src="kit" class="card-img-top imageCard" alt="Image" />
+                <!-- <div class="card-body">
                   <h5 class="card-title">{{ kit.title }}</h5>
                   <p class="card-text">
                     {{ kit.shortDesc }}
                   </p>
                   <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
+                </div> -->
               </div>
             </Slide>
             <!-- <template #addons> -->
@@ -62,7 +62,7 @@
 import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
 
-import { getKitByIdController, getKitsController, generateImageWithAIController } from "../../controllers/kitsController";
+import { getKitByIdController, getKitsController, generateImageWithAIController, getKitsImagesController } from "../../controllers/kitsController";
 
 export default {
   components: {
@@ -77,31 +77,21 @@ export default {
       totalCards: 10, // Suponiendo que tienes  10 tarjetas en total
       cardsToShow: 3, // Inicialmente mostramos  3 tarjetas
       loadedCards: 3, // Inicialmente cargamos  3 tarjetas
-      kits: [],
+      kitsImages: [],
     };
   },
   created() {
     this.getKit();
-    this.getKits();
+    this.getKitsImages();
   },
   methods: {
-    async getKits() {
-      var res = await getKitsController();
-      console.log("this.kits: ", this.kits);
-      this.kits = res.map((kit) => {
-        var shortDesc = kit.description;
-        if (kit.description.length > 97) {
-          shortDesc = shortDesc.slice(0, 97) + "...";
-        }
-        // Devuelve un nuevo objeto con el atributo shortDesc añadido
-        return {
-          shortDesc,
-          ...kit,
-        };
-      });
-      this.totalCards = this.kits.length;
+    async getKitsImages() {
+      var res = await getKitsImagesController();
+      console.log("this.kits: ", res);
+      this.kitsImages = res; 
+      this.totalCards = this.kitsImages.length;
       console.log("this.totalCards: ", this.totalCards);
-      console.log("this.kits: ", this.kits);
+      console.log("this.kits: ", this.kitsImages);
     },
     async getKit() {
       try {
@@ -125,6 +115,8 @@ export default {
       try {
 
         const response = await generateImageWithAIController(this.aiPrompt);
+
+        this.getKitsImages();
         // this.animateBorder();
 
         // this.name = response.title.replace(/"/g, "");

@@ -100,6 +100,19 @@ const generateImageWithAI = async (prompt) => {
   }
 };
 
+const getKitsImages = async () => {
+  try {
+    const response = await fetch(`${RUTA_SERVIDOR}/kits/kitImages`);
+    if (!response.ok) {
+      throw new Error(`Unable to get kits images`);
+    }
+    const images = await response.json();
+    return images;
+  } catch (error) { 
+    throw error;
+  }
+};
+
 // async function deleteProjectById(id) {
 //   try {
 //     const response = await fetch(`${RUTA_SERVIDOR}/projects/delete/${id}`, {
@@ -154,4 +167,4 @@ const generateImageWithAI = async (prompt) => {
 //   }
 // };
 
-export { getAllKits, getKit, generateKitWithAI, generateImageWithAI, createKit };
+export { getAllKits, getKit, generateKitWithAI, generateImageWithAI, createKit, getKitsImages };

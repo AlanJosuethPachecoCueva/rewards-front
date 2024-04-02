@@ -1,4 +1,4 @@
-import { getAllKits, getKit, generateKitWithAI, generateImageWithAI, createKit } from "../models/kitsModel";
+import { getAllKits, getKit, generateKitWithAI, generateImageWithAI, createKit, getKitsImages } from "../models/kitsModel";
 
 const createKitController = async (kitData) => {
     try {
@@ -85,6 +85,24 @@ const generateImageWithAIController = async (prompt) => {
 
 }
 
+const getKitsImagesController = async () => {
+    try {
+        const images = await getKitsImages();
+
+        if (!images) {
+            console.error("Error getting kits images");
+            return false;
+        }
+
+        return images;
+    } catch (error) {
+        console.error(error);
+        return false;
+    }
+
+}
+
+
 
 // const deleteProject = async (id) => {
 //     try {
@@ -112,4 +130,4 @@ const generateImageWithAIController = async (prompt) => {
     
 // }
 
-export { getKitsController, getKitByIdController, generateKitWithAIController, createKitController, generateImageWithAIController };
+export { getKitsController, getKitByIdController, generateKitWithAIController, createKitController, generateImageWithAIController, getKitsImagesController };
