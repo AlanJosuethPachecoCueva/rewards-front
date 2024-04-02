@@ -3,25 +3,45 @@
     <h2>Nuevo Material Publicitario</h2>
     <h3> Afiches & Banners</h3>
     <div class="createKitContainer">
+
+
       <div class="createKitContainerLeft">
+        <div class="showInformationLeft">
+          <div class="showDataKit">
+            <h4>Tu chocolate</h4>
+            <div class="card cardKitInformation" style="height: fit-content;">
+              {{ kit.title }}
+            </div>
+            <div class="card cardKitInformation" style="height: fit-content; text-align: left;">
+              {{ kit.description }}
+            </div>
+            <div class="card cardKitInformation" style="height: fit-content; text-align: left;">
+              {{ kit.slogans }}
+            </div>
+          </div>
+          <div class="imagesSelector" :class="{ 'imagesSelectorMiddle': inMiddle }">
+            <h4>Imágenes</h4>
+            <div class="row">
+              <div class="col-md-4 col-lg-4 mb-3" v-for="selectedImage in selectedImages" :key="selectedImage">
+                <div class="card cardsSelectedImages">
+                  <img :src="selectedImage" class="card-img-top" alt="I" @click="deleteKitImage(selectedImage)">
+                  <!-- <div class="card-body">
+                    <h5 class="card-title">{{ item.title }}</h5>
+                    <p class="card-text">{{ item.description }}</p>
+                    <a href="#" class="btn btn-primary">Ver más</a>
+                  </div> -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="containerLeft">
           <carousel :items-to-show="cardsToShow" :paginationEnabled="true">
-            <Slide v-for="kit in kitsImages" :key="kit" class="carousel-slide p-2">
+            <Slide v-for="image in kitsImages" :key="image" class="carousel-slide p-2">
               <div class="card" style="width: 18rem">
-                <img :src="kit" class="card-img-top imageCard" alt="Image" />
-                <!-- <div class="card-body">
-                  <h5 class="card-title">{{ kit.title }}</h5>
-                  <p class="card-text">
-                    {{ kit.shortDesc }}
-                  </p>
-                  <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div> -->
+                <img :src="image" class="card-img-top imageCard" alt="Image" @click="selectKitImage(image)" />
               </div>
             </Slide>
-            <!-- <template #addons> -->
-            <navigation />
-            <pagination />
-            <!-- </template> -->
           </carousel>
         </div>
       </div>
@@ -30,10 +50,7 @@
           <div class="form-group generateKitIA">
             <label class="label" for="exampleFormControlTextarea1">Generar con inteligencia artificial</label>
             <textarea v-model="aiPrompt" class="form-control" id="textAreaGenerateWithAI" rows="3"
-              placeholder="Describa en máximo 400 palabras de que trata la campaña, el enfoque que debe tener; el público objetivo (Edad, género y ubicación geográfica de su audiencia), características del producto.
-            - Beneficios clave que ofrece el producto.
-            - ¿Cuál es el problema que resuelve el producto?
-            - ¿Cuál es el propósito principal de la campaña? (aumentar ventas, conciencia de marca, lanzamiento de un nuevo producto, etc.)"></textarea>
+              placeholder="Describa en máximo 400 palabras la imagen que quiere generar."></textarea>
 
             <!-- <form @submit.prevent="submitForm"> -->
             <div class="mb-3">
@@ -42,8 +59,7 @@
             </div>
             <!-- </form> -->
 
-            <button type="button" class="btn btn-primary btnGenerateKit"
-              @click="generateImageOpenAI()">Generar con
+            <button type="button" class="btn btn-primary btnGenerateKit" @click="generateImageOpenAI()">Generar con
               IA
             </button>
           </div>
@@ -52,10 +68,6 @@
     </div>
 
   </div>
-  página para agregar las imágenes de material a un kit en concreto
-
-
-
 </template>
 
 <script>
@@ -78,6 +90,8 @@ export default {
       cardsToShow: 3, // Inicialmente mostramos  3 tarjetas
       loadedCards: 3, // Inicialmente cargamos  3 tarjetas
       kitsImages: [],
+      selectedImages: [],
+      inMiddle: true,
     };
   },
   created() {
@@ -85,10 +99,32 @@ export default {
     this.getKitsImages();
   },
   methods: {
+    selectKitImage(image) {
+      console.log("Imagen recibida en selector de imagen: ", image);
+
+      //Antes comprueba si dicho elemento ya está dentro del arreglo
+      const isInTheArray = this.selectedImages.includes(image);
+      if (!isInTheArray) {
+        this.selectedImages.push(image);
+      }
+      this.needsToBeInMiddle();
+    },
+    needsToBeInMiddle() {
+      if (this.selectedImages.length < 1) {
+        this.inMiddle = true;
+      } else {
+        this.inMiddle = false;
+      }
+    },
+    deleteKitImage(image) {
+      let arrayWithoutSelectedImage = this.selectedImages.filter(element => element !== image);
+      this.selectedImages = arrayWithoutSelectedImage;
+      this.needsToBeInMiddle();
+    },
     async getKitsImages() {
       var res = await getKitsImagesController();
       console.log("this.kits: ", res);
-      this.kitsImages = res; 
+      this.kitsImages = res;
       this.totalCards = this.kitsImages.length;
       console.log("this.totalCards: ", this.totalCards);
       console.log("this.kits: ", this.kitsImages);
@@ -131,4 +167,41 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.showInformationLeft {
+  background-color: rgba(214, 198, 27, 0.1);
+  height: fit-content;
+  padding: 10px;
+
+  display: flex;
+
+}
+
+.showDataKit {
+  width: 50%;
+}
+
+.cardKitInformation {
+  margin: 0px 20px 10px 20px;
+  padding: 8px;
+
+}
+
+.imagesSelector {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  background-color: rgb(250, 250, 242);
+}
+
+.imagesSelectorMiddle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center !important;
+}
+
+.cardsSelectedImages {
+  width: 100%;
+  height: 10px;
+}
+</style>

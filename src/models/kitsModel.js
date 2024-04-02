@@ -106,6 +106,7 @@ const getKitsImages = async () => {
     if (!response.ok) {
       throw new Error(`Unable to get kits images`);
     }
+    
     const images = await response.json();
     return images;
   } catch (error) { 
