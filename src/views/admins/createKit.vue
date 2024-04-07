@@ -53,9 +53,6 @@ export default {
       selectedDateObj.setDate(selectedDateObj.getDate() + 1); // Suma un día a la fecha actual
       selectedDateObj.setHours(0, 0, 0, 0);
 
-      // console.log("----Inicial");
-      // console.log("currentDate: ", currentDate);
-      // console.log("selectedDateObj: ", selectedDateObj);
 
       var isPrevious = false;
       if (selectedDateObj < currentDate) {
@@ -70,10 +67,6 @@ export default {
       const finalDateObj = new Date(this.finalDate);
       finalDateObj.setDate(finalDateObj.getDate() + 1); // Suma un día a la fecha actual
 
-      // console.log("----Final");
-      // console.log("initialDateObj: ", initialDateObj);
-      // console.log("finalDateObj: ", finalDateObj);
-
       var isPrevious = false;
       if (finalDateObj <= initialDateObj) {
         isPrevious = true;
@@ -87,7 +80,6 @@ export default {
     getUserId() {
       const store = useUserStore();
       const user = store.getUser;
-      console.log("User at navBar: ", user);
       return user.id;
     },
     async checkForm() {
@@ -131,7 +123,6 @@ export default {
             slogans: this.slogans
           }
           const kitId = await createKitController(kit);
-          console.log("kitId: ", kitId);
           await this.$swal({
             title: "¡El kit ha sido creado con éxito!",
             icon: "success",
@@ -245,7 +236,7 @@ export default {
             </div>
 
             <button type="submit" class="btn btn-primary mb-3 btnGenerateKit" :style="{ 'margin-left': 10 + '%' }"
-              @click="checkForm()">Crear</button>
+              >Crear</button>
 
           </form>
         </div>

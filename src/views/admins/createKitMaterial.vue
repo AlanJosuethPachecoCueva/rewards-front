@@ -24,7 +24,7 @@
             <div class="row">
               <div class="col-md-4 col-lg-4 mb-3" v-for="selectedImage in selectedImages" :key="selectedImage">
                 <div class="card cardsSelectedImages">
-                  <img :src="selectedImage" class="card-img-top" alt="I" @click="deleteKitImage(selectedImage)">
+                  <img :src="selectedImage.url" class="card-img-top" alt="I" @click="deleteKitImage(selectedImage)">
                   <!-- <div class="card-body">
                     <h5 class="card-title">{{ item.title }}</h5>
                     <p class="card-text">{{ item.description }}</p>
@@ -39,7 +39,7 @@
           <carousel :items-to-show="cardsToShow" :paginationEnabled="true">
             <Slide v-for="image in kitsImages" :key="image" class="carousel-slide p-2">
               <div class="card" style="width: 18rem">
-                <img :src="image" class="card-img-top imageCard" alt="Image" @click="selectKitImage(image)" />
+                <img :src="image.url" class="card-img-top imageCard" alt="Image" @click="selectKitImage(image)" />
               </div>
             </Slide>
           </carousel>
@@ -65,16 +65,20 @@
           </div>
         </div>
       </div>
-    </div>
 
+    </div>
+    <button type="button" class="btn btn-primary btnGenerateKit" @click="assignImages()">Asignar imágenes
+    </button>
   </div>
 </template>
 
 <script>
 import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
+import { computed } from "vue";
 
-import { getKitByIdController, getKitsController, generateImageWithAIController, getKitsImagesController } from "../../controllers/kitsController";
+import { useUserStore } from "../../stores/userStore.js";
+import { getKitByIdController, getKitsController, generateImageWithAIController, getKitsImagesController, updateKitImagesController } from "../../controllers/kitsController";
 
 export default {
   components: {
@@ -85,7 +89,7 @@ export default {
   data() {
     return {
       logIn: true,
-      kit: null,
+      kit: { title: "Provisional" },
       totalCards: 10, // Suponiendo que tienes  10 tarjetas en total
       cardsToShow: 3, // Inicialmente mostramos  3 tarjetas
       loadedCards: 3, // Inicialmente cargamos  3 tarjetas
@@ -94,11 +98,39 @@ export default {
       inMiddle: true,
     };
   },
-  created() {
-    this.getKit();
-    this.getKitsImages();
+  setup() {
+    const store = useUserStore();
+    const valueRes = computed(() => {
+      return store.getUser;
+    });
+    console.log("User at createKitMaterial Image: ", valueRes);
+    console.log("User at createKitMaterial Image _value: ", valueRes.value.id);
+
+    const user = valueRes.value;
+    return { user };
+  },
+  async created() {
+    await this.getKit();
+    await this.getKitsImages();
   },
   methods: {
+    async assignImages(){
+      if(this.selectedImages.length > 0){
+        console.log("Images to send: ", this.selectedImages);
+        console.log("kit Id to set images: ", this.kit.id );
+
+        //Proceso para extraer los ids
+        const idKitsToSave = this.selectedImages.map(image =>{
+          console.log("Map images: ", image.metadata[0].id);
+          return image.metadata[0].id;
+        });
+
+        console.log("IDs to save: ", idKitsToSave);
+        const res = await updateKitImagesController(this.kit.id, idKitsToSave);
+      }else{
+        //Recordar insertar avisos con sweet alert
+      }
+    },
     selectKitImage(image) {
       console.log("Imagen recibida en selector de imagen: ", image);
 
@@ -123,11 +155,11 @@ export default {
     },
     async getKitsImages() {
       var res = await getKitsImagesController();
-      console.log("this.kits: ", res);
+      console.log("this.kitsImages: ", res);
       this.kitsImages = res;
       this.totalCards = this.kitsImages.length;
       console.log("this.totalCards: ", this.totalCards);
-      console.log("this.kits: ", this.kitsImages);
+      console.log("this.kitsImages: ", this.kitsImages);
     },
     async getKit() {
       try {
@@ -150,7 +182,7 @@ export default {
 
       try {
 
-        const response = await generateImageWithAIController(this.aiPrompt);
+        const response = await generateImageWithAIController(this.aiPrompt, this.user.id);
 
         this.getKitsImages();
         // this.animateBorder();

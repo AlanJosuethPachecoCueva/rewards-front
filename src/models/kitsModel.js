@@ -11,7 +11,7 @@ async function createKit(kitData) {
       images,
       mainImageUrl,
       title,
-      slogans
+      slogans,
     } = kitData;
 
     const response = await fetch(`${RUTA_SERVIDOR}/kits/create`, {
@@ -27,7 +27,7 @@ async function createKit(kitData) {
         images,
         mainImageUrl,
         title,
-        slogans
+        slogans,
       }),
     });
 
@@ -36,7 +36,7 @@ async function createKit(kitData) {
     }
     console.log("response: ", response);
     const kit = await response.json();
-    
+
     console.log("Kit respuesta: ", kit);
     return kit;
   } catch (error) {
@@ -65,7 +65,7 @@ const getKit = async (id) => {
     }
     const user = await response.json();
     return user;
-  } catch (error) { 
+  } catch (error) {
     throw error;
   }
 };
@@ -85,13 +85,30 @@ const generateKitWithAI = async (prompt) => {
   }
 };
 
-const generateImageWithAI = async (prompt) => {
+// const generateImageWithAI = async (prompt) => {
+//   try {
+//     const response = await fetch(
+//       `${RUTA_SERVIDOR}/kits/generateImageAI/${prompt}`
+//     );
+//     if (!response.ok) {
+//       throw new Error(`Unable to generate image with AI ${id}`);
+//     }
+//     const generatedImagewithAI = await response.json();
+//     return generatedImagewithAI;
+//   } catch (error) {
+//     throw error;
+//   }
+// };
+const generateImageWithAI = async (prompt, userID) => {
   try {
-    const response = await fetch(
-      `${RUTA_SERVIDOR}/kits/generateImageAI/${prompt}`
-    );
+    // Construye la URL con parámetros de consulta para prompt y userId
+    const url = new URL(`${RUTA_SERVIDOR}/kits/generateImageAI`);
+    url.searchParams.append("prompt", prompt);
+    url.searchParams.append("userID", userID); // Asegúrate de pasar el userId cuando llames a esta función
+
+    const response = await fetch(url.toString());
     if (!response.ok) {
-      throw new Error(`Unable to generate image with AI ${id}`);
+      throw new Error(`Unable to generate image with AI`);
     }
     const generatedImagewithAI = await response.json();
     return generatedImagewithAI;
@@ -106,66 +123,50 @@ const getKitsImages = async () => {
     if (!response.ok) {
       throw new Error(`Unable to get kits images`);
     }
-    
+
     const images = await response.json();
+    console.log("images from model: ", images);
     return images;
-  } catch (error) { 
+  } catch (error) {
     throw error;
   }
 };
 
-// async function deleteProjectById(id) {
-//   try {
-//     const response = await fetch(`${RUTA_SERVIDOR}/projects/delete/${id}`, {
-//       method: "DELETE",
-//     });
+async function updateKitImages(kitId, imageIds) {
+  try {
+    const response = await fetch(
+      `${RUTA_SERVIDOR}/kits/updateKitImages/${kitId}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          imageIds,
+        }),
+      }
+    );
 
-//     if (!response.ok) {
-//       throw new Error("Error deleting project.");
-//     }
+    if (!response.ok) {
+      throw new Error("Error updating kit images");
+    }
+    console.log("response: ", response);
+    const result = await response.json();
 
-//     const data = await response.text();
-//     return data;
-//   } catch (error) {
-//     throw error;
-//   }
-// }
+    console.log("Update result: ", result);
+    return result;
+  } catch (error) {
+    throw error;
+  }
+}
 
-// const updateProject = async (id, projectData) => {
-//   try {
-//     const {
-//       description,
-//       state,
-//       estimatedEndDate,
-//       name,
-//       startDate,
-//       teamMembers,
-//       teamName,
-//     } = projectData;
-//     const response = await fetch(`${RUTA_SERVIDOR}/projects/update`, {
-//       method: "PUT",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify({
-//         id,
-//         description,
-//         state,
-//         estimatedEndDate,
-//         name,
-//         startDate,
-//         teamMembers,
-//         teamName,
-//       }),
-//     });
 
-//     if (!response.ok) {
-//       throw new Error("Error updating project");
-//     }
-//     return response.ok;
-//   } catch (error) {
-//     throw error;
-//   }
-// };
-
-export { getAllKits, getKit, generateKitWithAI, generateImageWithAI, createKit, getKitsImages };
+export {
+  getAllKits,
+  getKit,
+  generateKitWithAI,
+  generateImageWithAI,
+  createKit,
+  getKitsImages,
+  updateKitImages,
+};

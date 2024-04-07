@@ -44,7 +44,8 @@ export default {
           <img
             class="card-img-top mb-5 mb-md-0"
             :src="mainImageUrl"
-            alt="..."
+            :alt="title"
+            style="max-height: 408px;"
           />
         </div>
         <div class="col-md-6">
