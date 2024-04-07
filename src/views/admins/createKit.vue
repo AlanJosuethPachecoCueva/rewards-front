@@ -123,6 +123,9 @@ export default {
             slogans: this.slogans
           }
           const kitId = await createKitController(kit);
+
+
+
           await this.$swal({
             title: "¡El kit ha sido creado con éxito!",
             icon: "success",
@@ -132,15 +135,6 @@ export default {
 
           // this.$router.push("/createKitMaterial");
           this.$router.push({ name: "createKitMaterial", params: { kitId } });
-
-          //     const result = await this.$swal({
-          //     title: '¿Do you want to register?',
-          //     icon: 'question',
-          //     showCancelButton: true,
-          //     confirmButtonText: 'Yes',
-          //     cancelButtonText: "Not",
-          // });
-          // if (result.isConfirmed) {
         }
       } catch (error) {
         await this.$swal({
@@ -162,6 +156,19 @@ export default {
 
       try {
 
+        // Muestra el mensaje de carga
+        this.$swal.fire({
+          title: 'Cargando...',
+          text: 'Por favor, espera mientras se genera el texto.',
+          allowOutsideClick: false,
+          showConfirmButton: false, // Oculta el botón de confirmación
+          confirmButtonText: false, // Asegura que no haya texto en el botón de confirmación
+          onBeforeOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
+
         const response = await generateKitWithAIController(this.aiPrompt);
         this.animateBorder();
 
@@ -169,6 +176,8 @@ export default {
         this.description = response.description.replace(/"/g, "");
         this.slogans = response.slogans.join(' | ');
 
+        // Oculta el mensaje de carga
+        this.$swal.close();
       } catch (error) {
         console.error('Error al generar texto:', error);
       }
@@ -235,8 +244,8 @@ export default {
                 v-model="finalDate">
             </div>
 
-            <button type="submit" class="btn btn-primary mb-3 btnGenerateKit" :style="{ 'margin-left': 10 + '%' }"
-              >Crear</button>
+            <button type="submit" class="btn btn-primary mb-3 btnGenerateKit"
+              :style="{ 'margin-left': 10 + '%' }">Crear</button>
 
           </form>
         </div>

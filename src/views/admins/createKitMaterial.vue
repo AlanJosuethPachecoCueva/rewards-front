@@ -103,8 +103,6 @@ export default {
     const valueRes = computed(() => {
       return store.getUser;
     });
-    console.log("User at createKitMaterial Image: ", valueRes);
-    console.log("User at createKitMaterial Image _value: ", valueRes.value.id);
 
     const user = valueRes.value;
     return { user };
@@ -114,26 +112,33 @@ export default {
     await this.getKitsImages();
   },
   methods: {
-    async assignImages(){
-      if(this.selectedImages.length > 0){
-        console.log("Images to send: ", this.selectedImages);
-        console.log("kit Id to set images: ", this.kit.id );
+    async assignImages() {
+      if (this.selectedImages.length > 0) {
 
         //Proceso para extraer los ids
-        const idKitsToSave = this.selectedImages.map(image =>{
-          console.log("Map images: ", image.metadata[0].id);
+        const idKitsToSave = this.selectedImages.map(image => {
           return image.metadata[0].id;
         });
 
-        console.log("IDs to save: ", idKitsToSave);
         const res = await updateKitImagesController(this.kit.id, idKitsToSave);
-      }else{
-        //Recordar insertar avisos con sweet alert
+        await this.$swal({
+          title: "¡Se ha creado el kit y asignado las imágenes correctamente!",
+          icon: "success",
+          showCancelButton: false,
+          confirmButtonText: "OK",
+        });
+
+        this.$router.push("/admin/manageKits");
+      } else {
+        await this.$swal({
+          title: "¡Ha ocurrido un problema, por favor, intenta nuevamente!",
+          icon: "error",
+          showCancelButton: false,
+          confirmButtonText: "OK",
+        });
       }
     },
     selectKitImage(image) {
-      console.log("Imagen recibida en selector de imagen: ", image);
-
       //Antes comprueba si dicho elemento ya está dentro del arreglo
       const isInTheArray = this.selectedImages.includes(image);
       if (!isInTheArray) {
@@ -155,21 +160,16 @@ export default {
     },
     async getKitsImages() {
       var res = await getKitsImagesController();
-      console.log("this.kitsImages: ", res);
       this.kitsImages = res;
       this.totalCards = this.kitsImages.length;
-      console.log("this.totalCards: ", this.totalCards);
-      console.log("this.kitsImages: ", this.kitsImages);
     },
     async getKit() {
       try {
         const idToSearch = this.$route.params.kitId;
-        console.log("id recuperado en route: ", idToSearch);
         const kit = await getKitByIdController(idToSearch);
         if (!kit) {
           throw new Error('Unable to find kit');
         }
-        console.log("kit encoontrado: ", kit);
         this.kit = kit;
         // this.user = Object.assign({}, user);
       } catch (error) {
@@ -179,17 +179,23 @@ export default {
 
     },
     async generateImageOpenAI() {
-
       try {
-
+        this.$swal.fire({
+          title: 'Cargando...',
+          text: 'Por favor, espera mientras se genera la imágen.',
+          allowOutsideClick: false,
+          showConfirmButton: false, // Oculta el botón de confirmación
+          confirmButtonText: false, // Asegura que no haya texto en el botón de confirmación
+          onBeforeOpen: () => {
+            Swal.showLoading();
+          },
+        });
         const response = await generateImageWithAIController(this.aiPrompt, this.user.id);
-
+        console.log("response imagen generada: ", response);
         this.getKitsImages();
-        // this.animateBorder();
-
-        // this.name = response.title.replace(/"/g, "");
-        // this.description = response.description.replace(/"/g, "");
-        // this.slogans = response.slogans.join(' | ');
+        console.log("this.kitsImages: ", this.kitsImages);
+        // Oculta el mensaje de carga
+        this.$swal.close();
 
       } catch (error) {
         console.error('Error al generar imagen:', error);

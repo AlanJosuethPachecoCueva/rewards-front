@@ -23,7 +23,6 @@ const createKitController = async (kitData) => {
   }
 };
 const getKitsController = async () => {
-  console.log("Se ejecuta getKitsControllers");
   try {
     const kits = await getAllKits();
 
@@ -121,23 +120,18 @@ const getKitsImagesController = async () => {
 const getImagesFromKitsController = async (kits) => {
     try {
       const kitsImages = await getKitsImagesController();
-      console.log("kitsImages: ", kitsImages);
       
       // Utilizamos Promise.all() para esperar a que todas las promesas se resuelvan
       const res = await Promise.all(kits.map(async (kit) => {
-        console.log("kit.mainImageUrl: ", kit.mainImageUrl);
   
         // Utilizamos el método find() para buscar la imagen con el ID correspondiente
         let urlMainImage = kitsImages.find(
           (image) => image.metadata[0].id === kit.mainImageUrl
         );
-        console.log("urlMainImage: ", urlMainImage.url);
         
         kit.mainImageUrl = urlMainImage.url;
         return kit;
       }));
-  
-      console.log("arregloDeObjetos result: ", res); // Imprime el arreglo de objetos normal
       
       return res;
     } catch (error) {

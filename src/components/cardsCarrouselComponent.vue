@@ -4,11 +4,14 @@
       <div class="card" style="width: 18rem">
         <img :src="kit.mainImageUrl" class="card-img-top imageCard" alt="Image" />
         <div class="card-body">
-          <h5 class="card-title">{{ kit.title }}</h5>
-          <p class="card-text">
-            {{ kit.shortDesc }}
-          </p>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
+          <div class="minContentCard">
+            <h5 class="card-title">{{ kit.title }}</h5>
+            <p class="card-text">
+              {{ kit.shortDesc }}
+            </p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+          </div>
+
         </div>
       </div>
     </Slide>
@@ -26,7 +29,7 @@
 import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
 
-import { getKitsController } from "@/controllers/kitsController";
+import { getKitsController, getImagesFromKitsController } from "@/controllers/kitsController";
 
 export default {
   components: {
@@ -51,30 +54,37 @@ export default {
     },
   },
   async mounted() {
-  var res = await getKitsController();
-  console.log("this.kits: ", this.kits);
-  this.kits = res.map((kit) => {
-    var shortDesc = kit.description;
-    if (kit.description.length >  97) {
-      shortDesc = shortDesc.slice(0,  97) + "...";
-    }
-    // Devuelve un nuevo objeto con el atributo shortDesc añadido
-    return {
-      shortDesc,
-      ...kit,
-    };
-  });
-  this.totalCards = this.kits.length;
-  console.log("this.totalCards: ", this.totalCards);
-  console.log("this.kits: ", this.kits);
-},
+    var res = await getKitsController();
+    res = await getImagesFromKitsController(res);
+
+    console.log("this.kits: ", this.kits);
+    this.kits = res.map((kit) => {
+      var shortDesc = kit.description;
+      if (kit.description.length > 97) {
+        shortDesc = shortDesc.slice(0, 97) + "...";
+      }
+      // Devuelve un nuevo objeto con el atributo shortDesc añadido
+      return {
+        shortDesc,
+        ...kit,
+      };
+    });
+    this.totalCards = this.kits.length;
+    console.log("this.totalCards: ", this.totalCards);
+    console.log("this.kits: ", this.kits);
+  },
 
 };
 </script>
 
 <style>
-.imageCard{
-max-width: 286px;
-max-height: 163px;
+.imageCard {
+  max-width: 286px;
+  max-height: 163px;
+}
+
+.minContentCard{
+
+  height: 239.2px;
 }
 </style>

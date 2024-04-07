@@ -34,10 +34,8 @@ async function createKit(kitData) {
     if (!response.ok) {
       throw new Error("Error creating project");
     }
-    console.log("response: ", response);
     const kit = await response.json();
 
-    console.log("Kit respuesta: ", kit);
     return kit;
   } catch (error) {
     throw error;
@@ -125,7 +123,6 @@ const getKitsImages = async () => {
     }
 
     const images = await response.json();
-    console.log("images from model: ", images);
     return images;
   } catch (error) {
     throw error;
@@ -150,10 +147,8 @@ async function updateKitImages(kitId, imageIds) {
     if (!response.ok) {
       throw new Error("Error updating kit images");
     }
-    console.log("response: ", response);
     const result = await response.json();
 
-    console.log("Update result: ", result);
     return result;
   } catch (error) {
     throw error;
