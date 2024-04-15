@@ -22,6 +22,7 @@ const createKitController = async (kitData) => {
     return false;
   }
 };
+
 const getKitsController = async () => {
   try {
     const kits = await getAllKits();
@@ -117,6 +118,7 @@ const getKitsImagesController = async () => {
     return false;
   }
 };
+
 const getImagesFromKitsController = async (kits) => {
     try {
       const kitsImages = await getKitsImagesController();

@@ -83,20 +83,6 @@ const generateKitWithAI = async (prompt) => {
   }
 };
 
-// const generateImageWithAI = async (prompt) => {
-//   try {
-//     const response = await fetch(
-//       `${RUTA_SERVIDOR}/kits/generateImageAI/${prompt}`
-//     );
-//     if (!response.ok) {
-//       throw new Error(`Unable to generate image with AI ${id}`);
-//     }
-//     const generatedImagewithAI = await response.json();
-//     return generatedImagewithAI;
-//   } catch (error) {
-//     throw error;
-//   }
-// };
 const generateImageWithAI = async (prompt, userID) => {
   try {
     // Construye la URL con parámetros de consulta para prompt y userId

@@ -124,7 +124,7 @@ export default {
               <li v-if="user.isAdmin == true">
                 <a
                   class="dropdown-item"
-                  href="#"
+                  href="/admin/rewards"
                   :style="{ color: textColorContrast }"
                   >Gestionar Premios</a
                 >

@@ -18,7 +18,7 @@ export default {
   },
   methods: {
     goToCreateKit(){
-      this.$router.push("/createKit");
+      this.$router.push("/admin/createKit");
     }
     // async chargekits() {
     //   kits = await getKitsController();

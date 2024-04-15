@@ -7,6 +7,9 @@ import auth from "./views/auth.vue";
 import manageKits from "./views/admins/manageKits.vue";
 import createKit from "./views/admins/createKit.vue";
 import createKitMaterial from "./views/admins/createKitMaterial.vue";
+//rewards
+import rewards from "./views/admins/rewards/rewards.vue"
+import generateStickers from "./views/admins/rewards/generateStickers.vue";
 
 // import firebase from 'firebase/app';
 // import 'firebase/auth';
@@ -44,16 +47,28 @@ const router = createRouter({
       component: manageKits,
     },
     {
-      path: "/createKit",
+      path: "/admin/createKit",
       name: "createKit",
       component: createKit
     },
     {
-      path: "/createKitMaterial/:kitId",
+      path: "/admin/createKitMaterial/:kitId",
       name: "createKitMaterial",
       component: createKitMaterial,
       props: true
-    }
+    },
+    {
+      path: "/admin/rewards",
+      name: "rewards",
+      component: rewards,
+      props: true
+    },
+    {
+      path: "/admin/generateStickers",
+      name: "generateStickers",
+      component: generateStickers,
+      props: true
+    },
   ],
 });
 

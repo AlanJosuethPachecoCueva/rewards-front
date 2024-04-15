@@ -162,22 +162,21 @@ export default {
           text: 'Por favor, espera mientras se genera el texto.',
           allowOutsideClick: false,
           showConfirmButton: false, // Oculta el botón de confirmación
-          confirmButtonText: false, // Asegura que no haya texto en el botón de confirmación
-          onBeforeOpen: () => {
-            Swal.showLoading();
-          },
+          confirmButtonText: false, // Asegura que no haya texto en el botón de confirmación    
         });
 
 
         const response = await generateKitWithAIController(this.aiPrompt);
         this.animateBorder();
 
+        // Oculta el mensaje de carga
+        this.$swal.close();
+        
         this.name = response.title.replace(/"/g, "");
         this.description = response.description.replace(/"/g, "");
         this.slogans = response.slogans.join(' | ');
 
-        // Oculta el mensaje de carga
-        this.$swal.close();
+        
       } catch (error) {
         console.error('Error al generar texto:', error);
       }
