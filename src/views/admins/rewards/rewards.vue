@@ -39,6 +39,7 @@
         <div class="input-group mb-3">
             <span class="searchButtons input-group-text" @click="searchByType('3dObjects')">Buscar</span>
             <input type="text" class="form-control" ref="searchInput3d" placeholder="Ingresa tu búsqueda">
+            <span class="searchButtons input-group-text" @click="goGenerate3DObjects()">Agregar</span>
         </div>
 
         <carousel :items-to-show="4" :paginationEnabled="true">
@@ -184,6 +185,9 @@ export default {
         },
         goGenerateStickers() {
             this.$router.push("/admin/generateStickers");
+        },
+        goGenerate3DObjects() {
+            this.$router.push("/admin/generate3DObjects");
         },
     },
 };

@@ -12,12 +12,12 @@ const generateStickerWithAI = async (prompt, userID) => {
     url.searchParams.append("userID", userID); // Asegúrate de pasar el userId cuando llames a esta función
 
     const response = await fetch(url.toString());
-    
+
     if (!response.ok) {
       throw new Error(`Unable to generate a sticker with AI`);
     }
     const generatedStickerwithAI = await response.json();
-    
+
     return generatedStickerwithAI;
   } catch (error) {
     throw error;
@@ -38,7 +38,7 @@ async function saveSticker(stickerData) {
         prompt,
       }),
     });
-    
+
     if (!response.ok) {
       throw new Error("Error saving sticker in Model.");
     }
@@ -64,5 +64,31 @@ const getStickers = async () => {
   }
 };
 
+async function saveStickerByFile(stickerData) {
+  try {
+     const { image, title, description, userID } = stickerData;
+ 
+     const formData = new FormData();
+     formData.append("image", image);
+     formData.append("title", title);
+     formData.append("description", description);
+     formData.append("userID", userID); // Asegúrate de añadir userID correctamente
+ 
+     const response = await fetch(`${RUTA_SERVIDOR}/rewards/saveStickerByFile`, {
+       method: "POST",
+       // No establezcas manualmente el encabezado "Content-Type" aquí
+       body: formData,
+     });
+ console.log("ResponSee_ ", response);
+     if (!response.ok) {
+       throw new Error("Error saving sticker by file in Model.");
+     }
+     const kit = await response.json();
+ 
+     return kit;
+  } catch (error) {
+     throw error;
+  }
+ }
 
-export { generateStickerWithAI, saveSticker, getStickers };
+export { generateStickerWithAI, saveSticker, getStickers, saveStickerByFile };

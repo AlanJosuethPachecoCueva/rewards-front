@@ -10,7 +10,7 @@ import createKitMaterial from "./views/admins/createKitMaterial.vue";
 //rewards
 import rewards from "./views/admins/rewards/rewards.vue"
 import generateStickers from "./views/admins/rewards/generateStickers.vue";
-
+import generate3DObjects from "./views/admins/rewards/generate3DObjects.vue";
 // import firebase from 'firebase/app';
 // import 'firebase/auth';
 
@@ -67,6 +67,12 @@ const router = createRouter({
       path: "/admin/generateStickers",
       name: "generateStickers",
       component: generateStickers,
+      props: true
+    },
+    {
+      path: "/admin/generate3DObjects",
+      name: "generate3DObjects",
+      component: generate3DObjects,
       props: true
     },
   ],

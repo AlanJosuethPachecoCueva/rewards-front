@@ -1,11 +1,35 @@
 <template #addons>
   <div class="bigContainerKit">
+
     <h2>Generar Stickers</h2>
-    <div class="createKitContainer">
+    <div class="createKitContainer" id="bigContainerSticker">
       <div id="createStickerContainerLeft">
         <div id="showInformationLeft">
           <img :src="imageSrc" id="stickerImage" class="card-img-top" alt="Sticker generado">
         </div>
+        <div :class="{ 'hideIfAI': !isLocalImageSticker, 'showIfManual': isLocalImageSticker }">
+          <div class="errorsContainer">
+            <p v-if="errors.length" class="text-danger">
+              <b>Por favor, corrija lo siguiente:</b>
+            <ul>
+              <li v-for="error in errors" :key="error">{{ error }}</li>
+            </ul>
+            </p>
+          </div>
+
+          <div class="form-group group">
+            <label class="label" for="name">Título</label>
+            <input type="text" class="form-control" :class="{ 'is-invalid': titleTouched && !titleValid }"
+              placeholder="Ingrese el título del sticker" id="title" v-model="title" @blur="titleTouched = true">
+          </div>
+          <div class="form-group group">
+            <label class="label" for="description">Descripción</label>
+            <textarea class="form-control" :class="{ 'is-invalid': descriptionTouched && !descriptionValid }" rows="3"
+              placeholder="Ingrese una descripción para su sticker" id="description" v-model="description"
+              @blur="descriptionTouched = true"></textarea>
+          </div>
+        </div>
+
       </div>
       <div class="createKitContainerRight">
         <div class="card cardContainer">
@@ -17,7 +41,8 @@
             <!-- <form @submit.prevent="submitForm"> -->
             <div class="mb-3">
               <label for="imageInput" class="label">O seleccionar del almacenamiento:</label>
-              <input type="file" class="form-control" id="imageInput" ref="imageInput" accept="image/*">
+              <input type="file" class="form-control" id="imageInput" @change="selectImageFromDevice" ref="imageInput"
+                accept="image/*">
             </div>
             <!-- </form> -->
 
@@ -29,14 +54,15 @@
       </div>
 
     </div>
-    <button type="button" class="btn btn-primary btnGenerateKit" @click="saveStickerInFirebase()">Guardar</button>
+    <button type="button" class="btn btn-primary btnGenerateKit" @click="checkForm()">Guardar</button>
   </div>
+
 </template>
 
 <script>
 import { computed } from "vue";
 import { useUserStore } from "../../../stores/userStore.js";
-import { generateStickerWithAIController, saveStickerController } from "../../../controllers/rewardsController";
+import { generateStickerWithAIController, saveStickerController, saveStickerByFileController } from "../../../controllers/rewardsController";
 import imagenLocal from '@/assets/images/no-photo-thumbnail.jpg';
 
 export default {
@@ -47,6 +73,13 @@ export default {
       logIn: true,
       imageSrc: imagenLocal,
       aiPrompt: "",
+      isLocalImageSticker: false,
+      file: null,
+      title: "",
+      description: "",
+      titleTouched: false,
+      descriptionTouched: false,
+      errors: [],
     };
   },
   setup() {
@@ -61,6 +94,24 @@ export default {
   async created() {
   },
   methods: {
+    titleValid() {
+      return this.titleTouched ? this.title && this.title.length >= 4 : true;
+    },
+    descriptionValid() {
+      return this.descriptionTouched ? this.description && this.description.length > 10 : true;
+    },
+    async selectImageFromDevice(event) {
+      console.log("event selected: ", event);
+      this.file = event.target.files[0];
+      console.log("file selected: ", this.file);
+      if (this.file) {
+        let url = URL.createObjectURL(this.file);
+        console.log("url file selected: ", url);
+        // Crear una URL de objeto para la imagen seleccionada
+        this.imageSrc = url;
+        this.isLocalImageSticker = true;
+      }
+    },
     async generateStickerOpenAI() {
       try {
         this.$swal.fire({
@@ -75,6 +126,7 @@ export default {
         this.imageSrc = response;
         // Oculta el mensaje de carga
         this.$swal.close();
+        this.isLocalImageSticker = false;
       } catch (error) {
         console.error('Error al generar imagen:', error);
       }
@@ -90,30 +142,62 @@ export default {
           Swal.showLoading();
         },
       });
-      const stickerSource = this.imageSrc;
+
       const userID = this.user.id;
-      const prompt = this.aiPrompt;
-      const res = await saveStickerController({ stickerUrl: stickerSource, userID, prompt });
+
+      if (!this.isLocalImageSticker) {
+        //Si es generada por IA hace este procedimiento
+        const stickerSource = this.imageSrc;
+
+        const prompt = this.aiPrompt;
+        const res = await saveStickerController({ stickerUrl: stickerSource, userID, prompt });
+
+      } else {
+        //Si la imagen se subió desde un medio local
+        const image = this.file;
+        const title = this.title;
+        const description = this.description;
+        const res = await saveStickerByFileController({ image, title, description, userID });
+        console.warn("Res: ", res)
+      }
+
       // Oculta el mensaje de carga
       this.$swal.close();
 
-      this.$swal.fire({
+      await this.$swal.fire({
         title: '¡Éxito!',
         text: 'Sticker generado correctamente.',
         allowOutsideClick: false,
         showConfirmButton: true,
       });
-
       this.$router.push("/admin/rewards");
+    },
+    async checkForm() {
+      try {
+
+        this.errors = [];
+        if (!this.titleValid || this.title == null) {
+          this.errors.push("Se requiere un título válido.");
+        }
+        if (!this.descriptionValid || this.description == null) {
+          this.errors.push("Se requiere una descripción válida.");
+        }
+
+        const res = await this.saveStickerInFirebase();
+      } catch (error) {
+        console.error(error);
+      }
     }
+
   },
 };
 </script>
 
 <style>
-/* .bigContainerKit{
-  margin-left: 10;
-} */
+#bigContainerSticker {
+  display: flex;
+  justify-content: center;
+}
 
 #createStickerContainerLeft {
   width: 40%;
@@ -121,6 +205,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
 }
 
 #showInformationLeft {
@@ -136,7 +221,19 @@ export default {
 }
 
 #stickerImage {
-  width: 80% !important;
-  height: 70% !important;
+  width: 70% !important;
+  height: 55% !important;
+
+
+  min-width: 355px;
+}
+
+.hideIfAI {
+  display: none;
+}
+
+.showIfManual {
+  width: 100%;
+  padding-bottom: 10px;
 }
 </style>

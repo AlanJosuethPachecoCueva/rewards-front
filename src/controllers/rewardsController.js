@@ -1,4 +1,4 @@
-import { generateStickerWithAI, saveSticker, getStickers } from "../models/rewardModel.js";
+import { generateStickerWithAI, saveSticker, getStickers, saveStickerByFile } from "../models/rewardModel.js";
 
 const generateStickerWithAIController = async (prompt, userID) => {
   try {
@@ -32,6 +32,22 @@ const saveStickerController = async (stickerData) => {
   }
 };
 
+const saveStickerByFileController = async (stickerData) => {
+    try {
+      
+      const res = await saveStickerByFile(stickerData);
+  
+      if (!res) {
+        console.error("Error saving sticker in Controller.");
+        return false;
+      }
+      return res;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  };
+
 const getStickersController = async () => {
   try {
     const images = await getStickers();
@@ -48,4 +64,4 @@ const getStickersController = async () => {
   }
 };
 
-export { generateStickerWithAIController, saveStickerController, getStickersController};
+export { generateStickerWithAIController, saveStickerController, getStickersController, saveStickerByFileController};
