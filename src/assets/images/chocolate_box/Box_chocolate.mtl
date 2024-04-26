@@ -1,0 +1,166 @@
+# 3ds Max Wavefront OBJ Exporter v0.97b - (c)2007 guruware
+# File Created: 27.11.2018 10:26:54
+
+newmtl pepite_chocolat
+	Ns 50.0000
+	Ni 1.6000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.6588 0.2667 0.1333
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+
+newmtl chocolat_noir
+	Ns 50.0000
+	Ni 1.6000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.0196 0.0078 0.0039
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka S:\OBJETS LAETI_2018\A TRAITER\NON TRAITES\Chocolate_Box\Conversions\chocolat_rond.jpg
+	map_Kd S:\OBJETS LAETI_2018\A TRAITER\NON TRAITES\Chocolate_Box\Conversions\chocolat_rond.jpg
+
+newmtl chocolat_blanc_coeur1
+	Ns 50.0000
+	Ni 1.6000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.0196 0.0078 0.0039
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka S:\OBJETS LAETI_2018\A TRAITER\NON TRAITES\Chocolate_Box\Conversions\chocolat_coeur3.jpg
+	map_Kd S:\OBJETS LAETI_2018\A TRAITER\NON TRAITES\Chocolate_Box\Conversions\chocolat_coeur3.jpg
+	map_bump S:\OBJETS LAETI_2018\A TRAITER\NON TRAITES\Chocolate_Box\Conversions\chocolat_coeur2_bump2.jpg
+	bump S:\OBJETS LAETI_2018\A TRAITER\NON TRAITES\Chocolate_Box\Conversions\chocolat_coeur2_bump2.jpg
+
+newmtl chocolat_blanc_coeur2
+	Ns 50.0000
+	Ni 1.6000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.0196 0.0078 0.0039
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka S:\OBJETS LAETI_2018\A TRAITER\NON TRAITES\Chocolate_Box\Conversions\chocolat_coeur3.jpg
+	map_Kd S:\OBJETS LAETI_2018\A TRAITER\NON TRAITES\Chocolate_Box\Conversions\chocolat_coeur3.jpg
+	map_bump S:\OBJETS LAETI_2018\A TRAITER\NON TRAITES\Chocolate_Box\Conversions\chocolat_coeur2_bump.jpg
+	bump S:\OBJETS LAETI_2018\A TRAITER\NON TRAITES\Chocolate_Box\Conversions\chocolat_coeur2_bump.jpg
+
+newmtl chocolat_aulait_coeur2
+	Ns 50.0000
+	Ni 1.6000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.0196 0.0078 0.0039
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka S:\OBJETS LAETI_2018\A TRAITER\NON TRAITES\Chocolate_Box\Conversions\chocolat_coeur2.jpg
+	map_Kd S:\OBJETS LAETI_2018\A TRAITER\NON TRAITES\Chocolate_Box\Conversions\chocolat_coeur2.jpg
+	map_bump S:\OBJETS LAETI_2018\A TRAITER\NON TRAITES\Chocolate_Box\Conversions\chocolat_coeur2_bump.jpg
+	bump S:\OBJETS LAETI_2018\A TRAITER\NON TRAITES\Chocolate_Box\Conversions\chocolat_coeur2_bump.jpg
+
+newmtl pepites_chocolat
+	Ns 50.0000
+	Ni 1.6000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.0471 0.0235 0.0157
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+
+newmtl chocolat_blanc
+	Ns 50.0000
+	Ni 1.6000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.0196 0.0078 0.0039
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka S:\OBJETS LAETI_2018\A TRAITER\NON TRAITES\Chocolate_Box\Conversions\chocolat_rond2.jpg
+	map_Kd S:\OBJETS LAETI_2018\A TRAITER\NON TRAITES\Chocolate_Box\Conversions\chocolat_rond2.jpg
+
+newmtl chocolat_aulait_coeur1
+	Ns 50.0000
+	Ni 1.6000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.0196 0.0078 0.0039
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka S:\OBJETS LAETI_2018\A TRAITER\NON TRAITES\Chocolate_Box\Conversions\chocolat_coeur2.jpg
+	map_Kd S:\OBJETS LAETI_2018\A TRAITER\NON TRAITES\Chocolate_Box\Conversions\chocolat_coeur2.jpg
+	map_bump S:\OBJETS LAETI_2018\A TRAITER\NON TRAITES\Chocolate_Box\Conversions\chocolat_coeur2_bump2.jpg
+	bump S:\OBJETS LAETI_2018\A TRAITER\NON TRAITES\Chocolate_Box\Conversions\chocolat_coeur2_bump2.jpg
+
+newmtl truffe
+	Ns 50.0000
+	Ni 1.6000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.0471 0.0235 0.0157
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka S:\OBJETS LAETI_2018\A TRAITER\NON TRAITES\Chocolate_Box\Conversions\truffle.jpg
+	map_Kd S:\OBJETS LAETI_2018\A TRAITER\NON TRAITES\Chocolate_Box\Conversions\truffle.jpg
+	map_bump S:\OBJETS LAETI_2018\A TRAITER\NON TRAITES\Chocolate_Box\Conversions\truffle_bump.jpg
+	bump S:\OBJETS LAETI_2018\A TRAITER\NON TRAITES\Chocolate_Box\Conversions\truffle_bump.jpg
+
+newmtl bas_boite_choc
+	Ns 50.0000
+	Ni 1.6000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5000 0.5000 0.5000
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka S:\OBJETS LAETI_2018\A TRAITER\NON TRAITES\Chocolate_Box\Conversions\bas_boite_choc.jpg
+	map_Kd S:\OBJETS LAETI_2018\A TRAITER\NON TRAITES\Chocolate_Box\Conversions\bas_boite_choc.jpg
+	map_bump S:\OBJETS LAETI_2018\A TRAITER\NON TRAITES\Chocolate_Box\Conversions\boite_choc_bump.jpg
+	bump S:\OBJETS LAETI_2018\A TRAITER\NON TRAITES\Chocolate_Box\Conversions\boite_choc_bump.jpg
+
+newmtl couvercle_boite_choc
+	Ns 50.0000
+	Ni 1.6000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5000 0.5000 0.5000
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka S:\OBJETS LAETI_2018\A TRAITER\NON TRAITES\Chocolate_Box\Conversions\couvercle_boite_choc.jpg
+	map_Kd S:\OBJETS LAETI_2018\A TRAITER\NON TRAITES\Chocolate_Box\Conversions\couvercle_boite_choc.jpg
+	map_bump S:\OBJETS LAETI_2018\A TRAITER\NON TRAITES\Chocolate_Box\Conversions\boite_choc_bump.jpg
+	bump S:\OBJETS LAETI_2018\A TRAITER\NON TRAITES\Chocolate_Box\Conversions\boite_choc_bump.jpg

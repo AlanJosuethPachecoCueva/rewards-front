@@ -43,14 +43,19 @@
         </div>
 
         <carousel :items-to-show="4" :paginationEnabled="true">
-            <Slide v-for="object in threeDObjectsToShow" :key="object.title" class="carousel-slide p-2">
+            <Slide v-for="object in threeDObjectsToShow" :key="object.metadata[0].metadata.title"
+                class="carousel-slide p-2">
                 <div class="card" style="width: 18rem">
-                    <img :src="object.image" class="card-img-top imageCard" alt="Image" />
+                    <model-viewer :src="object.url" alt="Modelo 3D" disable-zoom disable-pan disable-touch-zoom
+                        disable-rotate auto-rotate="0"></model-viewer>
+
+
+                    <!-- <img :src="object.url" class="card-img-top imageCard" alt="Image" /> -->
                     <div class="card-body">
                         <div class="minContentCard">
-                            <h5 class="card-title">{{ object.title }}</h5>
+                            <h5 class="card-title">{{ object.metadata[0].metadata.title }}</h5>
                             <p class="card-text">
-                                {{ object.description }}
+                                {{ object.metadata[0].metadata.description }}
                             </p>
                         </div>
 
@@ -98,7 +103,8 @@
 <script>
 import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
-import { getStickersController } from "@/controllers/rewardsController";
+import { getStickersController, get3DObjectsController } from "@/controllers/rewardsController";
+import '@google/model-viewer';
 
 export default {
     components: {
@@ -106,28 +112,15 @@ export default {
         Slide,
         Pagination,
         Navigation,
+        'model-viewer': window.ModelViewer,
     },
     data() {
         return {
             logIn: true,
             stickers: [],
             stickersToShow: [],
-            threeDObjects: [
-                { title: "Amor", description: "Este sticker es un fantástico ejemplo", image: "https://firebasestorage.googleapis.com/v0/b/rewards-b63ba.appspot.com/o/stickers%2Famor.png?alt=media&token=683439b9-ebe8-438b-98cd-d3f0992afbb3" },
-                { title: "Chocolate Caliente", description: "Este sticker es un fantástico ejemplo", image: "https://firebasestorage.googleapis.com/v0/b/rewards-b63ba.appspot.com/o/stickers%2Fchocolate-caliente.png?alt=media&token=16f4aca1-5072-43ac-b430-9f22bc4573fd" },
-                { title: "Chocolate", description: "Este sticker es un fantástico ejemplo", image: "https://firebasestorage.googleapis.com/v0/b/rewards-b63ba.appspot.com/o/stickers%2Fchocolate.png?alt=media&token=ca44be8d-f140-446c-b666-4175f0b2bb2f" },
-                { title: "Amor", description: "Este sticker es un fantástico ejemplo", image: "https://firebasestorage.googleapis.com/v0/b/rewards-b63ba.appspot.com/o/stickers%2Famor.png?alt=media&token=683439b9-ebe8-438b-98cd-d3f0992afbb3" },
-                { title: "Chocolate Caliente", description: "Este sticker es un fantástico ejemplo", image: "https://firebasestorage.googleapis.com/v0/b/rewards-b63ba.appspot.com/o/stickers%2Fchocolate-caliente.png?alt=media&token=16f4aca1-5072-43ac-b430-9f22bc4573fd" },
-                { title: "Chocolate", description: "Este sticker es un fantástico ejemplo", image: "https://firebasestorage.googleapis.com/v0/b/rewards-b63ba.appspot.com/o/stickers%2Fchocolate.png?alt=media&token=ca44be8d-f140-446c-b666-4175f0b2bb2f" },
-            ],
-            threeDObjectsToShow: [
-                { title: "Amor", description: "Este sticker es un fantástico ejemplo", image: "https://firebasestorage.googleapis.com/v0/b/rewards-b63ba.appspot.com/o/stickers%2Famor.png?alt=media&token=683439b9-ebe8-438b-98cd-d3f0992afbb3" },
-                { title: "Chocolate Caliente", description: "Este sticker es un fantástico ejemplo", image: "https://firebasestorage.googleapis.com/v0/b/rewards-b63ba.appspot.com/o/stickers%2Fchocolate-caliente.png?alt=media&token=16f4aca1-5072-43ac-b430-9f22bc4573fd" },
-                { title: "Chocolate", description: "Este sticker es un fantástico ejemplo", image: "https://firebasestorage.googleapis.com/v0/b/rewards-b63ba.appspot.com/o/stickers%2Fchocolate.png?alt=media&token=ca44be8d-f140-446c-b666-4175f0b2bb2f" },
-                { title: "Amor", description: "Este sticker es un fantástico ejemplo", image: "https://firebasestorage.googleapis.com/v0/b/rewards-b63ba.appspot.com/o/stickers%2Famor.png?alt=media&token=683439b9-ebe8-438b-98cd-d3f0992afbb3" },
-                { title: "Chocolate Caliente", description: "Este sticker es un fantástico ejemplo", image: "https://firebasestorage.googleapis.com/v0/b/rewards-b63ba.appspot.com/o/stickers%2Fchocolate-caliente.png?alt=media&token=16f4aca1-5072-43ac-b430-9f22bc4573fd" },
-                { title: "Chocolate", description: "Este sticker es un fantástico ejemplo", image: "https://firebasestorage.googleapis.com/v0/b/rewards-b63ba.appspot.com/o/stickers%2Fchocolate.png?alt=media&token=ca44be8d-f140-446c-b666-4175f0b2bb2f" },
-            ],
+            threeDObjects: [],
+            threeDObjectsToShow: [],
             products: [
                 { title: "Amor", description: "Este sticker es un fantástico ejemplo", image: "https://firebasestorage.googleapis.com/v0/b/rewards-b63ba.appspot.com/o/stickers%2Famor.png?alt=media&token=683439b9-ebe8-438b-98cd-d3f0992afbb3" },
                 { title: "Chocolate Caliente", description: "Este sticker es un fantástico ejemplo", image: "https://firebasestorage.googleapis.com/v0/b/rewards-b63ba.appspot.com/o/stickers%2Fchocolate-caliente.png?alt=media&token=16f4aca1-5072-43ac-b430-9f22bc4573fd" },
@@ -147,10 +140,11 @@ export default {
         };
     },
     async mounted() {
-        const res = await getStickersController();
+        //Stickers
+        const stickersRes = await getStickersController();
 
         // Agrega cada objeto de res a this.stickers
-        res.forEach(sticker => {
+        stickersRes.forEach(sticker => {
             // Verifica si el título existe y no es una cadena vacía
             if (sticker.metadata[0].metadata.title) {
                 this.stickers.push(sticker);
@@ -158,6 +152,20 @@ export default {
         });
 
         this.stickersToShow = JSON.parse(JSON.stringify(this.stickers));
+
+        //Objetos 3D
+        const threeDObjectsRes = await get3DObjectsController();
+        console.log("threeDObjectsRes: ", threeDObjectsRes);
+        // Agrega cada objeto de res a this.stickers
+        threeDObjectsRes.forEach(object => {
+            // Verifica si el título existe y no es una cadena vacía
+            if (object.metadata[0].metadata.title) {
+                this.threeDObjects.push(object);
+            }
+        });
+        console.log("this.threeDObjects: ", this.threeDObjects);
+        this.threeDObjectsToShow = JSON.parse(JSON.stringify(this.threeDObjects));
+        console.log("this.threeDObjectsToShow: ", this.threeDObjectsToShow);
     },
     methods: {
         searchByType(type) {
@@ -175,8 +183,9 @@ export default {
         },
         search(original, listToShow, searchTerm) {
             listToShow.length = 0;
+            console.log("original: ", original);
             original.filter((sticker) => {
-                if (sticker.metadata[0].metadata.title.toLowerCase().includes(searchTerm.toLowerCase()) || stickermetadata[0].metadata.description.toLowerCase().includes(searchTerm.toLowerCase())) {
+                if (sticker.metadata[0].metadata.title.toLowerCase().includes(searchTerm.toLowerCase()) || sticker.metadata[0].metadata.description.toLowerCase().includes(searchTerm.toLowerCase())) {
                     listToShow.push(sticker);
                 } else {
                     console.log("No encontrado");

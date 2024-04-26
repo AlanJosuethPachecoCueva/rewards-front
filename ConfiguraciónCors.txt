@@ -1,0 +1,22 @@
+Para configurar cors se define:
+[
+ {
+    "origin": ["http://localhost:3000"],
+    "method": ["GET", "POST", "PUT", "DELETE"],
+    "responseHeader": ["Content-Type"],
+    "maxAgeSeconds": 3600
+ }
+]
+
+
+
+un archivo con esa estructura
+
+nos autenticamos en una consola de google cloud
+
+y subimos el archivo cors.json anterior con:
+
+gsutil cors set cors.json gs://<your-firebase-storage-bucket>
+
+Verificalo con:
+gsutil cors get gs://<your-firebase-storage-bucket>

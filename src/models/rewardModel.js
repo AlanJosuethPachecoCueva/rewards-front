@@ -66,29 +66,71 @@ const getStickers = async () => {
 
 async function saveStickerByFile(stickerData) {
   try {
-     const { image, title, description, userID } = stickerData;
- 
-     const formData = new FormData();
-     formData.append("image", image);
-     formData.append("title", title);
-     formData.append("description", description);
-     formData.append("userID", userID); // Asegúrate de añadir userID correctamente
- 
-     const response = await fetch(`${RUTA_SERVIDOR}/rewards/saveStickerByFile`, {
-       method: "POST",
-       // No establezcas manualmente el encabezado "Content-Type" aquí
-       body: formData,
-     });
- console.log("ResponSee_ ", response);
-     if (!response.ok) {
-       throw new Error("Error saving sticker by file in Model.");
-     }
-     const kit = await response.json();
- 
-     return kit;
-  } catch (error) {
-     throw error;
-  }
- }
+    const { image, title, description, userID } = stickerData;
 
-export { generateStickerWithAI, saveSticker, getStickers, saveStickerByFile };
+    const formData = new FormData();
+    formData.append("image", image);
+    formData.append("title", title);
+    formData.append("description", description);
+    formData.append("userID", userID); // Asegúrate de añadir userID correctamente
+
+    const response = await fetch(`${RUTA_SERVIDOR}/rewards/saveStickerByFile`, {
+      method: "POST",
+      // No establezcas manualmente el encabezado "Content-Type" aquí
+      body: formData,
+    });
+    console.log("ResponSee_ ", response);
+    if (!response.ok) {
+      throw new Error("Error saving sticker by file in Model.");
+    }
+    const kit = await response.json();
+
+    return kit;
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function save3DObjectByFile(objectData) {
+  try {
+    const { file, title, description, userID } = objectData;
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("title", title);
+    formData.append("description", description);
+    formData.append("userID", userID); 
+
+    const response = await fetch(`${RUTA_SERVIDOR}/rewards/save3DObjectFile`, {
+      method: "POST",
+      body: formData,
+    });
+
+    if (!response.ok) {
+      throw new Error("Error saving 3D object by file.");
+    }
+
+    const result = await response.json();
+
+    return result;
+  } catch (error) {
+    throw error;
+  }
+}
+
+const get3DObjects = async () => {
+  try {
+    const response = await fetch(`${RUTA_SERVIDOR}/rewards/get3DObjects`);
+    if (!response.ok) {
+      throw new Error(`Unable to get 3D Objects from firebase.`);
+    }
+
+    const threeDObjects = await response.json();
+    return threeDObjects;
+  } catch (error) {
+    throw error;
+  }
+};
+
+
+export { generateStickerWithAI, saveSticker, getStickers, saveStickerByFile, save3DObjectByFile, get3DObjects };

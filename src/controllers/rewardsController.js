@@ -1,4 +1,11 @@
-import { generateStickerWithAI, saveSticker, getStickers, saveStickerByFile } from "../models/rewardModel.js";
+import {
+  generateStickerWithAI,
+  saveSticker,
+  getStickers,
+  saveStickerByFile,
+  save3DObjectByFile,
+  get3DObjects
+} from "../models/rewardModel.js";
 
 const generateStickerWithAIController = async (prompt, userID) => {
   try {
@@ -18,7 +25,6 @@ const generateStickerWithAIController = async (prompt, userID) => {
 
 const saveStickerController = async (stickerData) => {
   try {
-    
     const res = await saveSticker(stickerData);
 
     if (!res) {
@@ -33,20 +39,19 @@ const saveStickerController = async (stickerData) => {
 };
 
 const saveStickerByFileController = async (stickerData) => {
-    try {
-      
-      const res = await saveStickerByFile(stickerData);
-  
-      if (!res) {
-        console.error("Error saving sticker in Controller.");
-        return false;
-      }
-      return res;
-    } catch (error) {
-      console.error(error);
+  try {
+    const res = await saveStickerByFile(stickerData);
+
+    if (!res) {
+      console.error("Error saving sticker in Controller.");
       return false;
     }
-  };
+    return res;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};
 
 const getStickersController = async () => {
   try {
@@ -64,4 +69,42 @@ const getStickersController = async () => {
   }
 };
 
-export { generateStickerWithAIController, saveStickerController, getStickersController, saveStickerByFileController};
+const save3DObjectByFileController = async (objectData) => {
+  try {
+    const res = await save3DObjectByFile(objectData);
+
+    if (!res) {
+      console.error("Error saving 3D object in Controller.");
+      return false;
+    }
+    return res;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};
+
+const get3DObjectsController = async () => {
+  try {
+    const threeDObjects = await get3DObjects();
+
+    if (!threeDObjects) {
+      console.error("Error getting 3D Objects");
+      return false;
+    }
+
+    return threeDObjects;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};
+
+export {
+  generateStickerWithAIController,
+  saveStickerController,
+  getStickersController,
+  saveStickerByFileController,
+  save3DObjectByFileController, 
+  get3DObjectsController,
+};

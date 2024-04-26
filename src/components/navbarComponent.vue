@@ -42,7 +42,12 @@ export default {
     return { user };
   },
   mounted() {
-    console.log("User at navBar mounted: ", this.user.isAdmin);
+    if(this.user != null){
+      console.log("User at navBar mounted: ", this.user.isAdmin);
+    }else{
+      console.log("No logueado");
+    }
+    
   },
 };
 </script>
@@ -96,7 +101,7 @@ export default {
               Premios
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li v-if="user.isAdmin != true">
+              <li v-if="user != null && user.isAdmin != true">
                 <a
                   class="dropdown-item"
                   href="#"
@@ -104,7 +109,7 @@ export default {
                   >Redimir</a
                 >
               </li>
-              <li v-if="user.isAdmin == true">
+              <li v-if="user != null && user.isAdmin == true">
                 <a
                   class="dropdown-item"
                   href="/admin/manageKits"
@@ -113,7 +118,7 @@ export default {
                 >
               </li>
 
-              <li v-if="user.isAdmin != true">
+              <li v-if="user != null && user.isAdmin != true">
                 <a
                   class="dropdown-item"
                   href="#"
@@ -121,7 +126,7 @@ export default {
                   >Ver Premios Activos</a
                 >
               </li>
-              <li v-if="user.isAdmin == true">
+              <li v-if="user != null && user.isAdmin == true">
                 <a
                   class="dropdown-item"
                   href="/admin/rewards"
@@ -154,7 +159,7 @@ export default {
 
         <ul
           class="navbar-nav me-auto mb-2 mb-lg-0 d-flex dropdown-menu-right"
-          v-if="user.id != ''"
+          v-if="user != null "
         >
           <li class="nav-item dropdown">
             <a
@@ -204,7 +209,7 @@ export default {
         <button class="btn btn-outline-success" type="submit">Search</button> -->
 
           <button
-            v-if="user.id == ''"
+            v-if="user == null "
             class="btn d-flex align-items-center"
             style="font-size: 1rem; color: #ffffff; font-weight: 400"
             @click="goToLogin()"

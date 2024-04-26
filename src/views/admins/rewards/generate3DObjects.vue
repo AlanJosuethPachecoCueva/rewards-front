@@ -1,5 +1,5 @@
 <template>
-    <div class="bigContainerKit">
+    <div class="bigContainerKit3D">
         <div id="containerFor3DInputs">
             <h2 class="title">Agregar Un Objeto 3D</h2>
             <div class="form-group group">
@@ -13,6 +13,14 @@
                     rows="3" placeholder="Ingrese una descripción para su object" id="description" v-model="description"
                     @blur="descriptionTouched = true"></textarea>
             </div>
+            <div class="errorsContainer">
+                <p v-if="errors.length" class="text-danger">
+                    <b>Por favor, corrija lo siguiente:</b>
+                <ul>
+                    <li v-for="error in errors" :key="error">{{ error }}</li>
+                </ul>
+                </p>
+            </div>
 
             <div class="createKitContainer" id="bigContainerobject">
                 <div id="showInformationLeft">
@@ -20,10 +28,10 @@
                     <model-viewer class="modelViewer" v-if="objectSrc" :src="objectSrc" alt="Descripción del modelo"
                         poster="../../../assets/images/Waiting3DModel3.png" auto-rotate camera-controls
                         ar></model-viewer>
-                        <div class="modelViewer" id="modelViewerText" v-if="!objectSrc">
-                            <h3  >Esperando objeto 3D...</h3>
-                        </div>
-                    
+                    <div class="modelViewer" id="modelViewerText" v-if="!objectSrc">
+                        <h3>Esperando objeto 3D...</h3>
+                    </div>
+
                 </div>
             </div>
 
@@ -48,8 +56,8 @@
 <script>
 import { computed } from "vue";
 import { useUserStore } from "../../../stores/userStore.js";
-import { saveStickerByFileController } from "../../../controllers/rewardsController";
-import '@google/model-viewer'; // Importa model-viewer
+import { saveStickerByFileController, save3DObjectByFileController } from "../../../controllers/rewardsController";
+import '@google/model-viewer'; 
 
 export default {
     data() {
@@ -110,11 +118,11 @@ export default {
             });
 
             const userID = this.user.id;
-            const object = this.file;
+            const file = this.file;
             const title = this.title;
             const description = this.description;
 
-            await saveStickerByFileController({ object, title, description, userID });
+            await save3DObjectByFileController({ file, title, description, userID });
 
             this.$swal.close();
 
@@ -138,6 +146,14 @@ export default {
 
                 if (this.errors.length === 0) {
                     await this.saveObjectInFirebase();
+                } else {
+                    await this.$swal({
+                        title: "¡Ocurrió un error!",
+                        text: "Por favor, solucione todas las sugerencias antes de continuar",
+                        icon: "error",
+                        showCancelButton: false,
+                        confirmButtonText: "OK",
+                    });
                 }
             } catch (error) {
                 console.error(error);
@@ -149,7 +165,7 @@ export default {
 
 
 <style>
-.bigContainerKit {
+.bigContainerKit3D {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -189,13 +205,13 @@ export default {
     height: 80vh !important;
 }
 
-#modelViewerText{
+#modelViewerText {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.title{
+.title {
     padding: 30px 0 30px 0;
 }
 </style>

@@ -7,7 +7,7 @@ export const useUserStore = defineStore({
   state: () => ({
     user: JSON.parse(localStorage.getItem('user')) || null,
 
-    isLogued: localStorage.getItem('isLogued') ? JSON.parse(localStorage.getItem('isLogued')) : null
+    isLogued: localStorage.getItem('isLogued') ? JSON.parse(localStorage.getItem('isLogued')) : false
   }),
   getters: {
     // Agregar getters para acceder a los datos del usuario
