@@ -42,46 +42,31 @@ export default {
     return { user };
   },
   mounted() {
-    if(this.user != null){
+    if (this.user != null) {
       console.log("User at navBar mounted: ", this.user.isAdmin);
-    }else{
+    } else {
       console.log("No logueado");
     }
-    
+
   },
 };
 </script>
 
 <template>
-  <nav
-    class="navbar navbar-expand-lg navBarPersonalized"
-    :style="{ backgroundColor: colors.primaryColor }"
-  >
+  <nav class="navbar navbar-expand-lg navBarPersonalized" :style="{ backgroundColor: colors.primaryColor }">
     <div class="container-fluid">
       <a class="navbar-brand" :style="{ color: textColor }" href="/">Kvmi</a>
       <!-- Botón para ocultar -->
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-        :style="{ backgroundColor: textColor }"
-      >
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
+        :style="{ backgroundColor: textColor }">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a
-              class="nav-link active navMenu"
-              aria-current="page"
-              href="#"
-              :style="{ color: textColor }"
-              >Material Publicitario</a
-            >
+            <a class="nav-link active navMenu" aria-current="page" href="#" :style="{ color: textColor }">Material
+              Publicitario</a>
           </li>
           <!-- <li class="nav-item">
             <a class="nav-link" href="#" :style="{ color: textColor }"
@@ -89,60 +74,32 @@ export default {
             >
           </li> -->
           <li class="nav-item dropdown">
-            <a
-              class="nav-link dropdown-toggle"
-              href="#"
-              id="navbarDropdown"
-              role="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-              :style="{ color: textColor }"
-            >
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false" :style="{ color: textColor }">
               Premios
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li v-if="user != null && user.isAdmin != true">
-                <a
-                  class="dropdown-item"
-                  href="#"
-                  :style="{ color: textColorContrast }"
-                  >Redimir</a
-                >
-              </li>
-              <li v-if="user != null && user.isAdmin == true">
-                <a
-                  class="dropdown-item"
-                  href="/admin/manageKits"
-                  :style="{ color: textColorContrast }"
-                  >Gestionar Material Publicitario</a
-                >
-              </li>
-
-              <li v-if="user != null && user.isAdmin != true">
-                <a
-                  class="dropdown-item"
-                  href="#"
-                  :style="{ color: textColorContrast }"
-                  >Ver Premios Activos</a
-                >
-              </li>
-              <li v-if="user != null && user.isAdmin == true">
-                <a
-                  class="dropdown-item"
-                  href="/admin/rewards"
-                  :style="{ color: textColorContrast }"
-                  >Gestionar Premios</a
-                >
-              </li>
-
-              <li><hr class="dropdown-divider" /></li>
               <li>
-                <a
-                  class="dropdown-item"
-                  href="#"
-                  :style="{ color: textColorContrast }"
-                  >Ayuda</a
-                >
+                <a class="dropdown-item" href="#" :style="{ color: textColorContrast }">Redimir</a>
+              </li>
+              <li v-if="user != null && user.isAdmin == true">
+                <a class="dropdown-item" href="/admin/manageKits" :style="{ color: textColorContrast }">Gestionar
+                  Material Publicitario</a>
+              </li>
+
+              <li>
+                <a class="dropdown-item" href="#" :style="{ color: textColorContrast }">Ver Premios Activos</a>
+              </li>
+              <li v-if="user != null && user.isAdmin == true">
+                <a class="dropdown-item" href="/admin/rewards" :style="{ color: textColorContrast }">Gestionar
+                  Premios</a>
+              </li>
+
+              <li>
+                <hr class="dropdown-divider" />
+              </li>
+              <li>
+                <a class="dropdown-item" href="#" :style="{ color: textColorContrast }">Ayuda</a>
               </li>
             </ul>
           </li>
@@ -157,73 +114,51 @@ export default {
           </li> -->
         </ul>
 
-        <ul
-          class="navbar-nav me-auto mb-2 mb-lg-0 d-flex dropdown-menu-right"
-          v-if="user != null "
-        >
-          <li class="nav-item dropdown">
-            <a
-              class="nav-link dropdown-toggle"
-              href="#"
-              id="navbarDropdown"
-              role="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-              :style="{ color: textColor }"
-            >
-              <i
-                class="bi bi-person-fill"
-                style="font-size: 2rem; color: #ffffff; font-weight: bold"
-              ></i>
-              {{ user.name }}
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li>
-                <!-- <button class="btn" @click="closeSession()">
+        <div id="divGoloso" v-if="user != null">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex dropdown-menu-right" v-if="user.id != ''">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false" :style="{ color: textColor }">
+                <i class="bi bi-person-fill" style="font-size: 2rem; color: #ffffff; font-weight: bold"></i>
+                {{ user.name }}
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li>
+                  <!-- <button class="btn" @click="closeSession()">
                   <i class="bi bi-box-arrow-right" style="font-size: 2rem; font-weight: bold" :style="{ color: textColorContrast }"></i>
                 </button> -->
-                <a class="dropdown-item" href="#" @click="closeSession()"
-                  >Cerrar sesión</a
-                >
-              </li>
-              <!-- <li>
+                  <a class="dropdown-item" href="#" @click="closeSession()">Cerrar sesión</a>
+                </li>
+                <!-- <li>
                 <a class="dropdown-item" href="#" :style="{ color: textColorContrast }"
                   >Ver Premios Activos</a
                 >
               </li> -->
-              <li><hr class="dropdown-divider" /></li>
-              <li>
-                <a
-                  class="dropdown-item"
-                  href="#"
-                  :style="{ color: textColorContrast }"
-                  >Perfil</a
-                >
-              </li>
-            </ul>
-          </li>
-        </ul>
+                <li>
+                  <hr class="dropdown-divider" />
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#" :style="{ color: textColorContrast }">Perfil</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+
 
         <form class="d-flex">
           <!-- <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-success" type="submit">Search</button> -->
 
-          <button
-            v-if="user == null "
-            class="btn d-flex align-items-center"
-            style="font-size: 1rem; color: #ffffff; font-weight: 400"
-            @click="goToLogin()"
-          >
+          <button v-if="user == null || user.id == ''" class="btn d-flex align-items-center"
+            style="font-size: 1rem; color: #ffffff; font-weight: 400" @click="goToLogin()">
             Ingresar
-            <i
-              class="bi bi-person-circle"
-              style="
+            <i class="bi bi-person-circle" style="
                 margin-left: 10px;
                 font-size: 2rem;
                 color: #ffffff;
                 font-weight: bold;
-              "
-            ></i>
+              "></i>
           </button>
         </form>
       </div>
@@ -245,11 +180,26 @@ export default {
 </template>
 
 <style>
+#divGoloso{
+  padding: 0px;
+  margin: 0px;
+  display: flex;
+  position: absolute;
+  right: 0;
+  top:0;
+  /* Ajusta la posición a la derecha */
+  width: max-content;
+  /* Ajusta el ancho para que se extienda a lo ancho del contenedor */
+  padding-right: 15px;
+}
+
 .dropdown-menu-right {
   display: flex;
   position: fixed;
-  right: 0; /* Ajusta la posición a la derecha */
-  width: max-content; /* Ajusta el ancho para que se extienda a lo ancho del contenedor */
+  right: 0;
+  /* Ajusta la posición a la derecha */
+  width: max-content;
+  /* Ajusta el ancho para que se extienda a lo ancho del contenedor */
   padding-right: 15px;
 }
 
@@ -263,6 +213,7 @@ export default {
   top: 0;
   z-index: 10;
 }
+
 .containerContacts {
   position: absolute;
   z-index: 3;
