@@ -91,7 +91,7 @@ export default {
               </div>
               <h3 class="mb-5 text-center heading">Somos Chocolate</h3>
 
-              <h6 class="msg-info">Por favor, ingrese a su cuenta</h6>
+              <h6 class="msg-info">Ingrese sus credenciales</h6>
 
               <div class="form-group">
                 <label class="form-control-label text-muted"
@@ -101,7 +101,7 @@ export default {
                   type="text"
                   id="email"
                   name="email"
-                  placeholder="Phone no or email id"
+                  placeholder="Ingrese su usuario"
                   class="form-control"
                   v-model="user.email"
                 />
@@ -113,22 +113,31 @@ export default {
                   type="password"
                   id="psw"
                   name="psw"
-                  placeholder="Password"
+                  placeholder="Ingrese su contraseña"
                   class="form-control"
                   v-model="user.password"
                 />
               </div>
 
-              <div class="row justify-content-center my-3 px-3">
-                <button class="btn-block btn-color" @click="signIn()">Ingresar a KVMI</button>
-              </div>
-
               <div class="row justify-content-center my-2">
                 <a href="#"
-                  ><small class="text-muted">Olvidaste la contraseña?</small></a
+                  ><small class="text-muted">¿Olvidaste tu contraseña?</small></a
                 >
               </div>
 
+              <div class="row justify-content-center my-3 px-3">
+                <button class="btn-block btn-ingresar" @click="signIn()">Ingresar</button>
+              </div>
+
+            <div class="separator">
+            <div></div>
+            <span>o</span>
+            <div></div>
+            </div>
+
+
+              
+              <div class="row justify-content-center my-3 px-3">
               <button class="gsi-material-button" @click="signInGoogle()">
                 <div class="gsi-material-button-state"></div>
                 <div class="gsi-material-button-content-wrapper">
@@ -167,10 +176,11 @@ export default {
 
             </div>
           </div>
+          </div>
           <div class="bottom text-center mb-5">
             <p class="sm-text mx-auto mb-3">
-              No tienes cuenta?<button class="btn btn-white ml-2">
-                <a href="/register">Crer una</a>
+              ¿No tienes cuenta?<button class="btn btn-white ml-2">
+                <a href="/register">Crea una</a>
               </button>
             </p>
           </div>
@@ -228,4 +238,31 @@ export default {
 .heading {
   margin-bottom: 60px !important;
 }
+
+.separator {
+  font-size: 15px; /* Tamaño de la letra "o" */
+  color: #000; /* Color de la letra "o" */
+  margin-top: 10px;
+  margin-bottom: 10px;
+  text-align: center; /* Centra horizontalmente el texto */
+  line-height: 1; /* Ajusta la altura de la línea para centrar verticalmente */
+}
+
+.btn-ingresar {
+  background-color: #6f4e37; /* Color de fondo */
+  color: white; /* Color del texto */
+  padding: 14px 20px; /* Espacio interno */
+  border: none; /* Borde */
+  border-radius: 4px; /* Borde redondeado */
+  cursor: pointer; /* Cursor al pasar el mouse */
+  width: 100%; /* Ancho del botón */
+  transition: background-color 0.3s; /* Transición de color de fondo */
+}
+
+.btn-ingresar:hover {
+  background-color: #4C3D39; /* Color de fondo al pasar el mouse */
+}
+
+
+
 </style>

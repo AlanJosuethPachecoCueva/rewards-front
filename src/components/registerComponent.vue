@@ -239,9 +239,10 @@ export default {
                   v-model="user.password"
                 />
               </div>
+              
               <div class="row justify-content-center my-3 px-3">
-                <button class="btn-block btn-color" @click="createUser()">
-                  Registrarse en KVMI
+                <button class="btn-block btn-registrarse" @click="createUser()">
+                  Registrarse 
                 </button>
               </div>
               <button class="gsi-material-button" @click="signInGoogle()">
@@ -290,7 +291,7 @@ export default {
           </div>
           <div class="bottom text-center mb-5">
             <p class="sm-text mx-auto mb-3">
-              Tienes cuenta?<button class="btn btn-white ml-2"><a href="/login">Ingresar</a></button>
+              ¿Ya tienes cuenta?<button class="btn btn-white ml-2"><a href="/login">Ingresar</a></button>
             </p>
           </div>
         </div>
@@ -445,5 +446,21 @@ export default {
 .gsi-material-button:not(:disabled):hover .gsi-material-button-state {
   background-color: #303030;
   opacity: 8%;
+}
+
+.btn-registrarse {
+  background-color: #6f4e37; /* Color de fondo */
+  color: white; /* Color del texto */
+  padding: 14px 20px; /* Espacio interno */
+  margin: 8px 0; /* Margen externo */
+  border: none; /* Borde */
+  border-radius: 4px; /* Borde redondeado */
+  cursor: pointer; /* Cursor al pasar el mouse */
+  width: 100%; /* Ancho del botón */
+  transition: background-color 0.3s; /* Transición de color de fondo */
+}
+
+.btn-registrarse:hover {
+  background-color: #4C3D39; /* Color de fondo al pasar el mouse */
 }
 </style>
