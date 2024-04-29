@@ -181,7 +181,7 @@ export default {
               <h6 class="msg-info">Regístrese a continuación</h6>
 
               <div class="form-group">
-                <label class="form-control-label text-muted">Nombres</label>
+                <label class="form-control-label text-muted">Nombres: </label>
                 <input
                   type="text"
                   id="nombres"
@@ -193,7 +193,7 @@ export default {
               </div>
 
               <div class="form-group">
-                <label class="form-control-label text-muted">Apellidos</label>
+                <label class="form-control-label text-muted">Apellidos: </label>
                 <input
                   type="text"
                   id="apellidos"
@@ -205,7 +205,7 @@ export default {
               </div>
 
               <div class="form-group">
-                <label class="form-control-label text-muted">Dirección</label>
+                <label class="form-control-label text-muted">Dirección: </label>
                 <input
                   type="text"
                   id="dirección"
@@ -217,7 +217,7 @@ export default {
               </div>
 
               <div class="form-group">
-                <label class="form-control-label text-muted">Email</label>
+                <label class="form-control-label text-muted">Correo Electrónico </label>
                 <input
                   type="text"
                   id="email"
@@ -234,7 +234,7 @@ export default {
                   type="password"
                   id="psw"
                   name="psw"
-                  placeholder="Password"
+                  placeholder="Contraseña"
                   class="form-control"
                   v-model="user.password"
                 />
