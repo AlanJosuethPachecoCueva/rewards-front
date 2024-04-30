@@ -144,33 +144,38 @@ export default {
       });
 
       const userID = this.user.id;
-
+      let res;
       if (!this.isLocalImageSticker) {
         //Si es generada por IA hace este procedimiento
         const stickerSource = this.imageSrc;
 
         const prompt = this.aiPrompt;
-        const res = await saveStickerController({ stickerUrl: stickerSource, userID, prompt });
-
+        res = await saveStickerController({ stickerUrl: stickerSource, userID, prompt });
+        console.warn("Res al guardat sticker: ", res)
       } else {
         //Si la imagen se subió desde un medio local
         const image = this.file;
         const title = this.title;
         const description = this.description;
-        const res = await saveStickerByFileController({ image, title, description, userID });
-        console.warn("Res: ", res)
+        res = await saveStickerByFileController({ image, title, description, userID });
+        console.warn("Res al guardat sticker local: ", res)
       }
 
       // Oculta el mensaje de carga
       this.$swal.close();
 
+      
+      //this.$router.push("/admin/rewards");
+      console.log("res push: ", res);
+      const rewardId = "st-"+res.response.response.fileName;
+      console.log("rewardId mod: ", rewardId);
       await this.$swal.fire({
         title: '¡Éxito!',
         text: 'Sticker generado correctamente.',
         allowOutsideClick: false,
         showConfirmButton: true,
       });
-      this.$router.push("/admin/rewards");
+      this.$router.push({ name: "assignRewardTokit", params: { rewardId } });
     },
     async checkForm() {
       try {

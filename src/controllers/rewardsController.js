@@ -4,7 +4,9 @@ import {
   getStickers,
   saveStickerByFile,
   save3DObjectByFile,
-  get3DObjects
+  get3DObjects,
+  getFile,
+  assignRewardToKits
 } from "../models/rewardModel.js";
 
 const generateStickerWithAIController = async (prompt, userID) => {
@@ -29,9 +31,9 @@ const saveStickerController = async (stickerData) => {
 
     if (!res) {
       console.error("Error saving sticker in Controller.");
-      return false;
+      return {status: false};
     }
-    return res;
+    return {status: true, response: res};
   } catch (error) {
     console.error(error);
     return false;
@@ -44,9 +46,9 @@ const saveStickerByFileController = async (stickerData) => {
 
     if (!res) {
       console.error("Error saving sticker in Controller.");
-      return false;
+      return {status: false};
     }
-    return res;
+    return {status: true, response: res};
   } catch (error) {
     console.error(error);
     return false;
@@ -100,6 +102,39 @@ const get3DObjectsController = async () => {
   }
 };
 
+const getFileController = async (fileData) => {
+  try {
+    const file = await getFile(fileData);
+
+    if (!file) {
+      console.error("Error getting file in controller");
+      return false;
+    }
+
+    return file;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};
+
+
+const assignRewardToKitsController = async (data) => {
+  try {
+    const res = await assignRewardToKits(data);
+
+    if (!res) {
+      console.error("Error assigning reward to kits.");
+      return {status: false};
+    }
+    return {status: true, response: res};
+  } catch (error) {
+    console.error(error);
+    return {status: false};
+  }
+};
+
+
 export {
   generateStickerWithAIController,
   saveStickerController,
@@ -107,4 +142,6 @@ export {
   saveStickerByFileController,
   save3DObjectByFileController, 
   get3DObjectsController,
+  getFileController,
+  assignRewardToKitsController
 };

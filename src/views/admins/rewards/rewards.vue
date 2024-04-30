@@ -4,9 +4,11 @@
         <h2 class="marginHeaders">Stickers</h2>
 
         <div class="input-group mb-3">
-            <span class="searchButtons input-group-text" @click="searchByType('sticker')">Buscar</span>
-            <input type="text" class="form-control" ref="searchInput" placeholder="Ingresa tu búsqueda">
             <span class="searchButtons input-group-text" @click="goGenerateStickers()">Agregar</span>
+            <input type="text" class="form-control" ref="searchInput" placeholder="Ingresa tu búsqueda">
+            <span class="searchButtons input-group-text" @click="searchByType('sticker')">Buscar</span>
+            
+            
         </div>
 
 
@@ -37,9 +39,9 @@
         <h2 class="marginHeaders">3D Objects</h2>
 
         <div class="input-group mb-3">
-            <span class="searchButtons input-group-text" @click="searchByType('3dObjects')">Buscar</span>
-            <input type="text" class="form-control" ref="searchInput3d" placeholder="Ingresa tu búsqueda">
             <span class="searchButtons input-group-text" @click="goGenerate3DObjects()">Agregar</span>
+            <input type="text" class="form-control" ref="searchInput3d" placeholder="Ingresa tu búsqueda">
+            <span class="searchButtons input-group-text" @click="searchByType('3dObjects')">Buscar</span>
         </div>
 
         <carousel :items-to-show="4" :paginationEnabled="true">

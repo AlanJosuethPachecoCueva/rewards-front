@@ -24,6 +24,20 @@ const generateStickerWithAI = async (prompt, userID) => {
   }
 };
 
+const getStickers = async () => {
+  try {
+    const response = await fetch(`${RUTA_SERVIDOR}/rewards/getStickers`);
+    if (!response.ok) {
+      throw new Error(`Unable to get sticker images`);
+    }
+
+    const images = await response.json();
+    return images;
+  } catch (error) {
+    throw error;
+  }
+};
+
 async function saveSticker(stickerData) {
   try {
     const { stickerUrl, userID, prompt } = stickerData;
@@ -42,27 +56,13 @@ async function saveSticker(stickerData) {
     if (!response.ok) {
       throw new Error("Error saving sticker in Model.");
     }
-    const kit = await response.json();
+    const sticker = await response.json();
 
-    return kit;
+    return sticker;
   } catch (error) {
     throw error;
   }
 }
-
-const getStickers = async () => {
-  try {
-    const response = await fetch(`${RUTA_SERVIDOR}/rewards/getStickers`);
-    if (!response.ok) {
-      throw new Error(`Unable to get sticker images`);
-    }
-
-    const images = await response.json();
-    return images;
-  } catch (error) {
-    throw error;
-  }
-};
 
 async function saveStickerByFile(stickerData) {
   try {
@@ -83,9 +83,9 @@ async function saveStickerByFile(stickerData) {
     if (!response.ok) {
       throw new Error("Error saving sticker by file in Model.");
     }
-    const kit = await response.json();
+    const sticker = await response.json();
 
-    return kit;
+    return sticker;
   } catch (error) {
     throw error;
   }
@@ -132,5 +132,54 @@ const get3DObjects = async () => {
   }
 };
 
+const getFile = async (fileData) => {
+  try {
+    const {type, fileName} = fileData;
+    const response = await fetch(`${RUTA_SERVIDOR}/rewards/getFileFromStorage?type=${type}&fileName=${fileName}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    
+    if (!response.ok) {
+      throw new Error(`Unable to get file`);
+    }
 
-export { generateStickerWithAI, saveSticker, getStickers, saveStickerByFile, save3DObjectByFile, get3DObjects };
+    const file = await response.json();
+    console.log("FILE recuperada: ", file);
+    return file;
+  } catch (error) {
+    throw error;
+  }
+};
+
+async function assignRewardToKits(data) {
+  try {
+    const { type, rewardId, kitsIds } = data;
+    const response = await fetch(`${RUTA_SERVIDOR}/rewards/assignRewardToKits`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        type,
+        rewardId,
+        kitsIds,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Error assigning reward to kit.");
+    }
+
+    const result = await response.json();
+
+    return result;
+  } catch (error) {
+    throw error;
+  }
+}
+
+
+export { generateStickerWithAI, saveSticker, getStickers, saveStickerByFile, save3DObjectByFile, get3DObjects, getFile, assignRewardToKits };
