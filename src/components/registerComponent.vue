@@ -112,7 +112,7 @@ export default {
         //Valida si el usuario se creó correctamente
         if (!res) {
           await this.$swal({
-            title: "¡Error tratando de crear al usuario!",
+            title: "¡Error tratando de crear usuario!",
             icon: "error",
             showCancelButton: false,
             confirmButtonText: "OK",
@@ -217,7 +217,7 @@ export default {
               </div>
 
               <div class="form-group">
-                <label class="form-control-label text-muted">Correo Electrónico </label>
+                <label class="form-control-label text-muted">Correo Electrónico: </label>
                 <input
                   type="text"
                   id="email"
@@ -229,7 +229,7 @@ export default {
               </div>
 
               <div class="form-group">
-                <label class="form-control-label text-muted">Contraseña</label>
+                <label class="form-control-label text-muted">Contraseña: </label>
                 <input
                   type="password"
                   id="psw"
@@ -245,6 +245,8 @@ export default {
                   Registrarse 
                 </button>
               </div>
+
+              <div class="row justify-content-center my-3 px-3">
               <button class="gsi-material-button" @click="signInGoogle()">
                 <div class="gsi-material-button-state"></div>
                 <div class="gsi-material-button-content-wrapper">
@@ -280,11 +282,14 @@ export default {
                   >
                 </div>
               </button>
+
+            </div>
+          
               
 
               <!-- <div class="row justify-content-center my-2">
                 <a href="#"
-                  ><small class="text-muted">Olvidaste la contraseña?</small></a
+                  ><small class="text-muted">¿Olvidaste la contraseña?</small></a
                 >
               </div> -->
             </div>
@@ -449,7 +454,7 @@ export default {
 }
 
 .btn-registrarse {
-  background-color: #6f4e37; /* Color de fondo */
+  background-color: #412628; /* Color de fondo */
   color: white; /* Color del texto */
   padding: 14px 20px; /* Espacio interno */
   margin: 8px 0; /* Margen externo */

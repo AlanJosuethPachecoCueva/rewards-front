@@ -15,8 +15,14 @@ export default {
   components: {},
   methods: {
     togglePasswordVisibility() {
-      this.showPassword = !this.showPassword; // Invertir el valor de showPassword al hacer clic en el botón
-    },
+  this.showPassword = !this.showPassword;
+  const inputField = document.getElementById('psw');
+  if (this.showPassword) {
+    inputField.type = 'text';
+  } else {
+    inputField.type = 'password';
+  }
+},
     goHome() {
       this.$router.push("/");
     },
@@ -107,8 +113,9 @@ export default {
                 />
               </div>
 
-              <div class="form-group">
+              <div class="form-group row align-items-center">
                 <label class="form-control-label text-muted">Contraseña</label>
+                <div class="input-group col-sm-6">
                 <input
                   type="password"
                   id="psw"
@@ -117,7 +124,25 @@ export default {
                   class="form-control"
                   v-model="user.password"
                 />
+
+                <div class="input-group-append">
+                    <button
+                      class="btn btn-outline-secondary"
+                      type="button"
+                      @click="togglePasswordVisibility"
+                    >
+                      <i
+                        class="bi"
+                         :class="{'bi-eye': showPassword, 'bi-eye-slash': !showPassword}"
+                        
+                      ></i>
+                    </button>
+                  </div> 
               </div>
+              </div>
+
+
+              
 
               <div class="row justify-content-center my-2">
                 <a href="#"
@@ -249,7 +274,7 @@ export default {
 }
 
 .btn-ingresar {
-  background-color: #6f4e37; /* Color de fondo */
+  background-color: #412628; /* Color de fondo */
   color: white; /* Color del texto */
   padding: 14px 20px; /* Espacio interno */
   border: none; /* Borde */
