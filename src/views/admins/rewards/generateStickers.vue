@@ -28,7 +28,13 @@
               placeholder="Ingrese una descripción para su sticker" id="description" v-model="description"
               @blur="descriptionTouched = true"></textarea>
           </div>
+          
         </div>
+        <div class="form-group group">
+            <label class="label" for="points">Costo en puntos</label>
+            <input type="number" class="form-control" :class="{ 'is-invalid': pointsTouched && pointsValid }"
+              placeholder="Ingrese la cantidad de puntos" id="points" v-model="points" @blur="pointsTouched = true">
+          </div>
 
       </div>
       <div class="createKitContainerRight">
@@ -80,6 +86,10 @@ export default {
       titleTouched: false,
       descriptionTouched: false,
       errors: [],
+      points: "",
+      priceTouched: false,
+      pointsTouched: false,
+      pointsValid: true,
     };
   },
   setup() {
@@ -96,6 +106,9 @@ export default {
   methods: {
     titleValid() {
       return this.titleTouched ? this.title && this.title.length >= 4 : true;
+    },
+    pointsValid() {
+      return this.pointsTouched ? this.points && this.points > 0 : true;
     },
     descriptionValid() {
       return this.descriptionTouched ? this.description && this.description.length > 10 : true;
@@ -144,30 +157,31 @@ export default {
       });
 
       const userID = this.user.id;
+      const costInPoints = this.points;
       let res;
       if (!this.isLocalImageSticker) {
         //Si es generada por IA hace este procedimiento
         const stickerSource = this.imageSrc;
 
         const prompt = this.aiPrompt;
-        res = await saveStickerController({ stickerUrl: stickerSource, userID, prompt });
+        res = await saveStickerController({ stickerUrl: stickerSource, userID, prompt, costInPoints });
         console.warn("Res al guardat sticker: ", res)
       } else {
         //Si la imagen se subió desde un medio local
         const image = this.file;
         const title = this.title;
         const description = this.description;
-        res = await saveStickerByFileController({ image, title, description, userID });
+        res = await saveStickerByFileController({ image, title, description, userID, costInPoints });
         console.warn("Res al guardat sticker local: ", res)
       }
 
       // Oculta el mensaje de carga
       this.$swal.close();
 
-      
+
       //this.$router.push("/admin/rewards");
       console.log("res push: ", res);
-      const rewardId = "st-"+res.response.response.fileName;
+      const rewardId = "st-" + res.response.response.fileName;
       console.log("rewardId mod: ", rewardId);
       await this.$swal.fire({
         title: '¡Éxito!',
@@ -187,8 +201,22 @@ export default {
         if (!this.descriptionValid || this.description == null) {
           this.errors.push("Se requiere una descripción válida.");
         }
+        if (!this.pointsValid || this.points == null) {
+          this.errors.push("La precio en puntos debe ser mayor que cero.");
+        }
 
-        const res = await this.saveStickerInFirebase();
+        //const res = await this.saveStickerInFirebase();
+        if (this.errors.length === 0) {
+          await this.saveStickerInFirebase();
+        } else {
+          await this.$swal({
+            title: "¡Ocurrió un error!",
+            text: "Por favor, solucione todas las sugerencias antes de continuar.",
+            icon: "error",
+            showCancelButton: false,
+            confirmButtonText: "OK",
+          });
+        }
       } catch (error) {
         console.error(error);
       }

@@ -6,7 +6,9 @@ import {
   save3DObjectByFile,
   get3DObjects,
   getFile,
-  assignRewardToKits
+  assignRewardToKits,
+  saveProduct,
+  getProductsImages
 } from "../models/rewardModel.js";
 
 const generateStickerWithAIController = async (prompt, userID) => {
@@ -134,6 +136,36 @@ const assignRewardToKitsController = async (data) => {
   }
 };
 
+const saveProductController = async (objectData) => {
+  try {
+    const res = await saveProduct(objectData);
+
+    if (!res) {
+      console.error("Error creating product in Controller.");
+      return false;
+    } 
+    return res;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};
+
+const getProductsImagesController = async () => {
+  try {
+    const images = await getProductsImages();
+
+    if (!images) {
+      console.error("Error getting product images");
+      return false;
+    }
+
+    return images;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};
 
 export {
   generateStickerWithAIController,
@@ -143,5 +175,7 @@ export {
   save3DObjectByFileController, 
   get3DObjectsController,
   getFileController,
-  assignRewardToKitsController
+  assignRewardToKitsController,
+  saveProductController,
+  getProductsImagesController,
 };

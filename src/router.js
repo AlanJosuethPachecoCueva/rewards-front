@@ -12,6 +12,8 @@ import rewards from "./views/admins/rewards/rewards.vue"
 import generateStickers from "./views/admins/rewards/generateStickers.vue";
 import generate3DObjects from "./views/admins/rewards/generate3DObjects.vue";
 import assignRewardTokit from "./views/admins/rewards/assignRewardToKit.vue"
+import generateProduct from "./views/admins/rewards/generateProduct.vue";
+import stickersTable from "./views/admins/rewards/stickersTable.vue";
 // import firebase from 'firebase/app';
 // import 'firebase/auth';
 
@@ -77,9 +79,21 @@ const router = createRouter({
       props: true
     },
     {
+      path: "/admin/generateProducts",
+      name: "generateProducts",
+      component: generateProduct,
+      props: true
+    },
+    {
       path: "/admin/assignRewardTokit/:rewardId",
       name: "assignRewardTokit",
       component: assignRewardTokit,
+      props: true
+    },
+    {
+      path: "/admin/stickersTable",
+      name: "stickersTable",
+      component: stickersTable,
       props: true
     },
   ],

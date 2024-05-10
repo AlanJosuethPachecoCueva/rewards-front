@@ -40,7 +40,7 @@ const getStickers = async () => {
 
 async function saveSticker(stickerData) {
   try {
-    const { stickerUrl, userID, prompt } = stickerData;
+    const { stickerUrl, userID, prompt, costInPoints } = stickerData;
     const response = await fetch(`${RUTA_SERVIDOR}/rewards/saveSticker`, {
       method: "POST",
       headers: {
@@ -50,6 +50,7 @@ async function saveSticker(stickerData) {
         stickerUrl,
         userID,
         prompt,
+        costInPoints
       }),
     });
 
@@ -66,14 +67,15 @@ async function saveSticker(stickerData) {
 
 async function saveStickerByFile(stickerData) {
   try {
-    const { image, title, description, userID } = stickerData;
+    const { image, title, description, userID, costInPoints } = stickerData;
 
     const formData = new FormData();
     formData.append("image", image);
     formData.append("title", title);
     formData.append("description", description);
     formData.append("userID", userID); // Asegúrate de añadir userID correctamente
-
+    formData.append("costInPoints", costInPoints);
+    
     const response = await fetch(`${RUTA_SERVIDOR}/rewards/saveStickerByFile`, {
       method: "POST",
       // No establezcas manualmente el encabezado "Content-Type" aquí
@@ -93,19 +95,21 @@ async function saveStickerByFile(stickerData) {
 
 async function save3DObjectByFile(objectData) {
   try {
-    const { file, title, description, userID } = objectData;
+    const { file, title, description, userID, costInPoints } = objectData;
 
     const formData = new FormData();
     formData.append("file", file);
     formData.append("title", title);
     formData.append("description", description);
-    formData.append("userID", userID); 
+    formData.append("userID", userID);
+    formData.append("costInPoints", costInPoints);
 
     const response = await fetch(`${RUTA_SERVIDOR}/rewards/save3DObjectFile`, {
       method: "POST",
       body: formData,
     });
 
+    console.log("response saving 3D object by file: ", response);
     if (!response.ok) {
       throw new Error("Error saving 3D object by file.");
     }
@@ -134,14 +138,17 @@ const get3DObjects = async () => {
 
 const getFile = async (fileData) => {
   try {
-    const {type, fileName} = fileData;
-    const response = await fetch(`${RUTA_SERVIDOR}/rewards/getFileFromStorage?type=${type}&fileName=${fileName}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
+    const { type, fileName } = fileData;
+    const response = await fetch(
+      `${RUTA_SERVIDOR}/rewards/getFileFromStorage?type=${type}&fileName=${fileName}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
       }
-    });
-    
+    );
+
     if (!response.ok) {
       throw new Error(`Unable to get file`);
     }
@@ -157,17 +164,20 @@ const getFile = async (fileData) => {
 async function assignRewardToKits(data) {
   try {
     const { type, rewardId, kitsIds } = data;
-    const response = await fetch(`${RUTA_SERVIDOR}/rewards/assignRewardToKits`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        type,
-        rewardId,
-        kitsIds,
-      }),
-    });
+    const response = await fetch(
+      `${RUTA_SERVIDOR}/rewards/assignRewardToKits`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          type,
+          rewardId,
+          kitsIds,
+        }),
+      }
+    );
 
     if (!response.ok) {
       throw new Error("Error assigning reward to kit.");
@@ -181,5 +191,58 @@ async function assignRewardToKits(data) {
   }
 }
 
+async function saveProduct(productData) {
+  try {
+    const { name, description, price, costInPoints, userId, image } = productData;
 
-export { generateStickerWithAI, saveSticker, getStickers, saveStickerByFile, save3DObjectByFile, get3DObjects, getFile, assignRewardToKits };
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("description", description);
+    formData.append("price", price);
+    formData.append("costInPoints", costInPoints);
+    formData.append("userId", userId);
+    formData.append("imageFile", image);
+
+    const response = await fetch(`${RUTA_SERVIDOR}/rewards/saveProduct`, {
+      method: "POST",
+      body: formData,
+    });
+
+    if (!response.status) {
+      throw new Error("Error saving product by file in Model.");
+    }
+
+    const product = await response.json();
+
+    return product;
+  } catch (error) {
+    throw error;
+  }
+}
+
+const getProductsImages = async () => {
+  try {
+    const response = await fetch(`${RUTA_SERVIDOR}/rewards/getProductImages`);
+    if (!response.ok) {
+      throw new Error(`Unable to get product images`);
+    }
+
+    const images = await response.json();
+    return images;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export {
+  generateStickerWithAI,
+  saveSticker,
+  getStickers,
+  saveStickerByFile,
+  save3DObjectByFile,
+  get3DObjects,
+  getFile,
+  assignRewardToKits,
+  saveProduct,
+  getProductsImages,
+};

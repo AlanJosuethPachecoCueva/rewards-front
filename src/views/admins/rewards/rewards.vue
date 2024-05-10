@@ -4,11 +4,33 @@
         <h2 class="marginHeaders">Stickers</h2>
 
         <div class="input-group mb-3">
-            <span class="searchButtons input-group-text" @click="goGenerateStickers()">Agregar</span>
+
+            <span class="searchButtons input-group-text" @click="goViewStickersInTable()">
+                <i class="bi bi-table" style="
+                    font-size: 1.2rem;
+                    color: #000;
+                    font-weight: bold;">
+                </i>
+            </span>
+
+            <span class="searchButtons input-group-text" @click="goGenerateStickers()">
+                <i class="bi bi-file-earmark-plus" style="
+                    font-size: 1.2rem;
+                    color: #000;
+                    font-weight: bold;">
+                </i>
+            </span>
+
             <input type="text" class="form-control" ref="searchInput" placeholder="Ingresa tu búsqueda">
-            <span class="searchButtons input-group-text" @click="searchByType('sticker')">Buscar</span>
-            
-            
+            <span class="searchButtons input-group-text" @click="searchByType('sticker')">
+                <i class="bi bi-search" style="
+                    font-size: 1.2rem;
+                    color: #000;
+                    font-weight: bold;">
+                </i>
+            </span>
+
+
         </div>
 
 
@@ -39,9 +61,28 @@
         <h2 class="marginHeaders">3D Objects</h2>
 
         <div class="input-group mb-3">
-            <span class="searchButtons input-group-text" @click="goGenerate3DObjects()">Agregar</span>
+            <span class="searchButtons input-group-text" @click="goViewStickersInTable()">
+                <i class="bi bi-table" style="
+                    font-size: 1.2rem;
+                    color: #000;
+                    font-weight: bold;">
+                </i>
+            </span>
+            <span class="searchButtons input-group-text" @click="goGenerate3DObjects()">
+                <i class="bi bi-file-earmark-plus" style="
+                    font-size: 1.2rem;
+                    color: #000;
+                    font-weight: bold;">
+                </i>
+            </span>
             <input type="text" class="form-control" ref="searchInput3d" placeholder="Ingresa tu búsqueda">
-            <span class="searchButtons input-group-text" @click="searchByType('3dObjects')">Buscar</span>
+            <span class="searchButtons input-group-text" @click="searchByType('3dObjects')">
+                <i class="bi bi-search" style="
+                    font-size: 1.2rem;
+                    color: #000;
+                    font-weight: bold;">
+                </i>
+            </span>
         </div>
 
         <carousel :items-to-show="4" :paginationEnabled="true">
@@ -50,7 +91,6 @@
                 <div class="card" style="width: 18rem">
                     <model-viewer :src="object.url" alt="Modelo 3D" disable-zoom disable-pan disable-touch-zoom
                         disable-rotate auto-rotate="0"></model-viewer>
-
 
                     <!-- <img :src="object.url" class="card-img-top imageCard" alt="Image" /> -->
                     <div class="card-body">
@@ -75,19 +115,41 @@
         <h2 class="marginHeaders">Products</h2>
 
         <div class="input-group mb-3">
-            <span class="searchButtons input-group-text" @click="searchByType('products')">Buscar</span>
+            <span class="searchButtons input-group-text" @click="goViewStickersInTable()">
+                <i class="bi bi-table" style="
+                    font-size: 1.2rem;
+                    color: #000;
+                    font-weight: bold;">
+                </i>
+            </span>
+            <span class="searchButtons input-group-text" @click="goGenerateProducts()">
+                <i class="bi bi-file-earmark-plus" style="
+                    font-size: 1.2rem;
+                    color: #000;
+                    font-weight: bold;">
+                </i>
+            </span>
             <input type="text" class="form-control" ref="searchInputProduct" placeholder="Ingresa tu búsqueda">
+            <span class="searchButtons input-group-text" @click="searchByType('products')">
+                <i class="bi bi-search" style="
+                    font-size: 1.2rem;
+                    color: #000;
+                    font-weight: bold;">
+                </i>
+            </span>
+
         </div>
 
         <carousel :items-to-show="4" :paginationEnabled="true">
-            <Slide v-for="product in productsToShow" :key="product.title" class="carousel-slide p-2">
+            <Slide v-for="product in productsToShow" :key="product.metadata[0].metadata.title"
+                class="carousel-slide p-2">
                 <div class="card" style="width: 18rem">
-                    <img :src="product.image" class="card-img-top imageCard" alt="Image" />
+                    <img :src="product.url" class="card-img-top imageCard" alt="Image" />
                     <div class="card-body">
                         <div class="minContentCard">
-                            <h5 class="card-title">{{ product.title }}</h5>
+                            <h5 class="card-title">{{ product.metadata[0].metadata.title }}</h5>
                             <p class="card-text">
-                                {{ product.description }}
+                                {{ product.metadata[0].metadata.description }}
                             </p>
                         </div>
 
@@ -105,7 +167,7 @@
 <script>
 import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
-import { getStickersController, get3DObjectsController } from "@/controllers/rewardsController";
+import { getStickersController, get3DObjectsController, getProductsImagesController } from "@/controllers/rewardsController";
 import '@google/model-viewer';
 
 export default {
@@ -123,22 +185,8 @@ export default {
             stickersToShow: [],
             threeDObjects: [],
             threeDObjectsToShow: [],
-            products: [
-                { title: "Amor", description: "Este sticker es un fantástico ejemplo", image: "https://firebasestorage.googleapis.com/v0/b/rewards-b63ba.appspot.com/o/stickers%2Famor.png?alt=media&token=683439b9-ebe8-438b-98cd-d3f0992afbb3" },
-                { title: "Chocolate Caliente", description: "Este sticker es un fantástico ejemplo", image: "https://firebasestorage.googleapis.com/v0/b/rewards-b63ba.appspot.com/o/stickers%2Fchocolate-caliente.png?alt=media&token=16f4aca1-5072-43ac-b430-9f22bc4573fd" },
-                { title: "Chocolate", description: "Este sticker es un fantástico ejemplo", image: "https://firebasestorage.googleapis.com/v0/b/rewards-b63ba.appspot.com/o/stickers%2Fchocolate.png?alt=media&token=ca44be8d-f140-446c-b666-4175f0b2bb2f" },
-                { title: "Amor", description: "Este sticker es un fantástico ejemplo", image: "https://firebasestorage.googleapis.com/v0/b/rewards-b63ba.appspot.com/o/stickers%2Famor.png?alt=media&token=683439b9-ebe8-438b-98cd-d3f0992afbb3" },
-                { title: "Chocolate Caliente", description: "Este sticker es un fantástico ejemplo", image: "https://firebasestorage.googleapis.com/v0/b/rewards-b63ba.appspot.com/o/stickers%2Fchocolate-caliente.png?alt=media&token=16f4aca1-5072-43ac-b430-9f22bc4573fd" },
-                { title: "Chocolate", description: "Este sticker es un fantástico ejemplo", image: "https://firebasestorage.googleapis.com/v0/b/rewards-b63ba.appspot.com/o/stickers%2Fchocolate.png?alt=media&token=ca44be8d-f140-446c-b666-4175f0b2bb2f" },
-            ],
-            productsToShow: [
-                { title: "Amor", description: "Este sticker es un fantástico ejemplo", image: "https://firebasestorage.googleapis.com/v0/b/rewards-b63ba.appspot.com/o/stickers%2Famor.png?alt=media&token=683439b9-ebe8-438b-98cd-d3f0992afbb3" },
-                { title: "Chocolate Caliente", description: "Este sticker es un fantástico ejemplo", image: "https://firebasestorage.googleapis.com/v0/b/rewards-b63ba.appspot.com/o/stickers%2Fchocolate-caliente.png?alt=media&token=16f4aca1-5072-43ac-b430-9f22bc4573fd" },
-                { title: "Chocolate", description: "Este sticker es un fantástico ejemplo", image: "https://firebasestorage.googleapis.com/v0/b/rewards-b63ba.appspot.com/o/stickers%2Fchocolate.png?alt=media&token=ca44be8d-f140-446c-b666-4175f0b2bb2f" },
-                { title: "Amor", description: "Este sticker es un fantástico ejemplo", image: "https://firebasestorage.googleapis.com/v0/b/rewards-b63ba.appspot.com/o/stickers%2Famor.png?alt=media&token=683439b9-ebe8-438b-98cd-d3f0992afbb3" },
-                { title: "Chocolate Caliente", description: "Este sticker es un fantástico ejemplo", image: "https://firebasestorage.googleapis.com/v0/b/rewards-b63ba.appspot.com/o/stickers%2Fchocolate-caliente.png?alt=media&token=16f4aca1-5072-43ac-b430-9f22bc4573fd" },
-                { title: "Chocolate", description: "Este sticker es un fantástico ejemplo", image: "https://firebasestorage.googleapis.com/v0/b/rewards-b63ba.appspot.com/o/stickers%2Fchocolate.png?alt=media&token=ca44be8d-f140-446c-b666-4175f0b2bb2f" },
-            ],
+            products: [],
+            productsToShow: [],
         };
     },
     async mounted() {
@@ -154,10 +202,10 @@ export default {
         });
 
         this.stickersToShow = JSON.parse(JSON.stringify(this.stickers));
-
+        console.log("this.stickersToShow : ", this.stickersToShow );
         //Objetos 3D
         const threeDObjectsRes = await get3DObjectsController();
-        console.log("threeDObjectsRes: ", threeDObjectsRes);
+
         // Agrega cada objeto de res a this.stickers
         threeDObjectsRes.forEach(object => {
             // Verifica si el título existe y no es una cadena vacía
@@ -165,9 +213,21 @@ export default {
                 this.threeDObjects.push(object);
             }
         });
-        console.log("this.threeDObjects: ", this.threeDObjects);
+
         this.threeDObjectsToShow = JSON.parse(JSON.stringify(this.threeDObjects));
-        console.log("this.threeDObjectsToShow: ", this.threeDObjectsToShow);
+
+        //Productos
+        const productRes = await getProductsImagesController();
+
+        // Agrega cada objeto de res a this.stickers
+        productRes.forEach(object => {
+            // Verifica si el título existe y no es una cadena vacía
+            if (object.metadata[0].metadata.title) {
+                this.products.push(object);
+            }
+        });
+
+        this.productsToShow = JSON.parse(JSON.stringify(this.products));
     },
     methods: {
         searchByType(type) {
@@ -200,6 +260,12 @@ export default {
         goGenerate3DObjects() {
             this.$router.push("/admin/generate3DObjects");
         },
+        goGenerateProducts() {
+            this.$router.push("/admin/generateProducts");
+        },
+        goViewStickersInTable() {
+            this.$router.push("/admin/stickersTable");
+        },
     },
 };
 </script>
@@ -207,6 +273,7 @@ export default {
 <style>
 .searchButtons {
     cursor: pointer;
+    justify-content: center;
 }
 
 .containerStickers {

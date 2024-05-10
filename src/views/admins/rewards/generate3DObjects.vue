@@ -13,6 +13,12 @@
                     rows="3" placeholder="Ingrese una descripción para su object" id="description" v-model="description"
                     @blur="descriptionTouched = true"></textarea>
             </div>
+            <div class="form-group group">
+                <label class="label" for="points">Cantidad de puntos</label>
+                <input type="number" class="form-control" :class="{ 'is-invalid': pointsTouched && pointsValid }"
+                    placeholder="Ingrese la cantidad de puntos" id="points" v-model="points"
+                    @blur="pointsTouched = true">
+            </div>
             <div class="errorsContainer">
                 <p v-if="errors.length" class="text-danger">
                     <b>Por favor, corrija lo siguiente:</b>
@@ -57,7 +63,7 @@
 import { computed } from "vue";
 import { useUserStore } from "../../../stores/userStore.js";
 import { saveStickerByFileController, save3DObjectByFileController } from "../../../controllers/rewardsController";
-import '@google/model-viewer'; 
+import '@google/model-viewer';
 
 export default {
     data() {
@@ -69,6 +75,10 @@ export default {
             titleTouched: false,
             descriptionTouched: false,
             errors: [],
+            points: "",
+            priceTouched: false,
+            pointsTouched: false,
+            pointsValid: true,
         };
     },
     components: {
@@ -108,6 +118,9 @@ export default {
             }
 
         },
+        pointsValid() {
+            return this.pointsTouched ? this.points && this.points > 0 : true;
+        },
         async saveObjectInFirebase() {
             this.$swal.fire({
                 title: 'Cargando...',
@@ -121,10 +134,15 @@ export default {
             const file = this.file;
             const title = this.title;
             const description = this.description;
+            const costInPoints = this.points;
 
-            await save3DObjectByFileController({ file, title, description, userID });
+            const res = await save3DObjectByFileController({ file, title, description, userID, costInPoints });
 
             this.$swal.close();
+
+            console.log("res push: ", res);
+            const rewardId = "3d-" + res.fileName;
+            console.log("rewardId mod: ", rewardId);
 
             await this.$swal.fire({
                 title: '¡Éxito!',
@@ -132,7 +150,8 @@ export default {
                 allowOutsideClick: false,
                 showConfirmButton: true,
             });
-            this.$router.push("/admin/rewards");
+            //this.$router.push("/admin/rewards");
+            this.$router.push({ name: "assignRewardTokit", params: { rewardId } });
         },
         async checkForm() {
             try {
@@ -143,13 +162,16 @@ export default {
                 if (!this.description || this.description.length <= 10) {
                     this.errors.push("Se requiere una descripción válida (mínimo 10 caracteres).");
                 }
+                if (!this.pointsValid || this.points == null) {
+                    this.errors.push("La precio en puntos debe ser mayor que cero.");
+                }
 
                 if (this.errors.length === 0) {
                     await this.saveObjectInFirebase();
                 } else {
                     await this.$swal({
                         title: "¡Ocurrió un error!",
-                        text: "Por favor, solucione todas las sugerencias antes de continuar",
+                        text: "Por favor, solucione todas las sugerencias antes de continuar.",
                         icon: "error",
                         showCancelButton: false,
                         confirmButtonText: "OK",

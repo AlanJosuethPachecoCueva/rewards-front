@@ -2,13 +2,17 @@
     <div id="bigContainerAssignReward">
         <!-- Contenedor izquierdo (contenedor de imagen) -->
         <div id="leftAssignReward">
-            <div id="imageContainerAssignReward" class="grid-item">
+            <div id="imageContainerAssignReward" class="grid-item" v-if="rewardParams.type != '3d'">
                 <img :src="reward.url" id="assignRewardImage" class="card-img-top" :alt="rewardParams.fileName">
             </div>
 
-            <!-- <div id="imageContainerAssignReward">
-                <img :src="reward.url" id="assignRewardImage" class="card-img-top" :alt="rewardParams.fileName">
-            </div> -->
+            <!-- Mostrar aquí el modelo 3d -->
+            <model-viewer class="modelViewerAssignReward" v-if="rewardParams.type == '3d'" :src="reward.url" alt="Modelo 3d"
+                poster="../../../assets/images/Waiting3DModel3.png" auto-rotate camera-controls ar></model-viewer>
+            <div class="modelViewerAssignReward" id="modelViewerText" v-if="!reward.url && rewardParams.type == '3d'">
+                <h3>Esperando objeto 3D...</h3>
+            </div>
+
             <button class="btn btn-outline-dark flex-shrink-0" type="button" @click="assignRewardToKit()">
                 Asignar Premio
                 <i class="bi bi-arrow-right-circle-fill"></i>
@@ -46,10 +50,14 @@
 </template>
 
 <script>
-import { getFileController, assignRewardToKitsController } from "@/controllers/rewardsController";
+import { getFileController, assignRewardToKitsController, get3DObjectsController } from "@/controllers/rewardsController";
 import { getKitsController, getImagesFromKitsController } from "@/controllers/kitsController";
+import '@google/model-viewer';
 
 export default {
+    components: {
+        'model-viewer': window.ModelViewer,
+    },
     data() {
         return {
             reward: { url: "https://static.vecteezy.com/system/resources/previews/011/125/843/non_2x/loading-icons-load-indicator-sign-waiting-symbols-free-vector.jpg" },
@@ -57,6 +65,7 @@ export default {
             kits: [],
             selectedKits: [],
             showInfoCardId: null,
+            objectSrc: null,
         };
     },
     created() {
@@ -65,6 +74,20 @@ export default {
     async mounted() {
         this.kits = await getKitsController();
         this.kits = await getImagesFromKitsController(this.kits);
+
+        // //Objetos 3D
+        // const threeDObjectsRes = await get3DObjectsController();
+        // console.log("threeDObjectsRes: ", threeDObjectsRes);
+        // // Agrega cada objeto de res a this.stickers
+        // threeDObjectsRes.forEach(object => {
+        //     // Verifica si el título existe y no es una cadena vacía
+        //     if (object.metadata[0].metadata.title) {
+        //         this.threeDObjects.push(object);
+        //     }
+        // });
+        // console.log("this.threeDObjects: ", this.threeDObjects);
+        // this.threeDObjectsToShow = JSON.parse(JSON.stringify(this.threeDObjects));
+        // console.log("this.threeDObjectsToShow: ", this.threeDObjectsToShow);
     },
     methods: {
         // Obtener datos de recompensa
@@ -152,6 +175,11 @@ export default {
 </script>
 
 <style>
+.modelViewerAssignReward{
+    background: linear-gradient(to bottom, #f7dede, rgba(214, 198, 27, 0.1));
+    width: 90%;
+    height: 80%;
+}
 /* Estilo para elementos de cuadrícula */
 #lineaIntermedia {
     background-color: rgb(214, 170, 27);
