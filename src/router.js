@@ -8,15 +8,16 @@ import manageKits from "./views/admins/manageKits.vue";
 import createKit from "./views/admins/createKit.vue";
 import createKitMaterial from "./views/admins/createKitMaterial.vue";
 //rewards
-import rewards from "./views/admins/rewards/rewards.vue"
+import rewards from "./views/admins/rewards/rewards.vue";
 import generateStickers from "./views/admins/rewards/generateStickers.vue";
 import generate3DObjects from "./views/admins/rewards/generate3DObjects.vue";
-import assignRewardTokit from "./views/admins/rewards/assignRewardToKit.vue"
+import assignRewardTokit from "./views/admins/rewards/assignRewardToKit.vue";
 import generateProduct from "./views/admins/rewards/generateProduct.vue";
 import stickersTable from "./views/admins/rewards/stickersTable.vue";
+import threeDObjectsTable from "./views/admins/rewards/threeDObjectsTable.vue";
+import productsTable from "./views/admins/rewards/productsTable.vue";
 // import firebase from 'firebase/app';
 // import 'firebase/auth';
-
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -52,49 +53,61 @@ const router = createRouter({
     {
       path: "/admin/createKit",
       name: "createKit",
-      component: createKit
+      component: createKit,
     },
     {
       path: "/admin/createKitMaterial/:kitId",
       name: "createKitMaterial",
       component: createKitMaterial,
-      props: true
+      props: true,
     },
     {
       path: "/admin/rewards",
       name: "rewards",
       component: rewards,
-      props: true
+      props: true,
     },
     {
       path: "/admin/generateStickers",
       name: "generateStickers",
       component: generateStickers,
-      props: true
+      props: true,
     },
     {
       path: "/admin/generate3DObjects",
       name: "generate3DObjects",
       component: generate3DObjects,
-      props: true
+      props: true,
     },
     {
       path: "/admin/generateProducts",
       name: "generateProducts",
       component: generateProduct,
-      props: true
+      props: true,
     },
     {
       path: "/admin/assignRewardTokit/:rewardId",
       name: "assignRewardTokit",
       component: assignRewardTokit,
-      props: true
+      props: true,
     },
     {
       path: "/admin/stickersTable",
       name: "stickersTable",
       component: stickersTable,
-      props: true
+      props: true,
+    },
+    {
+      path: "/admin/threeDObjectsTable",
+      name: "threeDObjectsTable",
+      component: threeDObjectsTable,
+      props: true,
+    },
+    {
+      path: "/admin/productsTable",
+      name: "productsTable",
+      component: productsTable,
+      props: true,
     },
   ],
 });
@@ -105,8 +118,6 @@ const router = createRouter({
 //   component: editUser,
 //   props: true
 // },
-
-
 
 // Guardia de navegación para verificar el estado de autenticación
 
@@ -122,6 +133,5 @@ const router = createRouter({
 //     next(); // De lo contrario, permite que el usuario acceda a la ruta solicitada
 //   }
 // });
-
 
 export default router;

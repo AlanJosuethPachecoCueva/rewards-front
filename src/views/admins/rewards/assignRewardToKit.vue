@@ -123,8 +123,6 @@ export default {
             }
         },
         async assignRewardToKit() {
-            console.log("this.selectedKits: ", this.selectedKits);
-            console.log("this.selectedKits.length: ", this.selectedKits.length);
 
             if (this.selectedKits.length < 1) {
                 await this.$swal({
@@ -145,7 +143,6 @@ export default {
                 });
                 if (result.isConfirmed) {
                     let selectedKitsIds = this.selectedKits.map(kit => kit.id);
-                    console.log("selectedKitsIds ", selectedKitsIds);
                     const res = await assignRewardToKitsController({ type: this.rewardParams.type, rewardId: this.rewardParams.fileName, kitsIds: selectedKitsIds })
                     if (res.status) {
                         await this.$swal({
@@ -166,7 +163,7 @@ export default {
                         });
                     }
                 }
-                console.log("result: ", result);
+
             }
 
         },

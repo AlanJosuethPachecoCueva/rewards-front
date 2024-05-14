@@ -18,7 +18,7 @@
                     <th>ID</th>
                     <th>Título</th>
                     <th>Descripción</th>
-                    <th>UserID</th>
+                    <th>File Name</th>
                     <th>Imagen</th>
                     <th>Acciones</th>
                   </tr>
@@ -28,10 +28,18 @@
                     <td>{{ sticker.id }}</td>
                     <td>{{ sticker.title }}</td>
                     <td>{{ sticker.description }}</td>
-                    <td>{{ sticker.userID }}</td>
+                    <td>{{ sticker.fileName }}</td>
                     <td><img :src="sticker.image" style="max-width: 100px; max-height: 100px;"></td>
                     <td>
-                      <span class="searchButtons input-group-text" @click="viewSticker(sticker.id)" >
+                      <span class="searchButtons input-group-text" @click="viewSticker(sticker.fileName)">
+                        <i class="bi bi-eye-fill" style="
+                        font-size: 1.2rem;
+                        color: #000;
+                        font-weight: bold;">
+                        </i>
+                      </span>
+
+                      <span class="searchButtons input-group-text" @click="editSticker(sticker.fileName)">
                         <i class="bi bi-pencil-square" style="
                         font-size: 1.2rem;
                         color: #000;
@@ -39,7 +47,7 @@
                         </i>
                       </span>
 
-                      <span class="searchButtons input-group-text" @click="deleteSticker(sticker.id)" >
+                      <span class="searchButtons input-group-text" @click="deleteSticker(sticker.fileName)">
                         <i class="bi bi-trash3-fill" style="
                         font-size: 1.2rem;
                         color: #000;
@@ -77,7 +85,7 @@
 </template>
 
 <script>
-import { getStickersController } from "@/controllers/rewardsController";
+import { getStickersController, deleteRewardsByRewardIdController } from "@/controllers/rewardsController";
 
 export default {
   components: {
@@ -98,6 +106,7 @@ export default {
   },
   async mounted() {
     const stickersRes = await getStickersController();
+
     stickersRes.forEach(sticker => {
       if (sticker.metadata[0].metadata.title) {
         this.stickers.push({
@@ -105,7 +114,8 @@ export default {
           title: sticker.metadata[0].metadata.title,
           description: sticker.metadata[0].metadata.description,
           userID: sticker.metadata[0].metadata.userID,
-          image: sticker.url
+          image: sticker.url,
+          fileName: sticker.metadata[0].name.substring(9)
         });
       }
     });
@@ -128,6 +138,59 @@ export default {
       this.totalPages = Math.ceil(this.stickersToShow.length / this.pagination.rowsPerPage);
       this.totalItems = this.stickersToShow.length;
     },
+    viewSticker(fileName) {
+      console.log("fileName in viewSticker: ", fileName);
+    },
+    editSticker(fileName) {
+      console.log("fileName in editSticker: ", fileName);
+    },
+    async deleteSticker(fileName) {
+      const result = await this.$swal({
+        title: '¿Deseas eliminar el sticker?',
+        text: 'Se eliminará el sticker y todos sus enlaces con los materiales publicitarios.',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Sí',
+        cancelButtonText: "No",
+      });
+      if (!result.isConfirmed) {
+        await this.$swal({
+          title: 'No se ha eliminado',
+          text: "Ni el sticker ni sus enlaces con los materiales han sido eliminados.",
+          icon: "success",
+          showCancelButton: false,
+          confirmButtonText: "OK",
+        });
+        return;
+      }
+
+      const rewardId = fileName;
+      const typeOfReward = "st";
+      const data = { rewardId, typeOfReward };
+      const res = await deleteRewardsByRewardIdController(data);
+
+      if (res.status) {
+        await this.$swal({
+          title: 'Sticker eliminado',
+          text: "El sticker y sus enlaces con los materiales han sido eliminados.",
+          icon: "success",
+          showCancelButton: false,
+          confirmButtonText: "OK",
+        });
+      } else {
+        console.error("Ha ocurrido un error al eliminar el sticker seleccionado: ", res);
+        await this.$swal({
+          title: 'No se ha eliminado',
+          text: "Ha ocurrido un error al eliminar el sticker seleccionado.",
+          icon: "success",
+          showCancelButton: false,
+          confirmButtonText: "OK",
+        });
+        return;
+      }
+
+      this.stickersToShow = this.stickersToShow.filter(sticker => sticker.fileName !== fileName);
+    }
   },
   watch: {
     searchTerm: {

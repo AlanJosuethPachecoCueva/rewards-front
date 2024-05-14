@@ -7,8 +7,7 @@
         <div id="showInformationLeft">
           <img :src="imageSrc" id="stickerImage" class="card-img-top" alt="Sticker generado">
         </div>
-        <div :class="{ 'hideIfAI': !isLocalImageSticker, 'showIfManual': isLocalImageSticker }">
-          <div class="errorsContainer">
+        <div class="errorsContainer">
             <p v-if="errors.length" class="text-danger">
               <b>Por favor, corrija lo siguiente:</b>
             <ul>
@@ -16,6 +15,8 @@
             </ul>
             </p>
           </div>
+        <div :class="{ 'hideIfAI': !isLocalImageSticker, 'showIfManual': isLocalImageSticker }">
+          
 
           <div class="form-group group">
             <label class="label" for="name">Título</label>
@@ -86,9 +87,9 @@ export default {
       titleTouched: false,
       descriptionTouched: false,
       errors: [],
-      points: "",
+      points: 0,
       priceTouched: false,
-      pointsTouched: false,
+      pointsTouched: true,
       pointsValid: true,
     };
   },
@@ -114,12 +115,12 @@ export default {
       return this.descriptionTouched ? this.description && this.description.length > 10 : true;
     },
     async selectImageFromDevice(event) {
-      console.log("event selected: ", event);
+
       this.file = event.target.files[0];
-      console.log("file selected: ", this.file);
+
       if (this.file) {
         let url = URL.createObjectURL(this.file);
-        console.log("url file selected: ", url);
+
         // Crear una URL de objeto para la imagen seleccionada
         this.imageSrc = url;
         this.isLocalImageSticker = true;
@@ -165,6 +166,10 @@ export default {
 
         const prompt = this.aiPrompt;
         res = await saveStickerController({ stickerUrl: stickerSource, userID, prompt, costInPoints });
+        res = {
+          response: res.response.response,
+          status: res.status
+        }
         console.warn("Res al guardat sticker: ", res)
       } else {
         //Si la imagen se subió desde un medio local
@@ -181,7 +186,7 @@ export default {
 
       //this.$router.push("/admin/rewards");
       console.log("res push: ", res);
-      const rewardId = "st-" + res.response.response.fileName;
+      const rewardId = "st-" + res.response.fileName;
       console.log("rewardId mod: ", rewardId);
       await this.$swal.fire({
         title: '¡Éxito!',
@@ -201,8 +206,8 @@ export default {
         if (!this.descriptionValid || this.description == null) {
           this.errors.push("Se requiere una descripción válida.");
         }
-        if (!this.pointsValid || this.points == null) {
-          this.errors.push("La precio en puntos debe ser mayor que cero.");
+        if (!this.pointsValid || this.points < 1) {
+          this.errors.push("El precio en puntos debe ser mayor que cero.");
         }
 
         //const res = await this.saveStickerInFirebase();

@@ -8,7 +8,8 @@ import {
   getFile,
   assignRewardToKits,
   saveProduct,
-  getProductsImages
+  getProductsImages,
+  deleteRewardsByRewardId
 } from "../models/rewardModel.js";
 
 const generateStickerWithAIController = async (prompt, userID) => {
@@ -167,6 +168,17 @@ const getProductsImagesController = async () => {
   }
 };
 
+const deleteRewardsByRewardIdController = async (data) => {
+  try {
+    const response = await deleteRewardsByRewardId(data);
+    console.log("response in deleteRewardsByRewardIdController: ", response);
+    return response;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};
+
 export {
   generateStickerWithAIController,
   saveStickerController,
@@ -178,4 +190,5 @@ export {
   assignRewardToKitsController,
   saveProductController,
   getProductsImagesController,
+  deleteRewardsByRewardIdController
 };

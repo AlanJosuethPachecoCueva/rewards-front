@@ -50,7 +50,7 @@ async function saveSticker(stickerData) {
         stickerUrl,
         userID,
         prompt,
-        costInPoints
+        costInPoints,
       }),
     });
 
@@ -75,7 +75,7 @@ async function saveStickerByFile(stickerData) {
     formData.append("description", description);
     formData.append("userID", userID); // Asegúrate de añadir userID correctamente
     formData.append("costInPoints", costInPoints);
-    
+
     const response = await fetch(`${RUTA_SERVIDOR}/rewards/saveStickerByFile`, {
       method: "POST",
       // No establezcas manualmente el encabezado "Content-Type" aquí
@@ -193,7 +193,8 @@ async function assignRewardToKits(data) {
 
 async function saveProduct(productData) {
   try {
-    const { name, description, price, costInPoints, userId, image } = productData;
+    const { name, description, price, costInPoints, userId, image } =
+      productData;
 
     const formData = new FormData();
     formData.append("name", name);
@@ -234,6 +235,33 @@ const getProductsImages = async () => {
   }
 };
 
+const deleteRewardsByRewardId = async (data) => {
+  try {
+    const { rewardId, typeOfReward } = data;
+    const response = await fetch(`${RUTA_SERVIDOR}/rewards/deleteRewardsByRewardId`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        rewardId: rewardId,
+        typeOfReward: typeOfReward,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Unable to delete rewards by rewardId: ${rewardId}`);
+    }
+
+    const result = await response.json();
+    console.log(result);
+    return result;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
 export {
   generateStickerWithAI,
   saveSticker,
@@ -245,4 +273,5 @@ export {
   assignRewardToKits,
   saveProduct,
   getProductsImages,
+  deleteRewardsByRewardId
 };

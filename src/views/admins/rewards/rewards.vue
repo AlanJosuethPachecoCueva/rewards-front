@@ -61,7 +61,7 @@
         <h2 class="marginHeaders">3D Objects</h2>
 
         <div class="input-group mb-3">
-            <span class="searchButtons input-group-text" @click="goViewStickersInTable()">
+            <span class="searchButtons input-group-text" @click="goViewObjectsInTable()">
                 <i class="bi bi-table" style="
                     font-size: 1.2rem;
                     color: #000;
@@ -115,7 +115,7 @@
         <h2 class="marginHeaders">Products</h2>
 
         <div class="input-group mb-3">
-            <span class="searchButtons input-group-text" @click="goViewStickersInTable()">
+            <span class="searchButtons input-group-text" @click="goViewProductsInTable()">
                 <i class="bi bi-table" style="
                     font-size: 1.2rem;
                     color: #000;
@@ -265,6 +265,12 @@ export default {
         },
         goViewStickersInTable() {
             this.$router.push("/admin/stickersTable");
+        },
+        goViewObjectsInTable() {
+            this.$router.push("/admin/threeDObjectsTable");
+        },
+        goViewProductsInTable() {
+            this.$router.push("/admin/productsTable");
         },
     },
 };
