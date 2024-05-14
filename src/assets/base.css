@@ -1,28 +1,18 @@
 /* color palette from <https://github.com/vuejs/theme> */
 :root {
-  --vt-c-white: #ffffff;
-  --vt-c-white-soft: #f8f8f8;
-  --vt-c-white-mute: #f2f2f2;
+  /* Paleta colores principales */
+  --mediumyellow: #B28A00; /* Pantone 457 C */
+  --lightyellow: #F6D300; /* Pantone 3965 C */
+  --darkyellow: #CE8B00; /* Pantone 7555 C */
+  --principalBrown: #580012; /* Pantone 188 CP */
+  --darkBrown: #2E0800; /* Pantone 433 CP */
+  --lightblack: #9B9B97; /* Pantone Cool Gray 6 CP */
+  --darkgray: #9B9B97; /* Pantone Cool Gray 3 CP */
+  --lightgray: #580012; 
+  --color-boton-cafe: #C4C5BE; 
 
-  --vt-c-black: #181818;
-  --vt-c-black-soft: #222222;
-  --vt-c-black-mute: #282828;
 
-  --vt-c-indigo: #2c3e50;
-
-  --vt-c-divider-light-1: rgba(60, 60, 60, 0.29);
-  --vt-c-divider-light-2: rgba(60, 60, 60, 0.12);
-  --vt-c-divider-dark-1: rgba(84, 84, 84, 0.65);
-  --vt-c-divider-dark-2: rgba(84, 84, 84, 0.48);
-
-  --vt-c-text-light-1: var(--vt-c-indigo);
-  --vt-c-text-light-2: rgba(60, 60, 60, 0.66);
-  --vt-c-text-dark-1: var(--vt-c-white);
-  --vt-c-text-dark-2: rgba(235, 235, 235, 0.64);
-}
-
-/* semantic color variables for this project */
-:root {
+  /* Semantic color variables for this project */
   --color-background: var(--vt-c-white);
   --color-background-soft: var(--vt-c-white-soft);
   --color-background-mute: var(--vt-c-white-mute);
@@ -83,4 +73,47 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Ejemplo de uso de variables de colores en un elemento */
+.mi-clase {
+  background-color: var(--color-amarillo-principal);
+  color: var(--color-naranja);
+}
+
+/* Clases para cada color */
+.amarillo-principal {
+  color: var(--color-amarillo-principal);
+}
+
+.amarillo-secundario {
+  color: var(--color-amarillo-secundario);
+}
+
+.naranja {
+  color: var(--color-naranja);
+}
+
+.rojo {
+  color: var(--color-rojo);
+}
+
+.negro {
+  color: var(--color-negro);
+}
+
+.gris-oscuro {
+  color: var(--color-gris-oscuro);
+}
+
+.gris-claro {
+  color: var(--color-gris-claro);
+}
+
+.marron-principal {
+  color: var(--principalBrown);
+}
+
+.color-boton-hover {
+  color: var(--color-boton-cafe);
 }

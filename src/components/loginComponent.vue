@@ -274,7 +274,7 @@ export default {
 }
 
 .btn-ingresar {
-  background-color: #412628; /* Color de fondo */
+  background-color: var(--principalBrown); 
   color: white; /* Color del texto */
   padding: 14px 20px; /* Espacio interno */
   border: none; /* Borde */
@@ -285,7 +285,7 @@ export default {
 }
 
 .btn-ingresar:hover {
-  background-color: #4C3D39; /* Color de fondo al pasar el mouse */
+  background-color: var(--color-cafe-claro) /* Color de fondo al pasar el mouse */
 }
 
 

@@ -3,6 +3,7 @@ import { computed } from "vue";
 import { registerWithFirebase } from "../models/userModel.js";
 import { logInFirebase, signInWithGoogle } from "../models/firebase/auth.js";
 import googleLogo from "../assets/images/google.png";
+import { colors } from '/src/assets/colors.js';
 
 export default {
   data() {
@@ -454,7 +455,7 @@ export default {
 }
 
 .btn-registrarse {
-  background-color: #412628; /* Color de fondo */
+  background-color: var(--principalBrown);  
   color: white; /* Color del texto */
   padding: 14px 20px; /* Espacio interno */
   margin: 8px 0; /* Margen externo */
@@ -466,6 +467,6 @@ export default {
 }
 
 .btn-registrarse:hover {
-  background-color: #4C3D39; /* Color de fondo al pasar el mouse */
+  background-color: var(--color-cafe-claro); /* Color de fondo al pasar el mouse */
 }
 </style>

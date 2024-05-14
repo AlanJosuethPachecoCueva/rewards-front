@@ -3,6 +3,7 @@ import { computed } from "vue";
 import { colors } from "../assets/colors.js";
 import { useUserStore } from "../stores/userStore.js";
 import { logOut } from "../models/firebase/auth.js";
+
 export default {
   data() {
     return {
@@ -53,7 +54,7 @@ export default {
 </script>
 
 <template>
-  <nav class="navbar navbar-expand-lg navBarPersonalized" :style="{ backgroundColor: colors.primaryColor }">
+  <nav class="navbar navbar-expand-lg navBarPersonalized marron-principal" :style="{ backgroundColor: colors.principalBrown }">
     <div class="container-fluid">
       <a class="navbar-brand" :style="{ color: textColor }" href="/">Kvmi</a>
       <!-- Botón para ocultar -->
@@ -204,6 +205,7 @@ export default {
 }
 
 .navBarPersonalized {
+  
   width: 100%;
   height: 50px;
   /* background-color: rgb(65, 39, 39); */
