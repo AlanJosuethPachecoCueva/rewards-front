@@ -54,7 +54,8 @@ export default {
 </script>
 
 <template>
-  <nav class="navbar navbar-expand-lg navBarPersonalized marron-principal" :style="{ backgroundColor: colors.principalBrown }">
+  <nav class="navbar navbar-expand-lg navBarPersonalized marron-principal"
+    :style="{ backgroundColor: colors.principalBrown }">
     <div class="container-fluid">
       <a class="navbar-brand" :style="{ color: textColor }" href="/">Kvmi</a>
       <!-- Botón para ocultar -->
@@ -63,7 +64,7 @@ export default {
         :style="{ backgroundColor: textColor }">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <div class="collapse navbar-collapse" id="navbarSupportedContent showPoints">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
             <a class="nav-link active navMenu" aria-current="page" href="#" :style="{ color: textColor }">Material
@@ -81,7 +82,7 @@ export default {
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
               <li>
-                <a class="dropdown-item" href="#" :style="{ color: textColorContrast }">Redimir</a>
+                <a class="dropdown-item" href="/admin/codes/reedemCode" :style="{ color: textColorContrast }">Redimir</a>
               </li>
               <li v-if="user != null && user.isAdmin == true">
                 <a class="dropdown-item" href="/admin/manageKits" :style="{ color: textColorContrast }">Gestionar
@@ -94,6 +95,10 @@ export default {
               <li v-if="user != null && user.isAdmin == true">
                 <a class="dropdown-item" href="/admin/rewards" :style="{ color: textColorContrast }">Gestionar
                   Premios</a>
+              </li>
+              <li v-if="user != null && user.isAdmin == true">
+                <a class="dropdown-item" href="/admin/codes" :style="{ color: textColorContrast }">Gestionar
+                  Códigos</a>
               </li>
 
               <li>
@@ -113,11 +118,24 @@ export default {
               >Disabled</a
             >
           </li> -->
+          <li id="pointsContainer">
+            <a class="nav-link" href="#" :style="{ color: textColor }">
+              {{ user.points }}
+            </a>
+            <i>
+              <img src="../assets//images//cacao.png" alt="Points Icon" style="width:32px; height:32px; margin-left: 5px;
+                margin-right: 5px; margin-left: 5px;
+                margin-right: 5px;">
+            </i>
+          </li>
+
         </ul>
 
         <div id="divGoloso" v-if="user != null">
+
           <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex dropdown-menu-right" v-if="user.id != ''">
             <li class="nav-item dropdown">
+
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
                 aria-expanded="false" :style="{ color: textColor }">
                 <i class="bi bi-person-fill" style="font-size: 2rem; color: #ffffff; font-weight: bold"></i>
@@ -181,13 +199,30 @@ export default {
 </template>
 
 <style>
-#divGoloso{
+#pointsContainer{
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(227, 90, 90);
+  border-radius: 20px;
+
+  height: 10% !important;
+
+}
+/* #showPoints {
+  background-color: red;
+  display: flex;
+  flex-direction: row;
+} */
+
+#divGoloso {
   padding: 0px;
   margin: 0px;
   display: flex;
   position: absolute;
   right: 0;
-  top:0;
+  top: 0;
   /* Ajusta la posición a la derecha */
   width: max-content;
   /* Ajusta el ancho para que se extienda a lo ancho del contenedor */
@@ -205,7 +240,7 @@ export default {
 }
 
 .navBarPersonalized {
-  
+
   width: 100%;
   height: 50px;
   /* background-color: rgb(65, 39, 39); */

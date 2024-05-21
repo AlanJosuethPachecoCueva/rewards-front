@@ -14,32 +14,7 @@ import { useUserStore } from "../../stores/userStore";
 
 import { saveUserDataInFirebase, getUser } from "../userModel.js";
 
-// async function logInWithGoogle() {
-//   signInWithPopup(authFirebase, provider)
-//     .then((result) => {
-//       // This gives you a Google Access Token. You can use it to access the Google API.
-//       const credential = GoogleAuthProvider.credentialFromResult(result);
-//       const token = credential.accessToken;
-//       // The signed-in user info.
-//       const user = result.user;
-//       // IdP data available using getAdditionalUserInfo(result)
-//       // ...
-//     })
-//     .catch((error) => {
-//       console.log("error: ", error);
-//       const errorCode = error.code;
-//       const errorMessage = error.message;
-//       // The email of the user's account used.
-//       const email = error.customData.email;
-//       // The AuthCredential type that was used.
-//       const credential = GoogleAuthProvider.credentialFromError(error);
-//       // ...
-
-//       return false;
-//     });
-
-//     return true;
-// }
+import { getUserByIdController } from "@/controllers/usersController.js";
 
 async function signInWithGoogle() {
   try {
@@ -52,7 +27,7 @@ async function signInWithGoogle() {
     // IdP data available using getAdditionalUserInfo(result)
     // Guarda el usuario en el store
     const userStore = useUserStore();
-    const userToSave = {
+    let userToSave = {
       name: user.reloadUserInfo.displayName,
       surname: "",
       email: user.reloadUserInfo.email,
@@ -60,18 +35,25 @@ async function signInWithGoogle() {
       birthdate: "",
       isAdmin: false,
       uid: user.uid,
+      points: 0,
     };
+
+    let userByController = await getUserByIdController(user.uid);
+    userToSave.surname = userByController.surname;
+    userToSave.city = userByController.city;
+    userToSave.birthdate = userByController.birthdate;
+    userToSave.points = userByController.points;
 
     userStore.setUser(userToSave);
     userStore.setIsLogued(true);
     console.log("userToSave: ", userToSave);
-    try{
+    try {
       //se guarda el usuario en la db de firebase
-      await saveUserDataInFirebase(userToSave); 
-    }catch(error){
+      await saveUserDataInFirebase(userToSave);
+    } catch (error) {
       console.log("Error saving user data in firebase: ", error);
     }
-    
+
     // Si la autenticación fue exitosa, devuelve true.
     return true;
   } catch (error) {
@@ -108,7 +90,7 @@ async function logInWithGoogle() {
     userStore.setUser(userRestored);
     userStore.setIsLogued(true);
     console.log("userRestored: ", userRestored);
-    
+
     // Si la autenticación fue exitosa, devuelve true.
     return true;
   } catch (error) {
@@ -145,7 +127,7 @@ async function logInFirebase(userData) {
       let userData = await resApi.json();
 
       const userStore = useUserStore();
-      const userToSave = {
+      let userToSave = {
         name: user.reloadUserInfo.displayName,
         surname: "",
         email: user.reloadUserInfo.email,
@@ -154,7 +136,14 @@ async function logInFirebase(userData) {
         isAdmin: false,
         authorizationCode: "",
         uid: user.uid,
+        points: 0,
       };
+
+      let userByController = await getUserByIdController(user.uid);
+      userToSave.surname = userByController.surname;
+      userToSave.city = userByController.city;
+      userToSave.birthdate = userByController.birthdate;
+      userToSave.points = userByController.points;
 
       userStore.setUser(userToSave);
       userStore.setIsLogued(true);
@@ -190,6 +179,7 @@ async function logOut() {
         birthdate: "",
         isAdmin: "",
         authorizationCode: "",
+        points: 0,
       };
       console.log("Paradw");
       userStore.setUser(emptyUser);

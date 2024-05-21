@@ -20,6 +20,7 @@ import 'sweetalert2/dist/sweetalert2.min.css';
 // import { mdiAccount } from '@mdi/js'
 import './assets/base.css';
 
+import 'vue-multiselect/dist/vue-multiselect.css'; // Importa los estilos aquí
 
 app.use(VueSweetalert2);
 
