@@ -39,9 +39,9 @@ export default {
   },
   data() {
     return {
-      totalCards: 10, // Suponiendo que tienes  10 tarjetas en total
-      cardsToShow: 3, // Inicialmente mostramos  3 tarjetas
-      loadedCards: 3, // Inicialmente cargamos  3 tarjetas
+      totalCards: 20, // Suponiendo que tienes  10 tarjetas en total
+      cardsToShow: 4, // Inicialmente mostramos  3 tarjetas
+      loadedCards: 4, // Inicialmente cargamos  3 tarjetas
       kits: [],
     };
   },
@@ -84,7 +84,8 @@ export default {
 }
 
 .minContentCard{
-
-  height: 239.2px;
+  height: 239.2px;  
 }
+
+
 </style>

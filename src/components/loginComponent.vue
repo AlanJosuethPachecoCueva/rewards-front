@@ -83,6 +83,10 @@ export default {
 </script>
 
 <template>
+<div class="botones-idioma" >
+<button @click="$i18n.locale = 'es'"> ES </button>
+<button @click="$i18n.locale = 'en'"> EN </button>
+</div>
   <div class="container px-4 py-5 mx-auto">
     <div class="card card0">
       <div class="d-flex flex-lg-row flex-column-reverse" id="dispositionCorrect">
@@ -95,32 +99,32 @@ export default {
                   src="../assets/images/kvmi-en-blanco_redes-AzGj93a4EkuxVrkB.avif"
                 />
               </div>
-              <h3 class="mb-5 text-center heading">Somos Chocolate</h3>
+              <h3 class="mb-5 text-center heading">{{ $t('Slogan')}}</h3>
 
-              <h6 class="msg-info">Ingrese sus credenciales</h6>
+              <h6 class="msg-info">{{ $t('Credentials')}}</h6>
 
               <div class="form-group">
                 <label class="form-control-label text-muted"
-                  >Nombre de usuario</label
+                  >{{ $t('NombreusuarioLabel')}}</label
                 >
                 <input
                   type="text"
                   id="email"
                   name="email"
-                  placeholder="Ingrese su usuario"
+                  :placeholder="$t('PlaceholderUsuario')"
                   class="form-control"
                   v-model="user.email"
                 />
               </div>
 
               <div class="form-group row align-items-center">
-                <label class="form-control-label text-muted">Contraseña</label>
+                <label class="form-control-label text-muted">{{ $t('Contraseña')}}</label>
                 <div class="input-group col-sm-6">
                 <input
                   type="password"
                   id="psw"
                   name="psw"
-                  placeholder="Ingrese su contraseña"
+                  :placeholder="$t('PlaceholderContrase')"
                   class="form-control"
                   v-model="user.password"
                 />
@@ -146,12 +150,12 @@ export default {
 
               <div class="row justify-content-center my-2">
                 <a href="#"
-                  ><small class="text-muted">¿Olvidaste tu contraseña?</small></a
+                  ><small class="text-muted">{{ $t('OlvidasteContraseña')}}</small></a
                 >
               </div>
 
               <div class="row justify-content-center my-3 px-3">
-                <button class="btn-block btn-ingresar" @click="signIn()">Ingresar</button>
+                <button class="btn-block btn-ingresar" @click="signIn()">{{ $t('BotonIngresar')}}</button>
               </div>
 
             <div class="separator">
@@ -194,7 +198,7 @@ export default {
                     </svg>
                   </div>
                   <span class="gsi-material-button-contents"
-                    >Ingresar con Google</span
+                    >{{ $t('GoogleButton')}}</span
                   >
                 </div>
               </button>
@@ -204,8 +208,8 @@ export default {
           </div>
           <div class="bottom text-center mb-5">
             <p class="sm-text mx-auto mb-3">
-              ¿No tienes cuenta?<button class="btn btn-white ml-2">
-                <a href="/register">Crea una</a>
+              {{ $t('DonthaveAccount')}}<button class="btn btn-white ml-2">
+                <a href="/register">{{ $t('CreateOne')}}</a>
               </button>
             </p>
           </div>
@@ -213,17 +217,17 @@ export default {
 
         <div class="card card2">
           <div class="my-auto mx-md-5 px-md-5 right">
-            <h3 class="text-white">KVMI, más que solo chocolate</h3>
+            <h3 class="text-white">{{ $t('SloganEnterprise')}}</h3>
             <small class="text-white"
-              >Marca de chocolates de lujo elaborados con un raro grano de cacao
-              amazónico. Creadores de mezclas exclusivas de temporada y
-              experiencias alucinantes para tus cinco sentidos.</small
+              >{{ $t('DescripcionEmpresa')}}</small
             >
           </div>
         </div>
       </div>
     </div>
   </div>
+
+  
 </template>
 
 <style>
@@ -285,8 +289,48 @@ export default {
 }
 
 .btn-ingresar:hover {
-  background-color: var(--color-cafe-claro) /* Color de fondo al pasar el mouse */
+  background-color: var(--darkBrown) /* Color de fondo al pasar el mouse */
 }
+
+.botones-idioma {
+    position: fixed;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.botones-idioma {
+    position: fixed;
+    top: 100px; /* Ajusta la distancia desde la parte superior */
+    right: 20px; /* Ajusta la distancia desde la derecha */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.botones-idioma button {
+    background-color: var(--lightgray);
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    font-size: 1em;
+    padding: 0.5em 1em;
+    margin: 0.2em 0; /* Ajusta el espacio entre los botones */
+    transition-duration: 0.4s;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+.botones-idioma button:hover {
+    background-color: #ccc;
+}
+
+
+
 
 
 

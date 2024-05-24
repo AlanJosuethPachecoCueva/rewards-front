@@ -33,9 +33,8 @@ export default {
 
 <template>
   <div class="text-center m-4">
-    <h1>Kits de premios activos!</h1>
+    <h1>Campañas Publicitarias Activas</h1>
   </div>
-
   <div v-for="kit in kits" :key="kit.id">
     <rewardContainerComponent :title="kit.title" :description="kit.description" :main-image-url="kit.mainImageUrl"
       :images="kit.images"></rewardContainerComponent>

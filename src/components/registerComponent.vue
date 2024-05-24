@@ -177,48 +177,48 @@ export default {
                   src="../assets/images/kvmi-en-blanco_redes-AzGj93a4EkuxVrkB.avif"
                 />
               </div>
-              <h3 class="mb-5 text-center heading">Somos Chocolate</h3>
+              <h3 class="mb-5 text-center heading">{{ $t('Slogan')}}</h3>
 
-              <h6 class="msg-info">Regístrese a continuación</h6>
+              <h6 class="msg-info">{{ $t('LabelRegistro')}}</h6>
 
               <div class="form-group">
-                <label class="form-control-label text-muted">Nombres: </label>
+                <label class="form-control-label text-muted">{{ $t('Name')}} </label>
                 <input
                   type="text"
                   id="nombres"
                   name="nombres"
-                  placeholder="Nombres"
+                   :placeholder="$t('PlaceHolderName')"
                   class="form-control"
                   v-model="user.name"
                 />
               </div>
 
               <div class="form-group">
-                <label class="form-control-label text-muted">Apellidos: </label>
+                <label class="form-control-label text-muted">{{ $t('LastName')}} </label>
                 <input
                   type="text"
                   id="apellidos"
                   name="apellidos"
-                  placeholder="Apellidos"
+                   :placeholder="$t('PlaceholderLastName')"
                   class="form-control"
                   v-model="user.surname"
                 />
               </div>
 
               <div class="form-group">
-                <label class="form-control-label text-muted">Dirección: </label>
+                <label class="form-control-label text-muted">{{ $t('Address')}} </label>
                 <input
                   type="text"
                   id="dirección"
                   name="dirección"
-                  placeholder="Dirección"
+                   :placeholder="$t('PlaceholderAddress')"
                   class="form-control"
                   v-model="user.city"
                 />
               </div>
 
               <div class="form-group">
-                <label class="form-control-label text-muted">Correo Electrónico: </label>
+                <label class="form-control-label text-muted">{{ $t('Mail')}} </label>
                 <input
                   type="text"
                   id="email"
@@ -230,12 +230,12 @@ export default {
               </div>
 
               <div class="form-group">
-                <label class="form-control-label text-muted">Contraseña: </label>
+                <label class="form-control-label text-muted">{{ $t('Password')}} </label>
                 <input
                   type="password"
                   id="psw"
                   name="psw"
-                  placeholder="Contraseña"
+                   :placeholder="$t('PlaceholderPassword')"
                   class="form-control"
                   v-model="user.password"
                 />
@@ -243,7 +243,7 @@ export default {
               
               <div class="row justify-content-center my-3 px-3">
                 <button class="btn-block btn-registrarse" @click="createUser()">
-                  Registrarse 
+                 {{ $t('RegisterButton')}}
                 </button>
               </div>
 
@@ -279,7 +279,7 @@ export default {
                     </svg>
                   </div>
                   <span class="gsi-material-button-contents"
-                    >Ingresar con Google</span
+                    >{{ $t('GoogleButton')}}</span
                   >
                 </div>
               </button>
@@ -297,7 +297,7 @@ export default {
           </div>
           <div class="bottom text-center mb-5">
             <p class="sm-text mx-auto mb-3">
-              ¿Ya tienes cuenta?<button class="btn btn-white ml-2"><a href="/login">Ingresar</a></button>
+              {{ $t('AlreadyHaveAccount')}}<button class="btn btn-white ml-2"><a href="/login">{{ $t('EnterLogin')}}</a></button>
             </p>
           </div>
         </div>
@@ -467,6 +467,6 @@ export default {
 }
 
 .btn-registrarse:hover {
-  background-color: var(--color-cafe-claro); /* Color de fondo al pasar el mouse */
+  background-color: var(--darkBrown); /* Color de fondo al pasar el mouse */
 }
 </style>

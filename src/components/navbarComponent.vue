@@ -76,31 +76,31 @@ export default {
           </li> -->
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
-              aria-expanded="false" :style="{ color: textColor }">
-              Premios
+              aria-expanded="false" :style="{ color: textColor }">{{ $t('Awards')}}
+              
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
               <li>
-                <a class="dropdown-item" href="#" :style="{ color: textColorContrast }">Redimir</a>
+                <a class="dropdown-item" href="#" :style="{ color: textColorContrast }">{{ $t('Redeem')}}</a>
               </li>
               <li v-if="user != null && user.isAdmin == true">
-                <a class="dropdown-item" href="/admin/manageKits" :style="{ color: textColorContrast }">Gestionar
-                  Material Publicitario</a>
+                <a class="dropdown-item" href="/admin/manageKits" :style="{ color: textColorContrast }">
+                {{ $t('ManagePublicitaryContent')}}</a>
               </li>
 
               <li>
-                <a class="dropdown-item" href="#" :style="{ color: textColorContrast }">Ver Premios Activos</a>
+                <a class="dropdown-item" href="#" :style="{ color: textColorContrast }">{{ $t('ActiveAwards')}}</a>
               </li>
               <li v-if="user != null && user.isAdmin == true">
-                <a class="dropdown-item" href="/admin/rewards" :style="{ color: textColorContrast }">Gestionar
-                  Premios</a>
+                <a class="dropdown-item" href="/admin/rewards" :style="{ color: textColorContrast }">
+                {{ $t('ManageAwards')}}</a>
               </li>
 
               <li>
                 <hr class="dropdown-divider" />
               </li>
               <li>
-                <a class="dropdown-item" href="#" :style="{ color: textColorContrast }">Ayuda</a>
+                <a class="dropdown-item" href="#" :style="{ color: textColorContrast }">{{ $t('Help')}}</a>
               </li>
             </ul>
           </li>
@@ -153,7 +153,7 @@ export default {
 
           <button v-if="user == null || user.id == ''" class="btn d-flex align-items-center"
             style="font-size: 1rem; color: #ffffff; font-weight: 400" @click="goToLogin()">
-            Ingresar
+            {{ $t('Login')}}
             <i class="bi bi-person-circle" style="
                 margin-left: 10px;
                 font-size: 2rem;

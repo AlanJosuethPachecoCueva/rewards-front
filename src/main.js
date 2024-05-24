@@ -12,14 +12,23 @@ import 'bootstrap/dist/css/bootstrap.css'
 import bootstrap from "bootstrap/dist/js/bootstrap.bundle.js"
 //Iconos bootstrap
 import "bootstrap-icons/font/bootstrap-icons.css"
-const app = createApp(App)
+
 
 //vueSweetAlert2
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 // import { mdiAccount } from '@mdi/js'
 import './assets/base.css';
+import { createI18n } from 'vue-i18n';
+import dictionary from './dictionary';
 
+const i18n = createI18n({
+    messages: dictionary, 
+    fallbackFormat: 'en',
+    locale: navigator.language.startsWith('es') ? 'en' : 'en'
+})
+
+const app = createApp(App).use(i18n)
 
 app.use(VueSweetalert2);
 
