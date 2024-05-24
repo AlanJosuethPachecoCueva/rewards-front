@@ -16,6 +16,12 @@ import generateProduct from "./views/admins/rewards/generateProduct.vue";
 import stickersTable from "./views/admins/rewards/stickersTable.vue";
 import threeDObjectsTable from "./views/admins/rewards/threeDObjectsTable.vue";
 import productsTable from "./views/admins/rewards/productsTable.vue";
+
+//Codes
+import codes from "./views/admins/codes/codes.vue"
+import createCode from "./views/admins/codes/createCode.vue";
+import viewGeneratedCodes from "./views/admins/codes/viewGeneratedCodes.vue";
+import reedemCode from "./views/admins/codes/reedemCode.vue";
 // import firebase from 'firebase/app';
 // import 'firebase/auth';
 
@@ -107,6 +113,30 @@ const router = createRouter({
       path: "/admin/productsTable",
       name: "productsTable",
       component: productsTable,
+      props: true,
+    },
+    {
+      path: "/admin/codes",
+      name: "codes",
+      component: codes,
+      props: true,
+    },
+    {
+      path: "/admin/codes/createCode",
+      name: "createCode",
+      component: createCode,
+      props: true,
+    },
+    {
+      path: "/admin/codes/viewGeneratedCodes/:generatedCodes",
+      name: "viewGeneratedCodes",
+      component: viewGeneratedCodes,
+      props: true,
+    },
+    {
+      path: "/admin/codes/reedemCode",
+      name: "reedemCode",
+      component: reedemCode,
       props: true,
     },
   ],

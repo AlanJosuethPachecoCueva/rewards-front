@@ -19,6 +19,7 @@ const colors = {
     quaternaryColor: "#FCFCC1",
     primaryTextColor:"#ffffff",
     contastBlackColor: "#000",
+
     /*COLORES KVMI*/
     mediumyellow: '#B28A00',
     lightyellow: '#F6D300',
@@ -28,7 +29,7 @@ const colors = {
     lightblack: '#020509',
     darkgray: '#9B9B97',
     lightgray: '#C4C5BE',
-        
+    gold: '#CDA434'
 }
 
 export {
