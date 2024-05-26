@@ -22,6 +22,7 @@ import './assets/base.css';
 import { createI18n } from 'vue-i18n';
 import dictionary from './dictionary';
 
+
 const i18n = createI18n({
     messages: dictionary, 
     fallbackFormat: 'en',
