@@ -48,8 +48,9 @@ export default {
     } else {
       console.log("No logueado");
     }
-
+  
   },
+
 };
 </script>
 
@@ -121,44 +122,48 @@ export default {
       </ul>
 
        <div id="divGoloso" v-if="user != null">
+          
           <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex dropdown-menu-right" v-if="user.id != ''">
-            <li class="nav-item">             
-            </li> 
-            <li id="pointsContainer">             
+           
+            <li class="nav-item"> 
+            </li>             
+            <li id="pointsContainer">
+            <div class="puntosCacao">       
             <a class="nav-link" href="#" :style="{ color: textColor }">
               {{ user.points }}
             </a>
-              
+            </div>              
             <i>
               <img src="../assets//images//cacao.png" alt="Points Icon" style="width:32px; height:32px; margin-left: 5px;
                 margin-right: 5px; margin-left: 5px;
                 margin-right: 5px;">
             </i>            
           </li>
-            <li class="nav-item dropdown">
+           
+            <li class="nav-item dropdown2">           
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
                 aria-expanded="false" :style="{ color: textColor }">
-                {{ user.name }}
+                {{ user.name }}            
                 <i class="bi bi-person-fill" style="font-size: 2rem; color: #ffffff; font-weight: bold"></i>                
               </a>
                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li>
-                  <a class="dropdown-item" href="#" @click="closeSession()">Cerrar sesión</a>
+                  <a class="dropdown-item" href="#" @click="closeSession()">{{ $t('LogOut')}}</a>
                 </li>
                 <li>
                   <hr class="dropdown-divider" />
                 </li>
                 <li>
-                  <a class="dropdown-item" href="#" :style="{ color: textColorContrast }">Perfil</a>
+                  <a class="dropdown-item" href="#" :style="{ color: textColorContrast }">{{ $t('Profile')}}</a>
                 </li>                                
               </ul>              
-            </li>          
+            </li>             
+            <div class="globe" @click="handleGlobeClick">       
           <i class="bi bi-globe" style="font-size: 1.5rem; color: #ffffff; font-weight: bold; margin-right: 15px;"></i>         
+          </div>
           </ul>          
         </div>
         
-
-
 
         <form class="d-flex">
           <!-- <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">        
@@ -195,12 +200,10 @@ export default {
 <style>
 #pointsContainer{
   display: flex;
-
   justify-content: center;
   align-items: center;
   background-color: rgb(227, 90, 90);
   border-radius: 20px;
-
   height: 10% !important;
 
 }
@@ -247,6 +250,7 @@ export default {
   /* background-color: rgb(65, 39, 39); */
   color: white !important;
   display: flex !important;
+   align-items: center;
   position: fixed !important;
   top: 0;
   z-index: 10;
@@ -257,7 +261,6 @@ export default {
   z-index: 3;
   width: 300px;
   height: 500px;
-
   top: 20px;
 }
 
@@ -265,7 +268,25 @@ export default {
   background-color: none;
 }
 
-. {
+.globe {  
+  display: flex;
+  justify-content:center;
   align-items: center;
+  width: 50px;
+  height: 50px;
+}
+
+#pointsContainer {
+  display: flex ;
+  justify-content:center;
+  align-items: center;
+  margin-top: 5px;
+}
+
+.nav-item.dropdown2 {
+  height: 50px;
+  display: flex;
+  align-items: center;
+
 }
 </style>

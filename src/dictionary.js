@@ -38,6 +38,9 @@ export default {
         ManageAwards : "Gestionar Premios",
         Help :  "Ayuda",
         ManageCodes : "Gestionar Códigos", 
+        /*Select De Usuario*/
+        LogOut: "Cerrar Sesión",
+        Profile: "Perfil",
 
 
 
@@ -82,6 +85,10 @@ export default {
           ManageAwards : "Manage Awards",
           Help :  "Help",
           ManageCodes: "Manage Codes",
+        /*Select De Usuario*/
+        LogOut: "Logout",
+        Profile: "Profile",
+
  
     }
 }
