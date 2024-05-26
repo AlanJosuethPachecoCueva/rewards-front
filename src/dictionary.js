@@ -37,6 +37,7 @@ export default {
         ActiveAwards : "Ver Premios Activos", 
         ManageAwards : "Gestionar Premios",
         Help :  "Ayuda",
+        ManageCodes : "Gestionar Códigos", 
 
 
 
@@ -80,6 +81,7 @@ export default {
           ActiveAwards : "Active Awards", 
           ManageAwards : "Manage Awards",
           Help :  "Help",
+          ManageCodes: "Manage Codes",
  
     }
 }

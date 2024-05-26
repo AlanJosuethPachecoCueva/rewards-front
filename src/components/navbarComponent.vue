@@ -1,4 +1,4 @@
-<script>
+d<script>
 import { computed } from "vue";
 import { colors } from "../assets/colors.js";
 import { useUserStore } from "../stores/userStore.js";
@@ -82,8 +82,8 @@ export default {
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
               <li>
-                <a class="dropdown-item" href="/admin/codes/reedemCode" :style="{ color: textColorContrast }">Redimir</a>
-                <a class="dropdown-item" href="#" :style="{ color: textColorContrast }">{{ $t('Redeem')}}</a>
+                <a class="dropdown-item" href="/admin/codes/reedemCode" :style="{ color: textColorContrast }">{{ $t('Redeem')}}</a>
+                
               </li>
               <li v-if="user != null && user.isAdmin == true">
                 <a class="dropdown-item" href="/admin/manageKits" :style="{ color: textColorContrast }">
@@ -98,8 +98,7 @@ export default {
                 {{ $t('ManageAwards')}}</a>
               </li>
               <li v-if="user != null && user.isAdmin == true">
-                <a class="dropdown-item" href="/admin/codes" :style="{ color: textColorContrast }">Gestionar
-                  Códigos</a>
+                <a class="dropdown-item" href="/admin/codes" :style="{ color: textColorContrast }">{{ $t('ManageCodes')}}</a>
               </li>
 
               <li>
@@ -118,58 +117,52 @@ export default {
               aria-disabled="true"
               >Disabled</a
             >
-          </li> -->
-          <li id="pointsContainer">
+          </li> -->    
+      </ul>
+
+       <div id="divGoloso" v-if="user != null">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex dropdown-menu-right" v-if="user.id != ''">
+            <li class="nav-item">             
+            </li> 
+            <li id="pointsContainer">             
             <a class="nav-link" href="#" :style="{ color: textColor }">
               {{ user.points }}
             </a>
+              
             <i>
               <img src="../assets//images//cacao.png" alt="Points Icon" style="width:32px; height:32px; margin-left: 5px;
                 margin-right: 5px; margin-left: 5px;
                 margin-right: 5px;">
-            </i>
+            </i>            
           </li>
-
-        </ul>
-
-        <div id="divGoloso" v-if="user != null">
-
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex dropdown-menu-right" v-if="user.id != ''">
             <li class="nav-item dropdown">
-
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
                 aria-expanded="false" :style="{ color: textColor }">
-                <i class="bi bi-person-fill" style="font-size: 2rem; color: #ffffff; font-weight: bold"></i>
                 {{ user.name }}
+                <i class="bi bi-person-fill" style="font-size: 2rem; color: #ffffff; font-weight: bold"></i>                
               </a>
-              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li>
-                  <!-- <button class="btn" @click="closeSession()">
-                  <i class="bi bi-box-arrow-right" style="font-size: 2rem; font-weight: bold" :style="{ color: textColorContrast }"></i>
-                </button> -->
                   <a class="dropdown-item" href="#" @click="closeSession()">Cerrar sesión</a>
                 </li>
-                <!-- <li>
-                <a class="dropdown-item" href="#" :style="{ color: textColorContrast }"
-                  >Ver Premios Activos</a
-                >
-              </li> -->
                 <li>
                   <hr class="dropdown-divider" />
                 </li>
                 <li>
                   <a class="dropdown-item" href="#" :style="{ color: textColorContrast }">Perfil</a>
-                </li>
-              </ul>
-            </li>
-          </ul>
+                </li>                                
+              </ul>              
+            </li>          
+          <i class="bi bi-globe" style="font-size: 1.5rem; color: #ffffff; font-weight: bold; margin-right: 15px;"></i>         
+          </ul>          
         </div>
+        
+
 
 
         <form class="d-flex">
-          <!-- <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button> -->
-
+          <!-- <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">        
+        <button class="btn btn-outline-success" type="submit">Search</button> -->          
           <button v-if="user == null || user.id == ''" class="btn d-flex align-items-center"
             style="font-size: 1rem; color: #ffffff; font-weight: 400" @click="goToLogin()">
             {{ $t('Login')}}
@@ -228,6 +221,14 @@ export default {
   width: max-content;
   /* Ajusta el ancho para que se extienda a lo ancho del contenedor */
   padding-right: 15px;
+  
+}
+
+#divGoloso .bi-globe {
+  font-size: 1.5rem;
+  color: #ffffff;
+  font-weight: bold;
+  margin-right: 10px;
 }
 
 .dropdown-menu-right {
@@ -241,7 +242,6 @@ export default {
 }
 
 .navBarPersonalized {
-
   width: 100%;
   height: 50px;
   /* background-color: rgb(65, 39, 39); */
@@ -263,5 +263,9 @@ export default {
 
 .navMenu {
   background-color: none;
+}
+
+. {
+  align-items: center;
 }
 </style>
