@@ -4,7 +4,7 @@ import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
   GoogleAuthProvider,
-  signInWithPopup
+  signInWithPopup,
 } from "firebase/auth";
 // import router from "../../router/index.js";
 
@@ -18,9 +18,6 @@ const firebaseConfig = {
   measurementId: `${import.meta.env.VITE_FB_MEASUREMENT_ID}`,
 };
 
-
-
-
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
@@ -30,35 +27,44 @@ const authFirebase = getAuth(app);
 // Para inicio de sesión con google
 const provider = new GoogleAuthProvider();
 
-function checkAuthState() {
-  const user = authFirebase.currentUser;
 
-  if (user) {
-    console.log('Usuario autenticado:', user);
-    return true;
-    // Aquí puedes realizar acciones basadas en que el usuario está autenticado
-  } else {
-    console.log('No hay usuario autenticado');
-    return false;
-    // Aquí puedes realizar acciones basadas en que no hay usuario autenticado
-  }
+async function checkAuthState() {
+  return new Promise((resolve) => {
+    onAuthStateChanged(authFirebase, (user) => {
+      if (user) {
+        console.log("Usuario autenticado:", user);
+        resolve({ state: true, user });
+      } else {
+        console.log("No hay usuario autenticado");
+        resolve({ state: false });
+      }
+    });
+  });
 }
 
-
+// async function checkAuthState() {
+//   const user = authFirebase.currentUser;
+//   console.log("checkAuthState: ", user);
+//   if (user) {
+//     console.log("Usuario autenticado:", user);
+//     return { state: true, user };
+//   } else {
+//     console.log("No hay usuario autenticado");
+//     return { state: false };
+//   }
+// }
 
 onAuthStateChanged(authFirebase, async (user) => {
   // if (user) {
   //   // El usuario está autenticado
   //   // Aquí puedes acceder a la información del usuario en el objeto `user`
   //   console.log("Usuario autenticado:", user.uid);
-
   //   const response = await fetch(
   //     `http://localhost:3000/users/user/${user.uid}`
   //   );
   //   // Verificar si la respuesta es exitosa
   //   if (response.ok) {
   //     const data = await response.json();
-
   //     user = {
   //       isAdmin: data.isAdmin,
   //     };
@@ -77,7 +83,15 @@ onAuthStateChanged(authFirebase, async (user) => {
   //   //Si el usuario no está autenticado lo redirige automáticamente a la pestaña de inicio
   //   router.push("/auth");
   // }
-  
 });
 
-export { checkAuthState, app, authFirebase, provider, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, onAuthStateChanged };
+export {
+  checkAuthState,
+  app,
+  authFirebase,
+  provider,
+  GoogleAuthProvider,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  onAuthStateChanged,
+};

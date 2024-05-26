@@ -89,7 +89,7 @@ export default {
     },
     async mounted() {
         this.kits = await getKitsController();
-        this.kits = await getImagesFromKitsController(this.kits);
+        // this.kits = await getImagesFromKitsController(this.kits);
         console.log("this.kits in create code: ", this.kits);
     },
     methods: {

@@ -88,7 +88,7 @@ export default {
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
               <li>
-                <a class="dropdown-item" href="/admin/codes/reedemCode" :style="{ color: textColorContrast }">{{ $t('Redeem')}}</a>
+                <a class="dropdown-item" href="/codes/reedemCode" :style="{ color: textColorContrast }">{{ $t('Redeem')}}</a>
                 
               </li>
               <li v-if="user != null && user.isAdmin == true">

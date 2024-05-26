@@ -55,7 +55,8 @@ export default {
   },
   async mounted() {
     var res = await getKitsController();
-    res = await getImagesFromKitsController(res);
+    // res = await getImagesFromKitsController(res);
+    console.log("res getKitsController: ", res);
 
     console.log("this.kits: ", this.kits);
     this.kits = res.map((kit) => {
