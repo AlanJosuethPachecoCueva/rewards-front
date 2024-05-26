@@ -23,23 +23,28 @@
                                 <thead>
                                     <tr>
                                         <th>ID</th>
-                                        <th>Título</th>
-                                        <th>Descripción</th>
-                                        <th>File Name</th>
-                                        <th>Imagen</th>
-                                        <th>Acciones</th>
+                                        <th>Name</th>
+                                        <th>Points</th>
+                                        <th>Product</th>
+                                        <th>¿Redeemed?</th>
+                                        <th>Selected Kits</th>
+                                        <th>Start Date</th>
+                                        <th>End Date</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="sticker in productsToShow" :key="sticker.id">
-                                        <td>{{ sticker.id }}</td>
-                                        <td>{{ sticker.title }}</td>
-                                        <td>{{ sticker.description }}</td>
-                                        <td>{{ sticker.fileName }}</td>
-                                        <td><img :src="sticker.image" style="max-width: 100px; max-height: 100px;"></td>
+                                    <tr v-for="code in codesToShow" :key="code.id">
+                                        <td>{{ code.id }}</td>
+                                        <td>{{ code.name }}</td>
+                                        <td>{{ code.points }}</td>
+                                        <td>{{ code.product }}</td>
+                                        <td>{{ code.redeemed }}</td>
+                                        <td>{{ code.selectedKits }}</td>
+                                        <td>{{ code.startDate }}</td>
+                                        <td>{{ code.endDate }}</td>
                                         <td>
                                             <span class="searchButtons input-group-text"
-                                                @click="viewSticker(sticker.fileName)">
+                                                @click="viewCode(code.fileName)">
                                                 <i class="bi bi-eye-fill" style="
                           font-size: 1.2rem;
                           color: #000;
@@ -48,7 +53,7 @@
                                             </span>
 
                                             <span class="searchButtons input-group-text"
-                                                @click="editSticker(sticker.fileName)">
+                                                @click="editCode(code.fileName)">
                                                 <i class="bi bi-pencil-square" style="
                           font-size: 1.2rem;
                           color: #000;
@@ -57,7 +62,7 @@
                                             </span>
 
                                             <span class="searchButtons input-group-text"
-                                                @click="deleteSticker(sticker.fileName)">
+                                                @click="deleteCode(code.id)">
                                                 <i class="bi bi-trash3-fill" style="
                           font-size: 1.2rem;
                           color: #000;
@@ -95,16 +100,15 @@
 </template>
 
 <script>
-import { getProductsImagesController } from "@/controllers/rewardsController";
-import { deleteRewardsByRewardIdController } from "@/controllers/rewardsController";
+import { getCodesController, deleteCodeByIdController } from "@/controllers/codesController.js";
 
 export default {
     components: {
     },
     data() {
         return {
-            products: [],
-            productsToShow: [],
+            codes: [],
+            codesToShow: [],
             pagination: {
                 page: 1,
                 rowsPerPage: 10
@@ -116,51 +120,53 @@ export default {
         };
     },
     async mounted() {
-        const productsRes = await getProductsImagesController();
+        const codesRes = await getCodesController();
 
-        console.log("productsRes: ", productsRes);
+        console.log("codesRes: ", codesRes);
 
-        productsRes.forEach(sticker => {
-            if (sticker.metadata[0].metadata.title) {
-                this.products.push({
-                    id: sticker.metadata[0].id,
-                    title: sticker.metadata[0].metadata.title,
-                    description: sticker.metadata[0].metadata.description,
-                    userID: sticker.metadata[0].metadata.userID,
-                    image: sticker.url,
-                    fileName: sticker.metadata[0].name.substring(9)
-                });
-            }
-        });
+        this.codes = codesRes;
+        // codesRes.forEach(code => {
+        //     if (code.metadata[0].metadata.title) {
+        //         this.codes.push({
+        //             id: code.metadata[0].id,
+        //             title: code.metadata[0].metadata.title,
+        //             description: code.metadata[0].metadata.description,
+        //             userID: code.metadata[0].metadata.userID,
+        //             image: code.url,
+        //             fileName: code.metadata[0].name.substring(9)
+        //         });
+        //     }
+        // });
 
-        this.filterproducts(); // Aplica la búsqueda al montar el componente
-        this.productsToShow = this.products.slice(0, this.pagination.rowsPerPage);
-        this.totalPages = Math.ceil(this.products.length / this.pagination.rowsPerPage);
-        this.totalItems = this.products.length;
+        this.filterCodes(); // Aplica la búsqueda al montar el componente
+        this.codesToShow = this.codes.slice(0, this.pagination.rowsPerPage);
+        this.totalPages = Math.ceil(this.codes.length / this.pagination.rowsPerPage);
+        this.totalItems = this.codes.length;
     },
     methods: {
-        filterproducts() {
+        filterCodes() {
             if (!this.searchTerm) {
-                this.productsToShow = this.products.slice(0, this.pagination.rowsPerPage);
+                this.codesToShow = this.codes.slice(0, this.pagination.rowsPerPage);
             } else {
-                this.productsToShow = this.products.filter(sticker =>
-                    sticker.title.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-                    sticker.description.toLowerCase().includes(this.searchTerm.toLowerCase())
+                this.codesToShow = this.codes.filter(code =>
+                    code.title.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+                    code.description.toLowerCase().includes(this.searchTerm.toLowerCase())
                 ).slice(0, this.pagination.rowsPerPage);
             }
-            this.totalPages = Math.ceil(this.productsToShow.length / this.pagination.rowsPerPage);
-            this.totalItems = this.productsToShow.length;
+            this.totalPages = Math.ceil(this.codesToShow.length / this.pagination.rowsPerPage);
+            this.totalItems = this.codesToShow.length;
         },
-        viewSticker(fileName) {
-            console.log("fileName in viewSticker: ", fileName);
+        viewCode(fileName) {
+            console.log("fileName in viewCode: ", fileName);
         },
-        editSticker(fileName) {
-            console.log("fileName in editSticker: ", fileName);
+        editCode(fileName) {
+            console.log("fileName in editCode: ", fileName);
         },
-        async deleteSticker(fileName) {
+        async deleteCode(codeId) {
+            console.log("deleteCode id: ", codeId);
             const result = await this.$swal({
-                title: '¿Deseas eliminar el sticker?',
-                text: 'Se eliminará el sticker y todos sus enlaces con los materiales publicitarios.',
+                title: '¿Deseas eliminar el código?',
+                text: 'Se eliminará el código permanente y ya no será accesible.',
                 icon: 'question',
                 showCancelButton: true,
                 confirmButtonText: 'Sí',
@@ -169,7 +175,7 @@ export default {
             if (!result.isConfirmed) {
                 await this.$swal({
                     title: 'No se ha eliminado',
-                    text: "Ni el sticker ni sus enlaces con los materiales han sido eliminados.",
+                    text: "La información del código sigue estando disponible.",
                     icon: "success",
                     showCancelButton: false,
                     confirmButtonText: "OK",
@@ -177,24 +183,21 @@ export default {
                 return;
             }
 
-            const rewardId = fileName;
-            const typeOfReward = "pr";
-            const data = { rewardId, typeOfReward };
-            const res = await deleteRewardsByRewardIdController(data);
+            const res = await deleteCodeByIdController(codeId);
 
             if (res.status) {
                 await this.$swal({
-                    title: 'Sticker eliminado',
-                    text: "El sticker y sus enlaces con los materiales han sido eliminados.",
+                    title: 'Código eliminado',
+                    text: "El código se ha eliminado satisfactoriamente.",
                     icon: "success",
                     showCancelButton: false,
                     confirmButtonText: "OK",
                 });
             } else {
-                console.error("Ha ocurrido un error al eliminar el sticker seleccionado: ", res);
+                console.error("Ha ocurrido un error al eliminar el code seleccionado: ", res);
                 await this.$swal({
                     title: 'No se ha eliminado',
-                    text: "Ha ocurrido un error al eliminar el sticker seleccionado.",
+                    text: "Ha ocurrido un error al eliminar el código seleccionado.",
                     icon: "success",
                     showCancelButton: false,
                     confirmButtonText: "OK",
@@ -202,7 +205,7 @@ export default {
                 return;
             }
 
-            this.productsToShow = this.productsToShow.filter(sticker => sticker.fileName !== fileName);
+            this.codesToShow = this.codesToShow.filter(code => code.id !== codeId);
         },
         goCreateCode() {
             this.$router.push("/admin/codes/createCode");
@@ -211,16 +214,16 @@ export default {
     watch: {
         searchTerm: {
             handler() {
-                this.filterproducts();
+                this.filterCodes();
             },
             immediate: true, // Ejecuta el handler inmediatamente al montar el componente
         },
         pagination: {
             handler() {
-                this.productsToShow = this.products.slice((this.pagination.page - 1) * this.pagination.rowsPerPage, this.pagination.page * this.pagination.rowsPerPage);
-                this.totalPages = Math.ceil(this.products.length / this.pagination.rowsPerPage);
-                this.totalItems = this.products.length;
-                this.filterproducts(); // Aplica la búsqueda después de cambiar la paginación
+                this.codesToShow = this.codes.slice((this.pagination.page - 1) * this.pagination.rowsPerPage, this.pagination.page * this.pagination.rowsPerPage);
+                this.totalPages = Math.ceil(this.codes.length / this.pagination.rowsPerPage);
+                this.totalItems = this.codes.length;
+                this.filterCodes(); // Aplica la búsqueda después de cambiar la paginación
             },
             deep: true
         }

@@ -44,9 +44,7 @@ async function saveMultipleCodes(data) {
 async function redeemCode(data) {
   try {
     console.log("data in redeemCode model: ", data);
-    const {
-      codeId, userId
-    } = data;
+    const { codeId, userId } = data;
 
     const response = await fetch(`${RUTA_SERVIDOR}/codes/redeemCode`, {
       method: "POST",
@@ -54,7 +52,8 @@ async function redeemCode(data) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        codeId, userId
+        codeId,
+        userId,
       }),
     });
 
@@ -70,4 +69,34 @@ async function redeemCode(data) {
   }
 }
 
-export { saveMultipleCodes, redeemCode };
+const getAllCodes = async () => {
+  try {
+    const response = await fetch(`${RUTA_SERVIDOR}/codes/`);
+    if (!response.ok) {
+      throw new Error("Error fetching codes");
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const deleteCodeById = async (id) => {
+  try {
+    const response = await fetch(`${RUTA_SERVIDOR}/codes/delete/${id}`, {
+      method: "DELETE",
+    });
+
+    console.log("response deleting code: ", response);
+    if (!response.ok) {
+      throw new Error("Error deleting code");
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export { saveMultipleCodes, redeemCode, getAllCodes, deleteCodeById };

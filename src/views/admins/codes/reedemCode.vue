@@ -64,6 +64,8 @@ export default {
             let userByController = await getUserByIdController(this.user.id);
 
             userStore.setUser(userByController);
+
+            
         },
     },
 };

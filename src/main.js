@@ -22,7 +22,6 @@ import './assets/base.css';
 import { createI18n } from 'vue-i18n';
 import dictionary from './dictionary';
 
-<<<<<<< HEAD
 const i18n = createI18n({
     messages: dictionary, 
     fallbackFormat: 'en',
@@ -30,9 +29,9 @@ const i18n = createI18n({
 })
 
 const app = createApp(App).use(i18n)
-=======
+
 import 'vue-multiselect/dist/vue-multiselect.css'; // Importa los estilos aquí
->>>>>>> c1c6c137752494ee5004454551bc0ae99d881cb0
+
 
 app.use(VueSweetalert2);
 

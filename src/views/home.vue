@@ -19,8 +19,8 @@ export default {
   },
   async mounted() {
     this.kits = await getKitsController();
-
-    this.kits = await getImagesFromKitsController(this.kits);
+    console.log("this.kitsss: ", this.kits);
+    // this.kits = await getImagesFromKitsController(this.kits);
 
 
     console.log("kits en home: ", this.kits);
