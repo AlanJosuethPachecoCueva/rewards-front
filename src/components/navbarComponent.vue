@@ -10,6 +10,7 @@ export default {
       colors,
       textColor: colors.primaryTextColor,
       textColorContrast: colors.contastBlackColor,
+       showLanguageButtons: false
     };
   },
   components: {},
@@ -33,6 +34,9 @@ export default {
     goToLogin() {
       this.$router.push("/login");
     },
+     toggleLanguageButtons() {
+      this.showLanguageButtons = !this.showLanguageButtons;
+    }
   },
   setup() {
     const store = useUserStore();
@@ -52,6 +56,7 @@ export default {
   },
 
 };
+
 </script>
 
 <template>
@@ -158,9 +163,18 @@ export default {
                 </li>                                
               </ul>              
             </li>             
-            <div class="globe" @click="handleGlobeClick">       
+           <div>
+        <!-- Ícono del globo -->
+        <div class="globe" @click="toggleLanguageButtons">       
           <i class="bi bi-globe" style="font-size: 1.5rem; color: #ffffff; font-weight: bold; margin-right: 15px;"></i>         
-          </div>
+        </div>
+
+        <!-- Botones de idioma -->
+        <div class="botones-idioma" v-if="showLanguageButtons">
+          <button @click="$i18n.locale = 'es'">ES</button>
+          <button @click="$i18n.locale = 'en'">EN</button>
+        </div>
+      </div>
           </ul>          
         </div>
         
@@ -274,6 +288,7 @@ export default {
   align-items: center;
   width: 50px;
   height: 50px;
+  cursor: pointer;
 }
 
 #pointsContainer {
