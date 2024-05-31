@@ -83,10 +83,7 @@ export default {
 </script>
 
 <template>
-<div class="botones-idioma" >
-<button @click="$i18n.locale = 'es'"> ES </button>
-<button @click="$i18n.locale = 'en'"> EN </button>
-</div>
+
   <div class="container px-4 py-5 mx-auto">
     <div class="card card0">
       <div class="d-flex flex-lg-row flex-column-reverse" id="dispositionCorrect">
@@ -328,9 +325,6 @@ export default {
 .botones-idioma button:hover {
     background-color: #ccc;
 }
-
-
-
 
 
 

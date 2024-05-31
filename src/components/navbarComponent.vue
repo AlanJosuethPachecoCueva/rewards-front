@@ -1,4 +1,4 @@
-d<script>
+<script>
 import { computed } from "vue";
 import { colors } from "../assets/colors.js";
 import { useUserStore } from "../stores/userStore.js";
@@ -191,8 +191,18 @@ export default {
                 color: #ffffff;
                 font-weight: bold;
               "></i>
-          </button>
+          </button>          
         </form>
+         <!-- Ícono del globo -->
+        <div class="globe" @click="toggleLanguageButtons">       
+          <i class="bi bi-globe" style="font-size: 1.5rem; color: #ffffff; font-weight: bold; margin-right: 15px;"></i>         
+        </div>
+
+        <!-- Botones de idioma -->
+        <div class="botones-idioma" v-if="showLanguageButtons">
+          <button @click="$i18n.locale = 'es'">ES</button>
+          <button @click="$i18n.locale = 'en'">EN</button>
+        </div>
       </div>
     </div>
   </nav>
@@ -241,13 +251,6 @@ export default {
   
 }
 
-#divGoloso .bi-globe {
-  font-size: 1.5rem;
-  color: #ffffff;
-  font-weight: bold;
-  margin-right: 10px;
-}
-
 .dropdown-menu-right {
   display: flex;
   position: fixed;
@@ -282,13 +285,14 @@ export default {
   background-color: none;
 }
 
-.globe {  
+.globe {    
   display: flex;
   justify-content:center;
   align-items: center;
   width: 50px;
   height: 50px;
   cursor: pointer;
+    
 }
 
 #pointsContainer {
