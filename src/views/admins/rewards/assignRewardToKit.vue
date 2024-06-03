@@ -73,7 +73,7 @@ export default {
     },
     async mounted() {
         this.kits = await getKitsController();
-        this.kits = await getImagesFromKitsController(this.kits);
+        //this.kits = await getImagesFromKitsController(this.kits);
 
         // //Objetos 3D
         // const threeDObjectsRes = await get3DObjectsController();

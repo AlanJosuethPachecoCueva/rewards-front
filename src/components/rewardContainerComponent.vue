@@ -68,7 +68,7 @@ export default {
             /> -->
             <button class="btn btn-outline-dark flex-shrink-0" type="button">
               <i class="bi-cart-fill me-1"></i>
-              Ver Premios
+              <a href="/rewards">Ver Premios</a>
             </button>
           </div>
         </div>

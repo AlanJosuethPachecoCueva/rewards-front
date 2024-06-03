@@ -238,16 +238,19 @@ const getProductsImages = async () => {
 const deleteRewardsByRewardId = async (data) => {
   try {
     const { rewardId, typeOfReward } = data;
-    const response = await fetch(`${RUTA_SERVIDOR}/rewards/deleteRewardsByRewardId`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        rewardId: rewardId,
-        typeOfReward: typeOfReward,
-      }),
-    });
+    const response = await fetch(
+      `${RUTA_SERVIDOR}/rewards/deleteRewardsByRewardId`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          rewardId: rewardId,
+          typeOfReward: typeOfReward,
+        }),
+      }
+    );
 
     if (!response.ok) {
       throw new Error(`Unable to delete rewards by rewardId: ${rewardId}`);
@@ -258,6 +261,20 @@ const deleteRewardsByRewardId = async (data) => {
     return result;
   } catch (error) {
     console.error(error);
+    throw error;
+  }
+};
+
+const getAllKits_Rewards = async () => {
+  try {
+    const response = await fetch(`${RUTA_SERVIDOR}/rewards/kits_rewards`);
+    if (!response.ok) {
+      throw new Error("Error fetching kits_rewards");
+    }
+    
+    const data = await response.json();
+    return data;
+  } catch (error) {
     throw error;
   }
 };
@@ -273,5 +290,6 @@ export {
   assignRewardToKits,
   saveProduct,
   getProductsImages,
-  deleteRewardsByRewardId
+  deleteRewardsByRewardId,
+  getAllKits_Rewards
 };

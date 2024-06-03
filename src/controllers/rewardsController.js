@@ -9,7 +9,8 @@ import {
   assignRewardToKits,
   saveProduct,
   getProductsImages,
-  deleteRewardsByRewardId
+  deleteRewardsByRewardId,
+  getAllKits_Rewards
 } from "../models/rewardModel.js";
 
 const generateStickerWithAIController = async (prompt, userID) => {
@@ -179,6 +180,23 @@ const deleteRewardsByRewardIdController = async (data) => {
   }
 };
 
+
+const getAllKits_RewardsController = async () => {
+  try {
+    const rewards = await getAllKits_Rewards();
+
+    if (!rewards) {
+      console.error("Error getting rewards");
+      return false;
+    }
+
+    return rewards;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};
+
 export {
   generateStickerWithAIController,
   saveStickerController,
@@ -190,5 +208,6 @@ export {
   assignRewardToKitsController,
   saveProductController,
   getProductsImagesController,
-  deleteRewardsByRewardIdController
+  deleteRewardsByRewardIdController,
+  getAllKits_RewardsController
 };

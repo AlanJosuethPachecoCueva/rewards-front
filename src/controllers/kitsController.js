@@ -6,6 +6,7 @@ import {
   createKit,
   getKitsImages,
   updateKitImages,
+  getAllKitsRewards
 } from "../models/kitsModel";
 
 const createKitController = async (kitData) => {
@@ -29,6 +30,22 @@ const getKitsController = async () => {
 
     if (!kits) {
       console.error("Error getting kits");
+      return false;
+    }
+
+    return kits;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};
+
+const getAllKitsRewardsController = async () => {
+  try {
+    const kits = await getAllKitsRewards();
+
+    if (!kits) {
+      console.error("Error getting kits with rewards");
       return false;
     }
 
@@ -152,4 +169,5 @@ export {
   getKitsImagesController,
   updateKitImagesController,
   getImagesFromKitsController,
+  getAllKitsRewardsController
 };

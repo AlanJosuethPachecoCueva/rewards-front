@@ -23,6 +23,12 @@ import createCode from "./views/admins/codes/createCode.vue";
 import viewGeneratedCodes from "./views/admins/codes/viewGeneratedCodes.vue";
 import reedemCode from "./views/admins/codes/reedemCode.vue";
 
+
+//Para usuarios no administradores
+import showRewards from "./views/clients/showRewards.vue";
+
+
+
 //Para la redirección
 import { useUserStore } from "./stores/userStore.js";
 
@@ -56,6 +62,12 @@ const router = createRouter({
       name: "home",
       component: home,
       meta: { requiresAuth: false, requiresAdmin: false }
+    },
+    {
+      path: "/rewards",
+      name: "showRewards",
+      component: showRewards,
+      meta: { requiresAuth: true, requiresAdmin: false }
     },
     //Admins
     {

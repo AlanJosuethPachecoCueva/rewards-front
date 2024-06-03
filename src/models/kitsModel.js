@@ -55,6 +55,19 @@ const getAllKits = async () => {
   }
 };
 
+const getAllKitsRewards = async () => {
+  try {
+    const response = await fetch(`${RUTA_SERVIDOR}/kits/getAllKitsWithRewards/`);
+    if (!response.ok) {
+      throw new Error("Error fetching kits");
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const getKit = async (id) => {
   try {
     const response = await fetch(`${RUTA_SERVIDOR}/kits/kit/${id}`);
@@ -150,4 +163,5 @@ export {
   createKit,
   getKitsImages,
   updateKitImages,
+  getAllKitsRewards
 };
