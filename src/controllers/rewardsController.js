@@ -10,7 +10,8 @@ import {
   saveProduct,
   getProductsImages,
   deleteRewardsByRewardId,
-  getAllKits_Rewards
+  getAllKits_Rewards,
+  reedemReward
 } from "../models/rewardModel.js";
 
 const generateStickerWithAIController = async (prompt, userID) => {
@@ -18,7 +19,7 @@ const generateStickerWithAIController = async (prompt, userID) => {
     const generatedSticker = await generateStickerWithAI(prompt, userID);
 
     if (!generatedSticker) {
-      console.error("Error generating Sticker with AI controller.");
+      console.error("Error generating Sticker with AI controller: ", generatedSticker);
       return false;
     }
 
@@ -197,6 +198,22 @@ const getAllKits_RewardsController = async () => {
   }
 };
 
+const reedemRewardController = async (data) => {
+  try {
+    const resp = await reedemReward(data);
+    console.log("data in reedemRewardController: ", data);
+    if (!resp) {
+      console.error("Error reedeming reward");
+      return false;
+    }
+
+    return resp;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};
+
 export {
   generateStickerWithAIController,
   saveStickerController,
@@ -209,5 +226,6 @@ export {
   saveProductController,
   getProductsImagesController,
   deleteRewardsByRewardIdController,
-  getAllKits_RewardsController
+  getAllKits_RewardsController,
+  reedemRewardController
 };

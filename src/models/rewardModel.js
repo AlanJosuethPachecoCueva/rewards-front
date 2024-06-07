@@ -12,12 +12,12 @@ const generateStickerWithAI = async (prompt, userID) => {
     url.searchParams.append("userID", userID); // Asegúrate de pasar el userId cuando llames a esta función
 
     const response = await fetch(url.toString());
-
+    console.log("response in generateStickerWithAI: ", response);
     if (!response.ok) {
       throw new Error(`Unable to generate a sticker with AI`);
     }
     const generatedStickerwithAI = await response.json();
-
+    console.log("generatedStickerwithAI: ", generatedStickerwithAI);
     return generatedStickerwithAI;
   } catch (error) {
     throw error;
@@ -279,6 +279,38 @@ const getAllKits_Rewards = async () => {
   }
 };
 
+const reedemReward = async (data) => {
+  const {fileName, type, uid, associatedKit} = data; 
+  try {
+    const response = await fetch(
+      `${RUTA_SERVIDOR}/rewards/reedemReward`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          fileName, 
+          type,
+          associatedKit, 
+          uid
+        }),
+      }
+    );
+
+
+    if (!response.ok) {
+      throw new Error("Error reedeming reward");
+    }
+    
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+
 export {
   generateStickerWithAI,
   saveSticker,
@@ -291,5 +323,6 @@ export {
   saveProduct,
   getProductsImages,
   deleteRewardsByRewardId,
-  getAllKits_Rewards
+  getAllKits_Rewards,
+  reedemReward
 };

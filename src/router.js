@@ -23,11 +23,10 @@ import createCode from "./views/admins/codes/createCode.vue";
 import viewGeneratedCodes from "./views/admins/codes/viewGeneratedCodes.vue";
 import reedemCode from "./views/admins/codes/reedemCode.vue";
 
-
 //Para usuarios no administradores
 import showRewards from "./views/clients/showRewards.vue";
-
-
+import reedemReward from "./views/clients/redeemReward.vue";
+import userRewards from "./views/clients/userRewards.vue";
 
 //Para la redirección
 import { useUserStore } from "./stores/userStore.js";
@@ -55,18 +54,31 @@ const router = createRouter({
           component: loginComponent,
         },
       ],
-      meta: { requiresAuth: false, requiresAdmin: false }
+      meta: { requiresAuth: false, requiresAdmin: false },
     },
     {
       path: "/",
       name: "home",
       component: home,
-      meta: { requiresAuth: false, requiresAdmin: false }
+      meta: { requiresAuth: false, requiresAdmin: false },
     },
     {
       path: "/rewards",
       name: "showRewards",
       component: showRewards,
+      meta: { requiresAuth: true, requiresAdmin: false },
+    },
+    {
+      path: "/reedemReward",
+      name: "reedemReward",
+      component: reedemReward,
+      meta: { requiresAuth: true, requiresAdmin: false },
+      props: true,
+    },
+    {
+      path: "/userRewards",
+      name: "userRewards",
+      component: userRewards,
       meta: { requiresAuth: true, requiresAdmin: false }
     },
     //Admins
@@ -74,104 +86,104 @@ const router = createRouter({
       path: "/admin/manageKits",
       name: "manageKits",
       component: manageKits,
-      meta: { requiresAuth: true, requiresAdmin: true }
+      meta: { requiresAuth: true, requiresAdmin: true },
     },
     {
       path: "/admin/createKit",
       name: "createKit",
       component: createKit,
-      meta: { requiresAuth: true, requiresAdmin: true }
+      meta: { requiresAuth: true, requiresAdmin: true },
     },
     {
       path: "/admin/createKitMaterial/:kitId",
       name: "createKitMaterial",
       component: createKitMaterial,
       props: true,
-      meta: { requiresAuth: true, requiresAdmin: true }
+      meta: { requiresAuth: true, requiresAdmin: true },
     },
     {
       path: "/admin/rewards",
       name: "rewards",
       component: rewards,
       props: true,
-      meta: { requiresAuth: true, requiresAdmin: true }
+      meta: { requiresAuth: true, requiresAdmin: true },
     },
     {
       path: "/admin/generateStickers",
       name: "generateStickers",
       component: generateStickers,
       props: true,
-      meta: { requiresAuth: true, requiresAdmin: true }
+      meta: { requiresAuth: true, requiresAdmin: true },
     },
     {
       path: "/admin/generate3DObjects",
       name: "generate3DObjects",
       component: generate3DObjects,
       props: true,
-      meta: { requiresAuth: true, requiresAdmin: true }
+      meta: { requiresAuth: true, requiresAdmin: true },
     },
     {
       path: "/admin/generateProducts",
       name: "generateProducts",
       component: generateProduct,
       props: true,
-      meta: { requiresAuth: true, requiresAdmin: true }
+      meta: { requiresAuth: true, requiresAdmin: true },
     },
     {
       path: "/admin/assignRewardTokit/:rewardId",
       name: "assignRewardTokit",
       component: assignRewardTokit,
       props: true,
-      meta: { requiresAuth: true, requiresAdmin: true }
+      meta: { requiresAuth: true, requiresAdmin: true },
     },
     {
       path: "/admin/stickersTable",
       name: "stickersTable",
       component: stickersTable,
       props: true,
-      meta: { requiresAuth: true, requiresAdmin: true }
+      meta: { requiresAuth: true, requiresAdmin: true },
     },
     {
       path: "/admin/threeDObjectsTable",
       name: "threeDObjectsTable",
       component: threeDObjectsTable,
       props: true,
-      meta: { requiresAuth: true, requiresAdmin: true }
+      meta: { requiresAuth: true, requiresAdmin: true },
     },
     {
       path: "/admin/productsTable",
       name: "productsTable",
       component: productsTable,
       props: true,
-      meta: { requiresAuth: true, requiresAdmin: true }
+      meta: { requiresAuth: true, requiresAdmin: true },
     },
     {
       path: "/admin/codes",
       name: "codes",
       component: codes,
       props: true,
-      meta: { requiresAuth: true, requiresAdmin: true }
+      meta: { requiresAuth: true, requiresAdmin: true },
     },
     {
       path: "/admin/codes/createCode",
       name: "createCode",
       component: createCode,
       props: true,
-      meta: { requiresAuth: true, requiresAdmin: true }
+      meta: { requiresAuth: true, requiresAdmin: true },
     },
     {
       path: "/admin/codes/viewGeneratedCodes/:generatedCodes",
       name: "viewGeneratedCodes",
       component: viewGeneratedCodes,
       props: true,
-      meta: { requiresAuth: true, requiresAdmin: true }
+      meta: { requiresAuth: true, requiresAdmin: true },
     },
     {
       path: "/codes/reedemCode",
       name: "reedemCode",
       component: reedemCode,
       props: true,
-      meta: { requiresAuth: true, requiresAdmin: false }
+      meta: { requiresAuth: true, requiresAdmin: false },
     },
   ],
 });
@@ -206,7 +218,6 @@ router.beforeEach(async (to, from, next) => {
   console.log("requiresAdmin: ", requiresAdmin);
 
   if (requiresAuth || requiresAdmin) {
-
     const currentUser = await checkAuthState();
     console.log("currentUser: ", currentUser);
 
@@ -215,9 +226,12 @@ router.beforeEach(async (to, from, next) => {
     const user = store.getUser;
     console.log("User at router: ", user);
 
-    console.log("currentUser.state : ", currentUser.state );
+    console.log("currentUser.state : ", currentUser.state);
     console.log("user.isAdmin: ", user.isAdmin);
-    if ((!currentUser.state && requiresAuth) || (!user.isAdmin && requiresAdmin)) {
+    if (
+      (!currentUser.state && requiresAuth) ||
+      (!user.isAdmin && requiresAdmin)
+    ) {
       next("/login");
     } else {
       next();
