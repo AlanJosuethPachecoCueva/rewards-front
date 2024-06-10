@@ -45,8 +45,7 @@ async function registerWithFirebase(userData) {
 
 async function saveUserDataInFirebase(userData) {
   try {
-    const { email, name, surname, birthdate, city, isAdmin, uid } =
-      userData;
+    const { email, name, surname, birthdate, city, isAdmin, uid } = userData;
 
     //Cambiar ruta de api
     const response = await fetch(`${RUTA_SERVIDOR}/users/saveUserData`, {
@@ -61,7 +60,7 @@ async function saveUserDataInFirebase(userData) {
         birthdate,
         city,
         isAdmin,
-        uid
+        uid,
       }),
     });
 
@@ -166,6 +165,19 @@ const updateUser = async (id, userData) => {
   }
 };
 
+const getUserRewards = async (id) => {
+  try {
+    const response = await fetch(`${RUTA_SERVIDOR}/users/userRewards/${id}`);
+    if (!response.ok) {
+      throw new Error("Unable to get the user rewards.");
+    }
+    const userRewards = await response.json();
+    return userRewards;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export {
   registerWithFirebase,
   getAllUsers,
@@ -173,5 +185,6 @@ export {
   updateUser,
   deleteUserById,
   sendEmail,
-  saveUserDataInFirebase
+  saveUserDataInFirebase,
+  getUserRewards
 };

@@ -54,36 +54,36 @@ async function checkAuthState() {
 //   }
 // }
 
-onAuthStateChanged(authFirebase, async (user) => {
-  // if (user) {
-  //   // El usuario está autenticado
-  //   // Aquí puedes acceder a la información del usuario en el objeto `user`
-  //   console.log("Usuario autenticado:", user.uid);
-  //   const response = await fetch(
-  //     `http://localhost:3000/users/user/${user.uid}`
-  //   );
-  //   // Verificar si la respuesta es exitosa
-  //   if (response.ok) {
-  //     const data = await response.json();
-  //     user = {
-  //       isAdmin: data.isAdmin,
-  //     };
-  //   }
-  //   console.log("this.$route.path: ", window.location.pathname);
-  //   if (window.location.pathname == "/auth") {
-  //     if (user.isAdmin == true) {
-  //       router.push("/homeAdmin");
-  //     } else {
-  //       router.push("/");
-  //     }
-  //   }
-  // } else {
-  //   // El usuario no está autenticado
-  //   console.log("Usuario no autenticado");
-  //   //Si el usuario no está autenticado lo redirige automáticamente a la pestaña de inicio
-  //   router.push("/auth");
-  // }
-});
+// onAuthStateChanged(authFirebase, async (user) => {
+//   if (user) {
+//     // El usuario está autenticado
+//     // Aquí puedes acceder a la información del usuario en el objeto `user`
+//     console.log("Usuario autenticado:", user.uid);
+//     const response = await fetch(
+//       `http://localhost:3000/users/user/${user.uid}`
+//     );
+//     // Verificar si la respuesta es exitosa
+//     if (response.ok) {
+//       const data = await response.json();
+//       user = {
+//         isAdmin: data.isAdmin,
+//       };
+//     }
+//     console.log("this.$route.path: ", window.location.pathname);
+//     if (window.location.pathname == "/auth") {
+//       if (user.isAdmin == true) {
+//         router.push("/homeAdmin");
+//       } else {
+//         router.push("/");
+//       }
+//     }
+//   } else {
+//     // El usuario no está autenticado
+//     console.log("Usuario no autenticado");
+//     //Si el usuario no está autenticado lo redirige automáticamente a la pestaña de inicio
+//     router.push("/auth");
+//   }
+// });
 
 export {
   checkAuthState,

@@ -271,7 +271,7 @@ const getAllKits_Rewards = async () => {
     if (!response.ok) {
       throw new Error("Error fetching kits_rewards");
     }
-    
+
     const data = await response.json();
     return data;
   } catch (error) {
@@ -280,29 +280,25 @@ const getAllKits_Rewards = async () => {
 };
 
 const reedemReward = async (data) => {
-  const {fileName, type, uid, associatedKit} = data; 
+  const { fileName, type, uid, associatedKit } = data;
   try {
-    const response = await fetch(
-      `${RUTA_SERVIDOR}/rewards/reedemReward`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          fileName, 
-          type,
-          associatedKit, 
-          uid
-        }),
-      }
-    );
-
+    const response = await fetch(`${RUTA_SERVIDOR}/rewards/reedemReward`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        fileName,
+        type,
+        associatedKit,
+        uid,
+      }),
+    });
 
     if (!response.ok) {
       throw new Error("Error reedeming reward");
     }
-    
+
     const data = await response.json();
     return data;
   } catch (error) {
@@ -310,6 +306,34 @@ const reedemReward = async (data) => {
   }
 };
 
+const modifyReward = async (data) => {
+  const { type, fileName, newTitle, newDescription, newCostInPoints } = data;
+  try {
+    const response = await fetch(`${RUTA_SERVIDOR}/rewards/updateReward`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        type,
+        fileName,
+        newTitle,
+        newDescription,
+        newCostInPoints,
+      }),
+    });
+    console.log("response in modifyReward: ", response);
+    if (!response.ok) {
+      throw new Error("Error modifiying reward");
+    }
+
+    //const data = await response.json();
+    const data = response;
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
 
 export {
   generateStickerWithAI,
@@ -324,5 +348,6 @@ export {
   getProductsImages,
   deleteRewardsByRewardId,
   getAllKits_Rewards,
-  reedemReward
+  reedemReward,
+  modifyReward
 };

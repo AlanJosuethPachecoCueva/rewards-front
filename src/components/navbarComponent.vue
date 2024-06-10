@@ -159,7 +159,7 @@ export default {
                   <hr class="dropdown-divider" />
                 </li>
                 <li>
-                  <a class="dropdown-item" href="#" :style="{ color: textColorContrast }">{{ $t('Profile')}}</a>
+                  <a class="dropdown-item" href="/userRewards" :style="{ color: textColorContrast }">{{ $t('Profile')}}</a>
                 </li>                                
               </ul>              
             </li>             

@@ -11,7 +11,8 @@ import {
   getProductsImages,
   deleteRewardsByRewardId,
   getAllKits_Rewards,
-  reedemReward
+  reedemReward,
+  modifyReward
 } from "../models/rewardModel.js";
 
 const generateStickerWithAIController = async (prompt, userID) => {
@@ -214,6 +215,23 @@ const reedemRewardController = async (data) => {
   }
 };
 
+const modifyRewardController = async (data) => {
+  try {
+    console.log("data in modifyRewardController: ", data);
+    const resp = await modifyReward(data);
+    console.log("resp in modifyRewardController: ", resp);
+    if (!resp) {
+      console.error("Error modifiying reward");
+      return false;
+    }
+
+    return resp;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};
+
 export {
   generateStickerWithAIController,
   saveStickerController,
@@ -227,5 +245,6 @@ export {
   getProductsImagesController,
   deleteRewardsByRewardIdController,
   getAllKits_RewardsController,
-  reedemRewardController
+  reedemRewardController,
+  modifyRewardController
 };

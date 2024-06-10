@@ -48,6 +48,7 @@
                         </div>
 
                     </div>
+                    <button @click="goToModifyReward(sticker, 'st')">Modificar</button>
                 </div>
             </Slide>
             <template #addons>
@@ -102,6 +103,7 @@
                         </div>
 
                     </div>
+                    <button @click="goToModifyReward(object, '3d')">Modificar</button>
                 </div>
             </Slide>
             <template #addons>
@@ -154,6 +156,7 @@
                         </div>
 
                     </div>
+                    <button @click="goToModifyReward(product, 'pr')">Modificar</button>
                 </div>
             </Slide>
             <template #addons>
@@ -202,7 +205,7 @@ export default {
         });
 
         this.stickersToShow = JSON.parse(JSON.stringify(this.stickers));
-        console.log("this.stickersToShow : ", this.stickersToShow );
+        console.log("this.stickersToShow : ", this.stickersToShow);
         //Objetos 3D
         const threeDObjectsRes = await get3DObjectsController();
 
@@ -230,6 +233,15 @@ export default {
         this.productsToShow = JSON.parse(JSON.stringify(this.products));
     },
     methods: {
+        goToModifyReward(reward, type) {
+            reward = {
+                ...reward,
+                type
+            }
+            const encodedReward = encodeURIComponent(JSON.stringify(reward));
+            console.log("encodedReward: ", encodedReward);
+            this.$router.push({ name: 'modifyReward', query: { reward: JSON.stringify(reward) } });
+        },
         searchByType(type) {
             if (type == "sticker") {
                 const searchTerm = this.$refs.searchInput.value;

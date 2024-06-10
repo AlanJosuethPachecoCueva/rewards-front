@@ -9,7 +9,9 @@
             <h1 class="reward-title">{{ reward.metadata[0].metadata.title }}</h1>
             <p class="reward-description">{{ reward.metadata[0].metadata.description }}</p>
             <div class="reward-image-container">
-                <img :src="reward.url" alt="Reward Image" class="reward-image" />
+                <img v-if="reward.type != '3d'" :src="reward.url" alt="Reward Image" class="reward-image" />
+                <model-viewer v-else :src="reward.url" alt="Modelo 3D" disable-zoom disable-pan disable-touch-zoom
+                    disable-rotate auto-rotate="0"></model-viewer>
             </div>
             <p class="reward-type">Type: {{ reward.type }}</p>
             <p class="reward-type">Costo en puntos: {{ reward.metadata[0].metadata.costInPoints }}</p>
@@ -30,6 +32,7 @@ import { computed } from "vue";
 import { reedemRewardController } from "../../controllers/rewardsController";
 import multiselect from 'vue-multiselect';
 import { useUserStore } from "../../stores/userStore";
+import '@google/model-viewer';
 
 export default {
     data() {
@@ -39,7 +42,10 @@ export default {
             selectedKit: null
         };
     },
-    components: { multiselect },
+    components: {
+        multiselect,
+        'model-viewer': window.ModelViewer,
+    },
     setup() {
         const store = useUserStore();
         const user = computed(() => {
@@ -57,14 +63,19 @@ export default {
     methods: {
         async reedemReward() {
             console.log("rerafegf");
+            const parts = this.reward.metadata[0].name.split("/");
+
+            // Toma el último elemento del array resultante
+            let fileName = parts[parts.length - 1];
+            console.log("fileNamee: ", fileName);
             const rewardToSend = {
-                fileName: this.reward.metadata[0].name, type: this.reward.type, uid: this.user.id, associatedKit: this.selectedKit.id
+                fileName, type: this.reward.type, uid: this.user.id, associatedKit: this.selectedKit.id
             }
             const res = await reedemRewardController(rewardToSend);
             console.log("res in reedem reward: ", res);
 
             if (!res.success) {
-                console.error("Ha ocurrido un error al eliminar el sticker seleccionado: ", res);
+                console.error("Ha ocurrido un error al redimir el sticker seleccionado: ", res);
                 await this.$swal({
                     title: 'No se ha redimido el premio',
                     text: "Ha ocurrido un error al redimir el premio seleccionado.",

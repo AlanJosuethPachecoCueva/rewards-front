@@ -1,4 +1,4 @@
-import {getUser} from "@/models/userModel";
+import {getUser, getUserRewards} from "@/models/userModel";
 
 const getUserByIdController = async (id) => {
   try {
@@ -16,4 +16,20 @@ const getUserByIdController = async (id) => {
   }
 };
 
-export { getUserByIdController };
+
+const getUserRewardsController = async (id) => {
+  try {
+    const userRewards = await getUserRewards(id);
+
+    if (!userRewards) {
+      console.error("Error getting user rewards.");
+      return false;
+    }
+
+    return userRewards;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};
+export { getUserByIdController, getUserRewardsController };
