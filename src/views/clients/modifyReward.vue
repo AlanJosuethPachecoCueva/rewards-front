@@ -2,7 +2,9 @@
     <div class="reward-editor">
         <h1>Edit Reward</h1>
         <div class="reward-image">
-            <img :src="reward.url" alt="Reward Image" />
+            <img v-if="reward.type != '3d'" :src="reward.url" alt="Reward Image" />
+            <model-viewer v-else :src="reward.url" alt="Modelo 3D" disable-zoom disable-pan disable-touch-zoom
+                disable-rotate auto-rotate="0"></model-viewer>
         </div>
         <form @submit.prevent="updateReward">
             <div class="form-group">
@@ -18,6 +20,7 @@
                 <input type="number" id="costInPoints" v-model.number="reward.metadata[0].metadata.costInPoints"
                     required />
             </div>
+
             <button type="submit">Save Changes</button>
         </form>
     </div>
@@ -25,7 +28,12 @@
 
 <script>
 import { modifyReward } from '@/models/rewardModel';
+import { getProductController } from "@/controllers/rewardsController";
+import '@google/model-viewer';
 export default {
+    components: {
+        'model-viewer': window.ModelViewer,
+    },
     data() {
         return {
             reward: {
@@ -38,13 +46,26 @@ export default {
                             costInPoints: 0,
                         }
                     }
-                ]
-            }
+                ],
+                price: 0,
+                stock: 0,
+            },
+            product: {}
         };
     },
     async created() {
         this.reward = JSON.parse(this.$route.query.reward);
         console.log("this.reward: ", this.reward);
+
+        if (this.reward.type == "pr") {
+            console.log("rerafegf");
+            const parts = this.reward.metadata[0].name.split("/");
+            let fileName = parts[parts.length - 1];
+
+            this.product = await getProductController(fileName);
+
+            console.log("this.product: ", this.product);
+        }
     },
     methods: {
         async updateReward() {
@@ -67,6 +88,35 @@ export default {
                 const resp = await modifyReward(data);
                 // Puedes mostrar un mensaje de éxito o redirigir a otra página
                 console.log("resp: ", resp);
+                const result = await this.$swal({
+                    title: '¿Deseas modificar el premio?',
+                    text: 'Se modificarán los parámetros indicados, esta acción no es reversible.',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'Sí',
+                    cancelButtonText: "No",
+                });
+                if (!result.isConfirmed) {
+                    await this.$swal({
+                        title: 'No se ha modificado',
+                        text: "El objeto no se modificó.",
+                        icon: "success",
+                        showCancelButton: false,
+                        confirmButtonText: "OK",
+                    });
+                    window.location.reload();
+                    return;
+                } else {
+                    await this.$swal({
+                        title: 'Premio modificado',
+                        text: "El premio ha sido modificado satisfactoriamente.",
+                        icon: "success",
+                        showCancelButton: false,
+                        confirmButtonText: "OK",
+                    });
+
+                }
+                this.$router.push({ path: '/admin/rewards' });
             } catch (error) {
                 console.error("Error updating reward: ", error);
                 // Puedes mostrar un mensaje de error

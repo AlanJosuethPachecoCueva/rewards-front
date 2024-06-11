@@ -12,7 +12,9 @@ import {
   deleteRewardsByRewardId,
   getAllKits_Rewards,
   reedemReward,
-  modifyReward
+  modifyReward,
+  modifyProduct,
+  getProduct
 } from "../models/rewardModel.js";
 
 const generateStickerWithAIController = async (prompt, userID) => {
@@ -232,6 +234,40 @@ const modifyRewardController = async (data) => {
   }
 };
 
+const modifyProductController = async (data) => {
+  try {
+    console.log("data in modifyProduct: ", data);
+    const resp = await modifyProduct(data);
+    console.log("resp in modifyProduct: ", resp);
+    if (!resp) {
+      console.error("Error modifiying product");
+      return false;
+    }
+
+    return resp;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};
+
+
+const getProductController = async (id) => {
+  try {
+    const product = await getProduct(id);
+
+    if (!product) {
+      console.error("Error getting product.");
+      return false;
+    }
+
+    return product;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};
+
 export {
   generateStickerWithAIController,
   saveStickerController,
@@ -246,5 +282,7 @@ export {
   deleteRewardsByRewardIdController,
   getAllKits_RewardsController,
   reedemRewardController,
-  modifyRewardController
+  modifyRewardController,
+  modifyProductController,
+  getProductController
 };

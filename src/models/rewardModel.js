@@ -335,6 +335,45 @@ const modifyReward = async (data) => {
   }
 };
 
+
+const modifyProduct = async (data) => {
+  const { price, stock, fileName, costInPoints } = data;
+  try {
+    const response = await fetch(`${RUTA_SERVIDOR}/rewards/updateProduct`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        price, stock, fileName, costInPoints
+      }),
+    });
+    console.log("response in modifyReward: ", response);
+    if (!response.ok) {
+      throw new Error("Error modifiying reward");
+    }
+
+    //const data = await response.json();
+    const data = response;
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const getProduct = async (id) => {
+  try {
+    const response = await fetch(`${RUTA_SERVIDOR}/rewards/product/${id}`);
+    if (!response.ok) {
+      throw new Error(`Unable to get product ${id}`);
+    }
+    const product = await response.json();
+    return product;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export {
   generateStickerWithAI,
   saveSticker,
@@ -349,5 +388,7 @@ export {
   deleteRewardsByRewardId,
   getAllKits_Rewards,
   reedemReward,
-  modifyReward
+  modifyReward,
+  modifyProduct,
+  getProduct
 };

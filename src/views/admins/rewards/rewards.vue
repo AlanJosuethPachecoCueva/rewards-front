@@ -48,7 +48,11 @@
                         </div>
 
                     </div>
-                    <button @click="goToModifyReward(sticker, 'st')">Modificar</button>
+                    <div class="globe" @click="goToModifyReward(sticker, 'st')">
+                        <i class="bi bi-pencil-square"
+                            style="font-size: 1.5rem; color: #000; font-weight: bold; margin-right: 15px;"></i>
+                    </div>
+                    <!-- <button @click="goToModifyReward(sticker, 'st')">Modificar</button> -->
                 </div>
             </Slide>
             <template #addons>
@@ -103,7 +107,11 @@
                         </div>
 
                     </div>
-                    <button @click="goToModifyReward(object, '3d')">Modificar</button>
+                    <div class="globe" @click="goToModifyReward(object, '3d')">
+                        <i class="bi bi-pencil-square"
+                            style="font-size: 1.5rem; color: #000; font-weight: bold; margin-right: 15px;"></i>
+                    </div>
+                    <!-- <button @click="goToModifyReward(object, '3d')">Modificar</button> -->
                 </div>
             </Slide>
             <template #addons>
@@ -156,7 +164,11 @@
                         </div>
 
                     </div>
-                    <button @click="goToModifyReward(product, 'pr')">Modificar</button>
+                    <div class="globe" @click="goToModifyReward(product, 'pr')">
+                        <i class="bi bi-pencil-square"
+                            style="font-size: 1.5rem; color: #000; font-weight: bold; margin-right: 15px;"></i>
+                    </div>
+                    <!-- <button @click="goToModifyReward(product, 'pr')">Modificar</button> -->
                 </div>
             </Slide>
             <template #addons>
