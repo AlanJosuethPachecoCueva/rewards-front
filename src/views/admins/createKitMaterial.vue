@@ -72,19 +72,41 @@
       </div>
       <div class="createKitContainerRight">
         <div class="card cardContainer">
-          <div class="mb-3">
-            <label for="imageInput" class="label"
-              >Seleccionar una diseño creado por mí:</label
+          <div class="form-group generateKitIA">
+            <label class="label" for="exampleFormControlTextarea1"
+              >Subir una diseño creado por mí</label
             >
             <input
-              type="file"
+              v-model="imageTitle"
               class="form-control"
-              id="imageInputManual"
-              ref="imageInputManual"
-              accept="image/*"
-              @change="handleFileUpload"
-            />
+              id="imageUploadTitle"
+              rows="3"
+              placeholder="Ingrese un titulo para la imagen (máx 4 palabras)">
+            </input>
+            <textarea
+              v-model="imageDescription"
+              class="form-control"
+              id="imageUploadDescription"
+              rows="3"
+              placeholder="Describa en máximo 100 carácteres la imagen"
+            ></textarea>
+
+            <!-- <form @submit.prevent="submitForm"> -->
+            <div class="mb-3">
+              <label for="imageInput" class="label"
+                >Seleccionar un archivo:</label
+              >
+              <input
+                type="file"
+                class="form-control"
+                id="imageInputManual"
+                ref="imageInputManual"
+                accept="image/*"
+                @change="handleFileUpload"
+              />
+            </div>
           </div>
+
           <div class="form-group generateKitIA">
             <label class="label" for="exampleFormControlTextarea1"
               >Generar con inteligencia artificial</label
@@ -145,6 +167,7 @@ import {
   generateImageWithAIController,
   getKitsImagesController,
   updateKitImagesController,
+  uploadImageController,
 } from "../../controllers/kitsController";
 import axios from "axios";
 
@@ -273,29 +296,31 @@ export default {
       }
     },
     async handleFileUpload(event) {
+      console.log(`The metadata is : ${this.imageTitle} ${this.imageDescription}`)
       const file = event.target.files[0];
       if (file) {
-        const formData = new FormData();
-        formData.append("image", file);
-        formData.append("userID", this.user.id);
-        formData.append("title", "Título del diseño"); // Ajusta según sea necesario
-        formData.append("description", "Descripción del diseño"); // Ajusta según sea necesario
-
         try {
-          const RUTA_SERVIDOR = `${import.meta.env.VITE_APP_RUTA_API}`;
-          const response = await axios.post(
-            `${RUTA_SERVIDOR}/kits/uploadImage/`,
-            formData,
-            {
-              headers: {
-                "Content-Type": "multipart/form-data",
-              },
-            }
-          );
-          console.log("Todo se ejecuto");
+          this.$swal.fire({
+            title: "Cargando...",
+            text: "Por favor, espera mientras se sube la imágen.",
+            allowOutsideClick: false,
+            showConfirmButton: false, // Oculta el botón de confirmación
+            confirmButtonText: false, // Asegura que no haya texto en el botón de confirmación
+            onBeforeOpen: () => {
+              Swal.showLoading();
+            },
+          });
+          const response = await uploadImageController(file, this.user.id, this.imageTitle, this.imageDescription);
+          console.log("imagen subida: ", response);
           this.getKitsImages();
+          // Restablece los campos de título, descripción y el input de archivo
+          this.imageTitle = '';
+          this.imageDescription = '';
+          this.$refs.imageInput.value = '';
+          // Oculta el mensaje de carga
+          this.$swal.close();
         } catch (error) {
-          console.error("Error al subir la imagen:", error);
+          console.error("Error al subir imagen:", error);
         }
       }
     },

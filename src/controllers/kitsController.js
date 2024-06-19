@@ -5,6 +5,7 @@ import {
   generateImageWithAI,
   createKit,
   getKitsImages,
+  uploadKitImage,
   updateKitImages,
   getAllKitsRewards
 } from "../models/kitsModel";
@@ -50,6 +51,22 @@ const getAllKitsRewardsController = async () => {
     }
 
     return kits;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};
+
+const uploadImageController = async (image, userID, title, description) => {
+  try {
+    const res = await uploadKitImage(image, userID, title, description);
+
+    if (!res) {
+      console.error("Error uploading kit image");
+      return false;
+    }
+
+    return res;
   } catch (error) {
     console.error(error);
     return false;
@@ -137,28 +154,28 @@ const getKitsImagesController = async () => {
 };
 
 const getImagesFromKitsController = async (kits) => {
-    try {
-      const kitsImages = await getKitsImagesController();
-      
-      // Utilizamos Promise.all() para esperar a que todas las promesas se resuelvan
-      const res = await Promise.all(kits.map(async (kit) => {
-  
-        // Utilizamos el método find() para buscar la imagen con el ID correspondiente
-        let urlMainImage = kitsImages.find(
-          (image) => image.metadata[0].id === kit.mainImageUrl
-        );
-        
-        kit.mainImageUrl = urlMainImage.url;
-        return kit;
-      }));
-      
-      return res;
-    } catch (error) {
-      console.error(error);
-      return false;
-    }
-  };
-  
+  try {
+    const kitsImages = await getKitsImagesController();
+
+    // Utilizamos Promise.all() para esperar a que todas las promesas se resuelvan
+    const res = await Promise.all(kits.map(async (kit) => {
+
+      // Utilizamos el método find() para buscar la imagen con el ID correspondiente
+      let urlMainImage = kitsImages.find(
+        (image) => image.metadata[0].id === kit.mainImageUrl
+      );
+
+      kit.mainImageUrl = urlMainImage.url;
+      return kit;
+    }));
+
+    return res;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};
+
 
 export {
   getKitsController,
@@ -168,6 +185,7 @@ export {
   generateImageWithAIController,
   getKitsImagesController,
   updateKitImagesController,
+  uploadImageController,
   getImagesFromKitsController,
   getAllKitsRewardsController
 };

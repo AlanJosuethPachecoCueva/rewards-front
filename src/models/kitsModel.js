@@ -128,6 +128,33 @@ const getKitsImages = async () => {
   }
 };
 
+async function uploadKitImage(image, userID, title, description) {
+  const formData = new FormData();
+  formData.append("image", image);
+  formData.append("userID", userID);
+  formData.append("title", title); // Ajusta según sea necesario
+  formData.append("description", description); // Ajusta según sea necesario
+
+  try {
+    const response = await fetch(`${RUTA_SERVIDOR}/kits/uploadImage/`, {
+      method: "POST",
+      body: formData,
+      headers: {
+        // No es necesario establecer el encabezado "Content-Type" ya que fetch lo hará automáticamente cuando se utiliza FormData
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Error uploading kit image");
+    }
+
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error("Error al subir la imagen:", error);
+  }
+}
+
 async function updateKitImages(kitId, imageIds) {
   try {
     const response = await fetch(
@@ -162,6 +189,7 @@ export {
   generateImageWithAI,
   createKit,
   getKitsImages,
+  uploadKitImage,
   updateKitImages,
   getAllKitsRewards
 };
