@@ -1,30 +1,46 @@
 <template #addons>
   <div class="bigContainerKit">
     <h2>Nuevo Material Publicitario</h2>
-    <h3> Afiches & Banners</h3>
+    <h3>Afiches & Banners</h3>
     <div class="createKitContainer">
-
-
       <div class="createKitContainerLeft">
         <div class="showInformationLeft">
           <div class="showDataKit">
             <h4>Tu chocolate</h4>
-            <div class="card cardKitInformation" style="height: fit-content;">
+            <div class="card cardKitInformation" style="height: fit-content">
               {{ kit.title }}
             </div>
-            <div class="card cardKitInformation" style="height: fit-content; text-align: left;">
+            <div
+              class="card cardKitInformation"
+              style="height: fit-content; text-align: left"
+            >
               {{ kit.description }}
             </div>
-            <div class="card cardKitInformation" style="height: fit-content; text-align: left;">
+            <div
+              class="card cardKitInformation"
+              style="height: fit-content; text-align: left"
+            >
               {{ kit.slogans }}
             </div>
           </div>
-          <div class="imagesSelector" :class="{ 'imagesSelectorMiddle': inMiddle }">
+          <div
+            class="imagesSelector"
+            :class="{ imagesSelectorMiddle: inMiddle }"
+          >
             <h4>Imágenes</h4>
             <div class="row">
-              <div class="col-md-4 col-lg-4 mb-3" v-for="selectedImage in selectedImages" :key="selectedImage">
+              <div
+                class="col-md-4 col-lg-4 mb-3"
+                v-for="selectedImage in selectedImages"
+                :key="selectedImage"
+              >
                 <div class="card cardsSelectedImages">
-                  <img :src="selectedImage.url" class="card-img-top" alt="I" @click="deleteKitImage(selectedImage)">
+                  <img
+                    :src="selectedImage.url"
+                    class="card-img-top"
+                    alt="I"
+                    @click="deleteKitImage(selectedImage)"
+                  />
                   <!-- <div class="card-body">
                     <h5 class="card-title">{{ item.title }}</h5>
                     <p class="card-text">{{ item.description }}</p>
@@ -37,9 +53,18 @@
         </div>
         <div class="containerLeft">
           <carousel :items-to-show="cardsToShow" :paginationEnabled="true">
-            <Slide v-for="image in kitsImages" :key="image" class="carousel-slide p-2">
+            <Slide
+              v-for="image in kitsImages"
+              :key="image"
+              class="carousel-slide p-2"
+            >
               <div class="card" style="width: 18rem">
-                <img :src="image.url" class="card-img-top imageCard" alt="Image" @click="selectKitImage(image)" />
+                <img
+                  :src="image.url"
+                  class="card-img-top imageCard"
+                  alt="Image"
+                  @click="selectKitImage(image)"
+                />
               </div>
             </Slide>
           </carousel>
@@ -47,27 +72,63 @@
       </div>
       <div class="createKitContainerRight">
         <div class="card cardContainer">
+          <div class="mb-3">
+            <label for="imageInput" class="label"
+              >Seleccionar una diseño creado por mí:</label
+            >
+            <input
+              type="file"
+              class="form-control"
+              id="imageInputManual"
+              ref="imageInputManual"
+              accept="image/*"
+              @change="handleFileUpload"
+            />
+          </div>
           <div class="form-group generateKitIA">
-            <label class="label" for="exampleFormControlTextarea1">Generar con inteligencia artificial</label>
-            <textarea v-model="aiPrompt" class="form-control" id="textAreaGenerateWithAI" rows="3"
-              placeholder="Describa en máximo 400 palabras la imagen que quiere generar."></textarea>
+            <label class="label" for="exampleFormControlTextarea1"
+              >Generar con inteligencia artificial</label
+            >
+            <textarea
+              v-model="aiPrompt"
+              class="form-control"
+              id="textAreaGenerateWithAI"
+              rows="3"
+              placeholder="Describa en máximo 400 palabras la imagen que quiere generar."
+            ></textarea>
 
             <!-- <form @submit.prevent="submitForm"> -->
             <div class="mb-3">
-              <label for="imageInput" class="label">Seleccionar una imagen de referencia (Opcional):</label>
-              <input type="file" class="form-control" id="imageInput" ref="imageInput" accept="image/*">
+              <label for="imageInput" class="label"
+                >Seleccionar una imagen de referencia (Opcional):</label
+              >
+              <input
+                type="file"
+                class="form-control"
+                id="imageInput"
+                ref="imageInput"
+                accept="image/*"
+              />
             </div>
             <!-- </form> -->
 
-            <button type="button" class="btn btn-primary btnGenerateKit" @click="generateImageOpenAI()">Generar con
-              IA
+            <button
+              type="button"
+              class="btn btn-primary btnGenerateKit"
+              @click="generateImageOpenAI()"
+            >
+              Generar con IA
             </button>
           </div>
         </div>
       </div>
-
     </div>
-    <button type="button" class="btn btn-primary btnGenerateKit" @click="assignImages()">Asignar imágenes
+    <button
+      type="button"
+      class="btn btn-primary btnGenerateKit"
+      @click="assignImages()"
+    >
+      Asignar imágenes
     </button>
   </div>
 </template>
@@ -78,13 +139,21 @@ import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
 import { computed } from "vue";
 
 import { useUserStore } from "../../stores/userStore.js";
-import { getKitByIdController, getKitsController, generateImageWithAIController, getKitsImagesController, updateKitImagesController } from "../../controllers/kitsController";
+import {
+  getKitByIdController,
+  getKitsController,
+  generateImageWithAIController,
+  getKitsImagesController,
+  updateKitImagesController,
+} from "../../controllers/kitsController";
+import axios from "axios";
 
 export default {
   components: {
     Carousel,
     Slide,
-    Pagination, Navigation
+    Pagination,
+    Navigation,
   },
   data() {
     return {
@@ -114,9 +183,8 @@ export default {
   methods: {
     async assignImages() {
       if (this.selectedImages.length > 0) {
-
         //Proceso para extraer los ids
-        const idKitsToSave = this.selectedImages.map(image => {
+        const idKitsToSave = this.selectedImages.map((image) => {
           return image.metadata[0].id;
         });
 
@@ -154,7 +222,9 @@ export default {
       }
     },
     deleteKitImage(image) {
-      let arrayWithoutSelectedImage = this.selectedImages.filter(element => element !== image);
+      let arrayWithoutSelectedImage = this.selectedImages.filter(
+        (element) => element !== image
+      );
       this.selectedImages = arrayWithoutSelectedImage;
       this.needsToBeInMiddle();
     },
@@ -168,21 +238,20 @@ export default {
         const idToSearch = this.$route.params.kitId;
         const kit = await getKitByIdController(idToSearch);
         if (!kit) {
-          throw new Error('Unable to find kit');
+          throw new Error("Unable to find kit");
         }
         this.kit = kit;
         // this.user = Object.assign({}, user);
       } catch (error) {
-        console.error('Unable to find kit:', error);
+        console.error("Unable to find kit:", error);
         throw error;
       }
-
     },
     async generateImageOpenAI() {
       try {
         this.$swal.fire({
-          title: 'Cargando...',
-          text: 'Por favor, espera mientras se genera la imágen.',
+          title: "Cargando...",
+          text: "Por favor, espera mientras se genera la imágen.",
           allowOutsideClick: false,
           showConfirmButton: false, // Oculta el botón de confirmación
           confirmButtonText: false, // Asegura que no haya texto en el botón de confirmación
@@ -190,15 +259,44 @@ export default {
             Swal.showLoading();
           },
         });
-        const response = await generateImageWithAIController(this.aiPrompt, this.user.id);
+        const response = await generateImageWithAIController(
+          this.aiPrompt,
+          this.user.id
+        );
         console.log("response imagen generada: ", response);
         this.getKitsImages();
         console.log("this.kitsImages: ", this.kitsImages);
         // Oculta el mensaje de carga
         this.$swal.close();
-
       } catch (error) {
-        console.error('Error al generar imagen:', error);
+        console.error("Error al generar imagen:", error);
+      }
+    },
+    async handleFileUpload(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const formData = new FormData();
+        formData.append("image", file);
+        formData.append("userID", this.user.id);
+        formData.append("title", "Título del diseño"); // Ajusta según sea necesario
+        formData.append("description", "Descripción del diseño"); // Ajusta según sea necesario
+
+        try {
+          const RUTA_SERVIDOR = `${import.meta.env.VITE_APP_RUTA_API}`;
+          const response = await axios.post(
+            `${RUTA_SERVIDOR}/kits/uploadImage/`,
+            formData,
+            {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            }
+          );
+          console.log("Todo se ejecuto");
+          this.getKitsImages();
+        } catch (error) {
+          console.error("Error al subir la imagen:", error);
+        }
       }
     },
   },
@@ -212,7 +310,6 @@ export default {
   padding: 10px;
 
   display: flex;
-
 }
 
 .showDataKit {
@@ -222,7 +319,6 @@ export default {
 .cardKitInformation {
   margin: 0px 20px 10px 20px;
   padding: 8px;
-
 }
 
 .imagesSelector {
