@@ -1,6 +1,7 @@
 import {
   getAllKits,
   getKit,
+  deleteKit,
   generateKitWithAI,
   generateImageWithAI,
   createKit,
@@ -105,6 +106,22 @@ const getKitByIdController = async (id) => {
   }
 };
 
+const deleteKitByIdController = async (id) => {
+  try {
+    const msg = await deleteKit(id);
+
+    if (!msg) {
+      console.error("Error delettin kit.");
+      return false;
+    }
+
+    return msg;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};
+
 const generateKitWithAIController = async (prompt) => {
   try {
     const generatedKit = await generateKitWithAI(prompt);
@@ -179,6 +196,7 @@ const getImagesFromKitsController = async (kits) => {
 
 export {
   getKitsController,
+  deleteKitByIdController,
   getKitByIdController,
   generateKitWithAIController,
   createKitController,

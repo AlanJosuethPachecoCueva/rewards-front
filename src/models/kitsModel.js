@@ -74,8 +74,21 @@ const getKit = async (id) => {
     if (!response.ok) {
       throw new Error(`Unable to get kit ${id}`);
     }
-    const user = await response.json();
-    return user;
+    const kit = await response.json();
+    return kit;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const deleteKit = async (id) => {
+  try {
+    const response = await fetch(`${RUTA_SERVIDOR}/kits/kit/${id}`,
+      { method: "DELETE", });
+    if (!response.ok) {
+      throw new Error(`Unable to get kit ${id}`);
+    }
+    return { msg: `Kit deleted ${id}` };
   } catch (error) {
     throw error;
   }
@@ -185,6 +198,7 @@ async function updateKitImages(kitId, imageIds) {
 export {
   getAllKits,
   getKit,
+  deleteKit,
   generateKitWithAI,
   generateImageWithAI,
   createKit,
