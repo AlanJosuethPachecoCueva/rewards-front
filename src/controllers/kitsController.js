@@ -5,6 +5,7 @@ import {
   generateKitWithAI,
   generateImageWithAI,
   createKit,
+  updateKit,
   getKitsImages,
   uploadKitImage,
   updateKitImages,
@@ -80,6 +81,22 @@ const updateKitImagesController = async (kitId, imageIds) => {
 
     if (!res) {
       console.error("Error getting updating kit images");
+      return false;
+    }
+
+    return res;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};
+
+const updateKitController = async (kitId, kitInfo) => {
+  try {
+    const res = await updateKit(kitId, kitInfo);
+
+    if (!res) {
+      console.error("Error getting updating kit");
       return false;
     }
 
@@ -198,6 +215,7 @@ export {
   getKitsController,
   deleteKitByIdController,
   getKitByIdController,
+  updateKitController,
   generateKitWithAIController,
   createKitController,
   generateImageWithAIController,

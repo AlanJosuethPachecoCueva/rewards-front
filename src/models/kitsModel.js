@@ -194,6 +194,32 @@ async function updateKitImages(kitId, imageIds) {
   }
 }
 
+async function updateKit(kitId, kitInfo) {
+  try {
+    const response = await fetch(
+      `${RUTA_SERVIDOR}/kits/updateKit/${kitId}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          kitInfo,
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Error updating kit");
+    }
+    const result = await response.json();
+
+    return result;
+  } catch (error) {
+    throw error;
+  }
+}
+
 
 export {
   getAllKits,
@@ -202,6 +228,7 @@ export {
   generateKitWithAI,
   generateImageWithAI,
   createKit,
+  updateKit,
   getKitsImages,
   uploadKitImage,
   updateKitImages,

@@ -58,8 +58,9 @@ export default {
         }
       });
     },
-    editKit(kit) {
-      console.log(`Editing kit: ${kit.metadata[0].metadata.title}`);
+    editKit(kitId) {
+      this.$router.push(`/admin/editKit/${kitId}`);
+      //console.log(`Editing kit: ${kit.metadata[0].metadata.title}`);
     },
     search() {
       const searchTerm = this.$refs.searchInput.value;
@@ -144,7 +145,7 @@ export default {
           </div>
           <div class="card-buttons">
             <button
-              @click="editKit(kit)"
+              @click="editKit(kit.id)"
               style="
                 font-size: 1rem;
                 background-color: rgb(65, 39, 39);
