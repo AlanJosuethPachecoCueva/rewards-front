@@ -138,7 +138,7 @@ export default {
               <li>
                 <a
                   class="dropdown-item"
-                  href="#"
+                  href="/rewards"
                   :style="{ color: textColorContrast }"
                   >{{ $t("ActiveAwards") }}</a
                 >
