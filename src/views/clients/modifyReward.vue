@@ -17,8 +17,19 @@
             </div>
             <div class="form-group">
                 <label for="costInPoints">Cost in Points</label>
-                <input type="number" id="costInPoints" v-model.number="reward.metadata[0].metadata.costInPoints"
-                    required />
+                <input type="number" id="costInPoints" v-model.number="product.costInPoints" required />
+            </div>
+
+            <div v-if="this.reward.type == 'pr'">
+                <div class="form-group">
+                    <label for="costInPoints">Stock</label>
+                    <input type="number" id="costInPoints" v-model.number="product.stock" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="costInPoints">Price $</label>
+                    <input type="number" id="costInPoints" v-model.number="product.price" required />
+                </div>
             </div>
 
             <button type="submit">Save Changes</button>
@@ -47,10 +58,11 @@ export default {
                         }
                     }
                 ],
-                price: 0,
-                stock: 0,
             },
-            product: {}
+            product: {
+                stock: null,
+                price: null
+            }
         };
     },
     async created() {
@@ -81,7 +93,9 @@ export default {
                     fileName,
                     newTitle: this.reward.metadata[0].metadata.title,
                     newDescription: this.reward.metadata[0].metadata.description,
-                    newCostInPoints: this.reward.metadata[0].metadata.costInPoints
+                    newCostInPoints: this.reward.metadata[0].metadata.costInPoints,
+                    newStock: this.product.stock,
+                    newPrice: this.product.price
                 };
 
                 console.log("data: ", data);

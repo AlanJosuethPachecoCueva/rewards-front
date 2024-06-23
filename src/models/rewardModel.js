@@ -307,7 +307,7 @@ const reedemReward = async (data) => {
 };
 
 const modifyReward = async (data) => {
-  const { type, fileName, newTitle, newDescription, newCostInPoints } = data;
+  const { type, fileName, newTitle, newDescription, newCostInPoints, newStock, newPrice } = data;
   try {
     const response = await fetch(`${RUTA_SERVIDOR}/rewards/updateReward`, {
       method: "PUT",
@@ -322,7 +322,11 @@ const modifyReward = async (data) => {
         newCostInPoints,
       }),
     });
+
+    const resultModifyProduct = await modifyProduct({ price: newPrice, stock: newStock, fileName, costInPoints: newCostInPoints });
+    
     console.log("response in modifyReward: ", response);
+    console.log("resultModifyProduct: ", resultModifyProduct);
     if (!response.ok) {
       throw new Error("Error modifiying reward");
     }
