@@ -74,8 +74,21 @@ const getKit = async (id) => {
     if (!response.ok) {
       throw new Error(`Unable to get kit ${id}`);
     }
-    const user = await response.json();
-    return user;
+    const kit = await response.json();
+    return kit;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const deleteKit = async (id) => {
+  try {
+    const response = await fetch(`${RUTA_SERVIDOR}/kits/kit/${id}`,
+      { method: "DELETE", });
+    if (!response.ok) {
+      throw new Error(`Unable to get kit ${id}`);
+    }
+    return { msg: `Kit deleted ${id}` };
   } catch (error) {
     throw error;
   }
@@ -128,6 +141,33 @@ const getKitsImages = async () => {
   }
 };
 
+async function uploadKitImage(image, userID, title, description) {
+  const formData = new FormData();
+  formData.append("image", image);
+  formData.append("userID", userID);
+  formData.append("title", title); // Ajusta según sea necesario
+  formData.append("description", description); // Ajusta según sea necesario
+
+  try {
+    const response = await fetch(`${RUTA_SERVIDOR}/kits/uploadImage/`, {
+      method: "POST",
+      body: formData,
+      headers: {
+        // No es necesario establecer el encabezado "Content-Type" ya que fetch lo hará automáticamente cuando se utiliza FormData
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Error uploading kit image");
+    }
+
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error("Error al subir la imagen:", error);
+  }
+}
+
 async function updateKitImages(kitId, imageIds) {
   try {
     const response = await fetch(
@@ -154,14 +194,43 @@ async function updateKitImages(kitId, imageIds) {
   }
 }
 
+async function updateKit(kitId, kitInfo) {
+  try {
+    const response = await fetch(
+      `${RUTA_SERVIDOR}/kits/updateKit/${kitId}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          kitInfo,
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Error updating kit");
+    }
+    const result = await response.json();
+
+    return result;
+  } catch (error) {
+    throw error;
+  }
+}
+
 
 export {
   getAllKits,
   getKit,
+  deleteKit,
   generateKitWithAI,
   generateImageWithAI,
   createKit,
+  updateKit,
   getKitsImages,
+  uploadKitImage,
   updateKitImages,
   getAllKitsRewards
 };

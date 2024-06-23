@@ -10,7 +10,7 @@ import { useUserStore } from "../stores/userStore";
 
 async function registerWithFirebase(userData) {
   try {
-    const { email, name, surname, birthdate, city, password, isAdmin } =
+    const { email, name, surname, birthdate, direction, password, isAdmin } =
       userData;
 
     //Cambiar ruta de api
@@ -24,7 +24,7 @@ async function registerWithFirebase(userData) {
         name,
         surname,
         birthdate,
-        city,
+        direction,
         password,
         isAdmin,
       }),
@@ -45,7 +45,7 @@ async function registerWithFirebase(userData) {
 
 async function saveUserDataInFirebase(userData) {
   try {
-    const { email, name, surname, birthdate, city, isAdmin, uid } = userData;
+    const { email, name, surname, birthdate, direction, isAdmin, uid } = userData;
 
     //Cambiar ruta de api
     const response = await fetch(`${RUTA_SERVIDOR}/users/saveUserData`, {
@@ -58,7 +58,7 @@ async function saveUserDataInFirebase(userData) {
         name,
         surname,
         birthdate,
-        city,
+        direction,
         isAdmin,
         uid,
       }),
@@ -147,13 +147,13 @@ const getUser = async (id) => {
 
 const updateUser = async (id, userData) => {
   try {
-    const { email, name, surname, birthdate, city } = userData;
+    const { email, name, surname, birthdate, direction } = userData;
     const response = await fetch(`${RUTA_SERVIDOR}/users/update`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ uid: id, email, name, surname, birthdate, city }),
+      body: JSON.stringify({ uid: id, email, name, surname, birthdate, direction }),
     });
 
     if (!response.ok) {

@@ -3,7 +3,7 @@ import { computed } from "vue";
 import { registerWithFirebase } from "../models/userModel.js";
 import { logInFirebase, signInWithGoogle } from "../models/firebase/auth.js";
 import googleLogo from "../assets/images/google.png";
-import { colors } from '/src/assets/colors.js';
+import { colors } from "/src/assets/colors.js";
 
 export default {
   data() {
@@ -14,7 +14,7 @@ export default {
         surname: "",
         password: "",
         email: "",
-        city: "",
+        direction: "",
         birthdate: "",
         isAdmin: false,
       },
@@ -28,7 +28,7 @@ export default {
         surname: { state: true, error: "" },
         password: { state: true, error: "" },
         email: { state: true, error: "" },
-        city: { state: true, error: "" },
+        direction: { state: true, error: "" },
         birthdate: { state: true, error: "" },
       },
       showPassword: false,
@@ -51,10 +51,10 @@ export default {
       //     console.log(error);
       //   }
     },
-    async signInGoogle(){
+    async signInGoogle() {
       console.log("HOLA");
       const res = await signInWithGoogle();
-      
+
       if (!res) {
         await this.$swal({
           title:
@@ -64,7 +64,7 @@ export default {
           confirmButtonText: "OK",
         });
         return;
-      }else{
+      } else {
         this.$router.push("/");
       }
     },
@@ -177,48 +177,56 @@ export default {
                   src="../assets/images/kvmi-en-blanco_redes-AzGj93a4EkuxVrkB.avif"
                 />
               </div>
-              <h3 class="mb-5 text-center heading">{{ $t('Slogan')}}</h3>
+              <h3 class="mb-5 text-center heading">{{ $t("Slogan") }}</h3>
 
-              <h6 class="msg-info">{{ $t('LabelRegistro')}}</h6>
+              <h6 class="msg-info">{{ $t("LabelRegistro") }}</h6>
 
               <div class="form-group">
-                <label class="form-control-label text-muted">{{ $t('Name')}} </label>
+                <label class="form-control-label text-muted"
+                  >{{ $t("Name") }}
+                </label>
                 <input
                   type="text"
                   id="nombres"
                   name="nombres"
-                   :placeholder="$t('PlaceHolderName')"
+                  :placeholder="$t('PlaceHolderName')"
                   class="form-control"
                   v-model="user.name"
                 />
               </div>
 
               <div class="form-group">
-                <label class="form-control-label text-muted">{{ $t('LastName')}} </label>
+                <label class="form-control-label text-muted"
+                  >{{ $t("LastName") }}
+                </label>
                 <input
                   type="text"
                   id="apellidos"
                   name="apellidos"
-                   :placeholder="$t('PlaceholderLastName')"
+                  :placeholder="$t('PlaceholderLastName')"
                   class="form-control"
                   v-model="user.surname"
                 />
               </div>
 
               <div class="form-group">
-                <label class="form-control-label text-muted">{{ $t('Address')}} </label>
+                <label class="form-control-label text-muted"
+                  >{{ $t("Address") }}
+                </label>
                 <input
                   type="text"
                   id="dirección"
                   name="dirección"
-                   :placeholder="$t('PlaceholderAddress')"
+                  :placeholder="$t('PlaceholderAddress')"
                   class="form-control"
-                  v-model="user.city"
+                  v-model="user.direction"
                 />
               </div>
 
               <div class="form-group">
-                <label class="form-control-label text-muted">{{ $t('Mail')}} </label>
+                <label class="form-control-label text-muted"
+                  >{{ $t("Mail") }}
+                </label>
                 <input
                   type="text"
                   id="email"
@@ -230,63 +238,62 @@ export default {
               </div>
 
               <div class="form-group">
-                <label class="form-control-label text-muted">{{ $t('Password')}} </label>
+                <label class="form-control-label text-muted"
+                  >{{ $t("Password") }}
+                </label>
                 <input
                   type="password"
                   id="psw"
                   name="psw"
-                   :placeholder="$t('PlaceholderPassword')"
+                  :placeholder="$t('PlaceholderPassword')"
                   class="form-control"
                   v-model="user.password"
                 />
               </div>
-              
+
               <div class="row justify-content-center my-3 px-3">
                 <button class="btn-block btn-registrarse" @click="createUser()">
-                 {{ $t('RegisterButton')}}
+                  {{ $t("RegisterButton") }}
                 </button>
               </div>
 
               <div class="row justify-content-center my-3 px-3">
-              <button class="gsi-material-button" @click="signInGoogle()">
-                <div class="gsi-material-button-state"></div>
-                <div class="gsi-material-button-content-wrapper">
-                  <div class="gsi-material-button-icon">
-                    <svg
-                      version="1.1"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 48 48"
-                      xmlns:xlink="http://www.w3.org/1999/xlink"
-                      style="display: block"
-                    >
-                      <path
-                        fill="#EA4335"
-                        d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"
-                      ></path>
-                      <path
-                        fill="#4285F4"
-                        d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"
-                      ></path>
-                      <path
-                        fill="#FBBC05"
-                        d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"
-                      ></path>
-                      <path
-                        fill="#34A853"
-                        d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"
-                      ></path>
-                      <path fill="none" d="M0 0h48v48H0z"></path>
-                    </svg>
+                <button class="gsi-material-button" @click="signInGoogle()">
+                  <div class="gsi-material-button-state"></div>
+                  <div class="gsi-material-button-content-wrapper">
+                    <div class="gsi-material-button-icon">
+                      <svg
+                        version="1.1"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 48 48"
+                        xmlns:xlink="http://www.w3.org/1999/xlink"
+                        style="display: block"
+                      >
+                        <path
+                          fill="#EA4335"
+                          d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"
+                        ></path>
+                        <path
+                          fill="#4285F4"
+                          d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"
+                        ></path>
+                        <path
+                          fill="#FBBC05"
+                          d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"
+                        ></path>
+                        <path
+                          fill="#34A853"
+                          d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"
+                        ></path>
+                        <path fill="none" d="M0 0h48v48H0z"></path>
+                      </svg>
+                    </div>
+                    <span class="gsi-material-button-contents">{{
+                      $t("GoogleButton")
+                    }}</span>
                   </div>
-                  <span class="gsi-material-button-contents"
-                    >{{ $t('GoogleButton')}}</span
-                  >
-                </div>
-              </button>
-
-            </div>
-          
-              
+                </button>
+              </div>
 
               <!-- <div class="row justify-content-center my-2">
                 <a href="#"
@@ -297,7 +304,10 @@ export default {
           </div>
           <div class="bottom text-center mb-5">
             <p class="sm-text mx-auto mb-3">
-              {{ $t('AlreadyHaveAccount')}}<button class="btn btn-white ml-2"><a href="/login">{{ $t('EnterLogin')}}</a></button>
+              {{ $t("AlreadyHaveAccount")
+              }}<button class="btn btn-white ml-2">
+                <a href="/login">{{ $t("EnterLogin") }}</a>
+              </button>
             </p>
           </div>
         </div>
@@ -455,7 +465,7 @@ export default {
 }
 
 .btn-registrarse {
-  background-color: var(--principalBrown);  
+  background-color: var(--principalBrown);
   color: white; /* Color del texto */
   padding: 14px 20px; /* Espacio interno */
   margin: 8px 0; /* Margen externo */

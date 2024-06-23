@@ -6,9 +6,11 @@ import loginComponent from "./components/loginComponent.vue";
 import auth from "./views/auth.vue";
 import manageKits from "./views/admins/manageKits.vue";
 import createKit from "./views/admins/createKit.vue";
+import editKit from "./views/admins/editKit.vue";
 import createKitMaterial from "./views/admins/createKitMaterial.vue";
 //rewards
 import rewards from "./views/admins/rewards/rewards.vue";
+import modifyReward from "./views/admins/rewards/modifyReward.vue";
 import generateStickers from "./views/admins/rewards/generateStickers.vue";
 import generate3DObjects from "./views/admins/rewards/generate3DObjects.vue";
 import assignRewardTokit from "./views/admins/rewards/assignRewardToKit.vue";
@@ -27,7 +29,6 @@ import reedemCode from "./views/admins/codes/reedemCode.vue";
 import showRewards from "./views/clients/showRewards.vue";
 import reedemReward from "./views/clients/redeemReward.vue";
 import userRewards from "./views/clients/userRewards.vue";
-import modifyReward from "./views/clients/modifyReward.vue";
 
 //Para la redirección
 import { useUserStore } from "./stores/userStore.js";
@@ -86,7 +87,7 @@ const router = createRouter({
       path: "/modifyReward",
       name: "modifyReward",
       component: modifyReward,
-      meta: { requiresAuth: true, requiresAdmin: false },
+      meta: { requiresAuth: true, requiresAdmin: true },
       props: true,
     },
     //Admins
@@ -100,6 +101,12 @@ const router = createRouter({
       path: "/admin/createKit",
       name: "createKit",
       component: createKit,
+      meta: { requiresAuth: true, requiresAdmin: true },
+    },
+    {
+      path: "/admin/editKit/:kitID",
+      name: "editKit",
+      component: editKit,
       meta: { requiresAuth: true, requiresAdmin: true },
     },
     {

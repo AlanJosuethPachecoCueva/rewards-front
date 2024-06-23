@@ -1,27 +1,33 @@
 <template #addons>
   <div class="bigContainerKit">
-    <h2>Nuevo Material Publicitario</h2>
+    <h2>Editando Material Publicitario</h2>
     <h3>Afiches & Banners</h3>
     <div class="createKitContainer">
       <div class="createKitContainerLeft">
         <div class="showInformationLeft">
           <div class="showDataKit">
-            <h4>Tu chocolate</h4>
-            <div class="card cardKitInformation" style="height: fit-content">
-              {{ kit.title }}
-            </div>
-            <div
-              class="card cardKitInformation"
-              style="height: fit-content; text-align: left"
-            >
-              {{ kit.description }}
-            </div>
-            <div
-              class="card cardKitInformation"
-              style="height: fit-content; text-align: left"
-            >
-              {{ kit.slogans }}
-            </div>
+            <h4>Tu kit</h4>
+            <input 
+              v-model="edittingKit.title" 
+              type="text" 
+              placeholder="edittingKit.title"
+              class="card"
+              style="width: 100%; padding: 0.5rem;  box-shadow: none;"
+            />
+            <textarea 
+              v-model="edittingKit.description" 
+              placeholder="Descripción del kit"
+              class="card"
+              rows="5"
+              style="width: 100%; padding: 0.5rem; box-shadow: none; resize: none;"
+            ></textarea>
+            <textarea 
+              v-model="edittingKit.slogans" 
+              placeholder="Slogans del kit"
+              class="card"
+              rows="4"
+              style="width: 100%; padding: 0.5rem; box-shadow: none; resize: none;"
+            ></textarea>
           </div>
           <div
             class="imagesSelector"
@@ -181,7 +187,7 @@ export default {
   data() {
     return {
       logIn: true,
-      kit: { title: "Provisional" },
+      edittingKit: { title: "Provisional" },
       totalCards: 10, // Suponiendo que tienes  10 tarjetas en total
       cardsToShow: 3, // Inicialmente mostramos  3 tarjetas
       loadedCards: 3, // Inicialmente cargamos  3 tarjetas
@@ -200,7 +206,7 @@ export default {
     return { user };
   },
   async created() {
-    await this.getKit();
+    await this.getKit(this.$route.params.kitID);
     await this.getKitsImages();
   },
   methods: {
@@ -256,14 +262,13 @@ export default {
       this.kitsImages = res;
       this.totalCards = this.kitsImages.length;
     },
-    async getKit() {
+    async getKit(id) {
       try {
-        const idToSearch = this.$route.params.kitId;
-        const kit = await getKitByIdController(idToSearch);
+        const kit = await getKitByIdController(id);
         if (!kit) {
           throw new Error("Unable to find kit");
         }
-        this.kit = kit;
+        this.edittingKit = kit;
         // this.user = Object.assign({}, user);
       } catch (error) {
         console.error("Unable to find kit:", error);
@@ -324,6 +329,10 @@ export default {
         }
       }
     },
+    // async mounted(){
+    //   const kitID = this.$route.params.kitID;
+    //   await getKit(kitID);
+    // }
   },
 };
 </script>

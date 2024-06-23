@@ -1,4 +1,4 @@
-import {getUser, getUserRewards} from "@/models/userModel";
+import { getUser, getUserRewards, deleteUserById } from "@/models/userModel";
 
 const getUserByIdController = async (id) => {
   try {
@@ -10,6 +10,22 @@ const getUserByIdController = async (id) => {
     }
 
     return user;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};
+
+const deleteUserByIdController = async (id) => {
+  try {
+    const msg = await deleteUserById(id);
+
+    if (!msg) {
+      console.error("Error deliting user in controller.");
+      return false;
+    }
+
+    return msg;
   } catch (error) {
     console.error(error);
     return false;
@@ -32,4 +48,4 @@ const getUserRewardsController = async (id) => {
     return false;
   }
 };
-export { getUserByIdController, getUserRewardsController };
+export { getUserByIdController, getUserRewardsController, deleteUserByIdController };

@@ -10,7 +10,7 @@ export default {
       colors,
       textColor: colors.primaryTextColor,
       textColorContrast: colors.contastBlackColor,
-       showLanguageButtons: false
+      showLanguageButtons: false,
     };
   },
   components: {},
@@ -34,9 +34,9 @@ export default {
     goToLogin() {
       this.$router.push("/login");
     },
-     toggleLanguageButtons() {
+    toggleLanguageButtons() {
       this.showLanguageButtons = !this.showLanguageButtons;
-    }
+    },
   },
   setup() {
     const store = useUserStore();
@@ -52,68 +52,117 @@ export default {
     } else {
       console.log("No logueado");
     }
-  
   },
-
 };
-
 </script>
 
 <template>
-  <nav class="navbar navbar-expand-lg navBarPersonalized marron-principal"
-    :style="{ backgroundColor: colors.principalBrown }">
+  <nav
+    class="navbar navbar-expand-lg navBarPersonalized marron-principal"
+    :style="{ backgroundColor: colors.principalBrown }"
+  >
     <div class="container-fluid">
-      <a class="navbar-brand" :style="{ color: textColor }" href="/">Kvmi</a>
+      <a class="navbar-brand" :style="{ color: textColor }" href="/">KVMI</a>
       <!-- Botón para ocultar -->
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
-        :style="{ backgroundColor: textColor }">
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+        :style="{ backgroundColor: textColor }"
+      >
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent showPoints">
+      <div
+        class="collapse navbar-collapse"
+        id="navbarSupportedContent showPoints"
+      >
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active navMenu" aria-current="page" href="#" :style="{ color: textColor }">Material
-              Publicitario</a>
-          </li>
-          <!-- <li class="nav-item">
-            <a class="nav-link" href="#" :style="{ color: textColor }"
-              >Premios</a
+            <a
+              class="nav-link active navMenu"
+              aria-current="page"
+              href="/admin/manageKits"
+              :style="{ color: textColor }"
+              >{{ $t("ManageKits") }}</a
             >
-          </li> -->
+          </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
-              aria-expanded="false" :style="{ color: textColor }">{{ $t('Awards')}}
-              
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="navbarDropdown"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+              :style="{ color: textColor }"
+              >{{ $t("Codes") }}
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
               <li>
-                <a class="dropdown-item" href="/codes/reedemCode" :style="{ color: textColorContrast }">{{ $t('Redeem')}}</a>
-                
+                <a
+                  class="dropdown-item"
+                  href="/admin/codes"
+                  :style="{ color: textColorContrast }"
+                  >{{ $t("ManageCodes") }}</a
+                >
               </li>
-              <li v-if="user != null && user.isAdmin == true">
-                <a class="dropdown-item" href="/admin/manageKits" :style="{ color: textColorContrast }">
-                {{ $t('ManagePublicitaryContent')}}</a>
-              </li>
-
-              <li>
-                <a class="dropdown-item" href="#" :style="{ color: textColorContrast }">{{ $t('ActiveAwards')}}</a>
-              </li>
-              <li v-if="user != null && user.isAdmin == true">
-                <a class="dropdown-item" href="/admin/rewards" :style="{ color: textColorContrast }">
-                {{ $t('ManageAwards')}}</a>
-              </li>
-              <li v-if="user != null && user.isAdmin == true">
-                <a class="dropdown-item" href="/admin/codes" :style="{ color: textColorContrast }">{{ $t('ManageCodes')}}</a>
-              </li>
-
               <li>
                 <hr class="dropdown-divider" />
               </li>
               <li>
-                <a class="dropdown-item" href="#" :style="{ color: textColorContrast }">{{ $t('Help')}}</a>
+                <a
+                  class="dropdown-item"
+                  href="/codes/reedemCode"
+                  :style="{ color: textColorContrast }"
+                  >{{ $t("Redeem") }}</a
+                >
               </li>
             </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="navbarDropdown"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+              :style="{ color: textColor }"
+              >{{ $t("Awards") }}
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li>
+                <a
+                  class="dropdown-item"
+                  href="/rewards"
+                  :style="{ color: textColorContrast }"
+                  >{{ $t("ActiveAwards") }}</a
+                >
+              </li>
+              <li v-if="user != null && user.isAdmin == true">
+                <a
+                  class="dropdown-item"
+                  href="/admin/rewards"
+                  :style="{ color: textColorContrast }"
+                >
+                  {{ $t("ManageAwards") }}</a
+                >
+              </li>
+            </ul>
+          </li>
+
+          <li class="nav-item">
+            <a
+              class="nav-link active navMenu"
+              aria-current="page"
+              href="#"
+              :style="{ color: textColor }"
+              >{{ $t("Help") }}</a
+            >
           </li>
           <!-- <li class="nav-item">
             <a
@@ -123,79 +172,127 @@ export default {
               aria-disabled="true"
               >Disabled</a
             >
-          </li> -->    
-      </ul>
+          </li> -->
+        </ul>
 
-       <div id="divGoloso" v-if="user != null">
-          
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex dropdown-menu-right" v-if="user.id != ''">
-           
-            <li class="nav-item"> 
-            </li>             
+        <div id="divGoloso" v-if="user != null">
+          <ul
+            class="navbar-nav me-auto mb-2 mb-lg-0 d-flex dropdown-menu-right"
+            v-if="user.id != ''"
+          >
+            <li class="nav-item"></li>
             <li id="pointsContainer">
-            <div class="puntosCacao">       
-            <a class="nav-link" href="#" :style="{ color: textColor }">
-              {{ user.points }}
-            </a>
-            </div>              
-            <i>
-              <img src="../assets//images//cacao.png" alt="Points Icon" style="width:32px; height:32px; margin-left: 5px;
-                margin-right: 5px; margin-left: 5px;
-                margin-right: 5px;">
-            </i>            
-          </li>
-           
-            <li class="nav-item dropdown2">           
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
-                aria-expanded="false" :style="{ color: textColor }">
-                {{ user.name }}            
-                <i class="bi bi-person-fill" style="font-size: 2rem; color: #ffffff; font-weight: bold"></i>                
+              <div class="puntosCacao">
+                <a class="nav-link" href="#" :style="{ color: textColor }">
+                  {{ user.points }}
+                </a>
+              </div>
+              <i>
+                <img
+                  src="../assets//images//cacao.png"
+                  alt="Points Icon"
+                  style="
+                    width: 32px;
+                    height: 32px;
+                    margin-left: 5px;
+                    margin-right: 5px;
+                    margin-left: 5px;
+                    margin-right: 5px;
+                  "
+                />
+              </i>
+            </li>
+
+            <li class="nav-item dropdown2">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                :style="{ color: textColor }"
+              >
+                {{ user.name }}
+                <i
+                  class="bi bi-person-fill"
+                  style="font-size: 2rem; color: #ffffff; font-weight: bold"
+                ></i>
               </a>
-               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li>
-                  <a class="dropdown-item" href="#" @click="closeSession()">{{ $t('LogOut')}}</a>
+                  <a class="dropdown-item" href="#" @click="closeSession()">{{
+                    $t("LogOut")
+                  }}</a>
                 </li>
                 <li>
                   <hr class="dropdown-divider" />
                 </li>
                 <li>
-                  <a class="dropdown-item" href="/userRewards" :style="{ color: textColorContrast }">{{ $t('Profile')}}</a>
-                </li>                                
-              </ul>              
-            </li>             
-           <div>
-        <!-- Ícono del globo -->
-        <div class="globe" @click="toggleLanguageButtons">       
-          <i class="bi bi-globe" style="font-size: 1.5rem; color: #ffffff; font-weight: bold; margin-right: 15px;"></i>         
-        </div>
+                  <a
+                    class="dropdown-item"
+                    href="/userRewards"
+                    :style="{ color: textColorContrast }"
+                    >{{ $t("Profile") }}</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <div>
+              <!-- Ícono del globo -->
+              <div class="globe" @click="toggleLanguageButtons">
+                <i
+                  class="bi bi-globe"
+                  style="
+                    font-size: 1.5rem;
+                    color: #ffffff;
+                    font-weight: bold;
+                    margin-right: 15px;
+                  "
+                ></i>
+              </div>
 
-        <!-- Botones de idioma -->
-        <div class="botones-idioma" v-if="showLanguageButtons">
-          <button @click="$i18n.locale = 'es'">ES</button>
-          <button @click="$i18n.locale = 'en'">EN</button>
+              <!-- Botones de idioma -->
+              <div class="botones-idioma" v-if="showLanguageButtons">
+                <button @click="$i18n.locale = 'es'">ES</button>
+                <button @click="$i18n.locale = 'en'">EN</button>
+              </div>
+            </div>
+          </ul>
         </div>
-      </div>
-          </ul>          
-        </div>
-        
 
         <form class="d-flex">
           <!-- <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">        
-        <button class="btn btn-outline-success" type="submit">Search</button> -->          
-          <button v-if="user == null || user.id == ''" class="btn d-flex align-items-center"
-            style="font-size: 1rem; color: #ffffff; font-weight: 400" @click="goToLogin()">
-            {{ $t('Login')}}
-            <i class="bi bi-person-circle" style="
+        <button class="btn btn-outline-success" type="submit">Search</button> -->
+          <button
+            v-if="user == null || user.id == ''"
+            class="btn d-flex align-items-center"
+            style="font-size: 1rem; color: #ffffff; font-weight: 400"
+            @click="goToLogin()"
+          >
+            {{ $t("Login") }}
+            <i
+              class="bi bi-person-circle"
+              style="
                 margin-left: 10px;
                 font-size: 2rem;
                 color: #ffffff;
                 font-weight: bold;
-              "></i>
-          </button>          
+              "
+            ></i>
+          </button>
         </form>
-         <!-- Ícono del globo -->
-        <div class="globe" @click="toggleLanguageButtons">       
-          <i class="bi bi-globe" style="font-size: 1.5rem; color: #ffffff; font-weight: bold; margin-right: 15px;"></i>         
+        <!-- Ícono del globo -->
+        <div class="globe" @click="toggleLanguageButtons">
+          <i
+            class="bi bi-globe"
+            style="
+              font-size: 1.5rem;
+              color: #ffffff;
+              font-weight: bold;
+              margin-right: 15px;
+            "
+          ></i>
         </div>
 
         <!-- Botones de idioma -->
@@ -222,14 +319,13 @@ export default {
 </template>
 
 <style>
-#pointsContainer{
+#pointsContainer {
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: rgb(227, 90, 90);
   border-radius: 20px;
   height: 10% !important;
-
 }
 /* #showPoints {
   background-color: red;
@@ -248,7 +344,6 @@ export default {
   width: max-content;
   /* Ajusta el ancho para que se extienda a lo ancho del contenedor */
   padding-right: 15px;
-  
 }
 
 .dropdown-menu-right {
@@ -267,7 +362,7 @@ export default {
   /* background-color: rgb(65, 39, 39); */
   color: white !important;
   display: flex !important;
-   align-items: center;
+  align-items: center;
   position: fixed !important;
   top: 0;
   z-index: 10;
@@ -285,19 +380,18 @@ export default {
   background-color: none;
 }
 
-.globe {    
+.globe {
   display: flex;
-  justify-content:center;
+  justify-content: center;
   align-items: center;
   width: 50px;
   height: 50px;
   cursor: pointer;
-    
 }
 
 #pointsContainer {
-  display: flex ;
-  justify-content:center;
+  display: flex;
+  justify-content: center;
   align-items: center;
   margin-top: 5px;
 }
@@ -306,6 +400,5 @@ export default {
   height: 50px;
   display: flex;
   align-items: center;
-
 }
 </style>
