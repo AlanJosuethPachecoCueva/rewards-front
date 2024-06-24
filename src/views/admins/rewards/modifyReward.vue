@@ -13,11 +13,13 @@
             </div>
             <div class="form-group">
                 <label for="description">Description</label>
-                <textarea id="description" v-model="reward.metadata[0].metadata.description" required></textarea>
+                <textarea id="description" v-model="reward.metadata[0].metadata.description"
+                    required></textarea>
             </div>
             <div class="form-group">
                 <label for="costInPoints">Cost in Points</label>
-                <input type="number" id="costInPoints" v-model.number="product.costInPoints" required />
+                <input v-if="reward.type != 'pr'"  type="number" id="costInPoints" v-model.number="reward.metadata[0].metadata.costInPoints" required />
+                <input v-else="reward.type == 'pr'" type="number" id="costInPoints" v-model.number="product.costInPoints" required />
             </div>
 
             <div v-if="this.reward.type == 'pr'">
@@ -39,7 +41,7 @@
 
 <script>
 import { modifyReward } from '@/models/rewardModel';
-import { getProductController } from "@/controllers/rewardsController";
+import { getProductController, modifyRewardController, modifyProductController } from "@/controllers/rewardsController";
 import '@google/model-viewer';
 export default {
     components: {
@@ -82,26 +84,32 @@ export default {
     methods: {
         async updateReward() {
             try {
-                // Aquí deberías llamar a la función que actualiza los metadatos en Firebase
                 const parts = this.reward.metadata[0].name.split("/");
 
                 // Toma el último elemento del array resultante
                 let fileName = parts[parts.length - 1];
 
-                const data = {
+                let data = {
                     type: this.reward.type,
                     fileName,
                     newTitle: this.reward.metadata[0].metadata.title,
                     newDescription: this.reward.metadata[0].metadata.description,
                     newCostInPoints: this.reward.metadata[0].metadata.costInPoints,
-                    newStock: this.product.stock,
-                    newPrice: this.product.price
                 };
 
-                console.log("data: ", data);
-                const resp = await modifyReward(data);
-                // Puedes mostrar un mensaje de éxito o redirigir a otra página
-                console.log("resp: ", resp);
+                if (this.reward.type == "pr") {
+                    data = {
+                        ...data,
+                        stock: this.product.stock,
+                        price: this.product.price
+                    };
+
+                    data.newCostInPoints = this.product.costInPoints;
+                }
+                console.log("data modifyyy: ", data);
+
+
+
                 const result = await this.$swal({
                     title: '¿Deseas modificar el premio?',
                     text: 'Se modificarán los parámetros indicados, esta acción no es reversible.',
@@ -121,13 +129,26 @@ export default {
                     window.location.reload();
                     return;
                 } else {
-                    await this.$swal({
-                        title: 'Premio modificado',
-                        text: "El premio ha sido modificado satisfactoriamente.",
-                        icon: "success",
-                        showCancelButton: false,
-                        confirmButtonText: "OK",
-                    });
+                    //Modifica el premio en storage
+                    const resp = await modifyRewardController(data);
+                    console.log("resp Modifica el premio en storage: ", resp);
+                    let respDoc = false;
+                    console.log("this.reward.type: ", this.reward.type);
+                    if (this.reward.type == "pr") {
+                        respDoc = await modifyProductController(data);
+                        console.log("respDoc Modifica el premio en doc: ", respDoc);
+                    }
+
+                    if (resp || (resp && respDoc)) {
+                        await this.$swal({
+                            title: 'Premio modificado',
+                            text: "El premio ha sido modificado satisfactoriamente.",
+                            icon: "success",
+                            showCancelButton: false,
+                            confirmButtonText: "OK",
+                        });
+                    }
+
 
                 }
                 this.$router.push({ path: '/admin/rewards' });

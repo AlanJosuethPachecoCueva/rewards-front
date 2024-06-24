@@ -1,105 +1,9 @@
-<script>
-import statsComponent from "@/components/admin/statsComponent.vue";
-import rewardContainerComponent from "@/components/rewardContainerComponent.vue";
-import cardsCarrouselComponent from "@/components/cardsCarrouselComponent.vue";
-import {
-  getKitsController,
-  deleteKitByIdController,
-} from "@/controllers/kitsController";
-import VueSweetalert2 from "vue-sweetalert2";
-import "sweetalert2/dist/sweetalert2.min.css";
-
-export default {
-  components: {
-    rewardContainerComponent,
-    statsComponent,
-    cardsCarrouselComponent,
-    VueSweetalert2,
-  },
-  data() {
-    return {
-      logIn: true,
-      kits: [],
-      kitsToShow: [],
-    };
-  },
-  methods: {
-    goToCreateKit() {
-      this.$router.push("/admin/createKit");
-    },
-    goToListView() {
-      this.$router.push("/admin/listKits");
-    },
-    async getKits() {
-      this.kits = await getKitsController();
-      this.kitsToShow = JSON.parse(JSON.stringify(this.kits));
-    },
-    async deleteKit(kitId) {
-      this.$swal({
-        title: "¿Estás seguro?",
-        text: "¡No podrás revertir esto!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Sí, eliminarlo",
-        cancelButtonText: "Cancelar",
-      }).then(async (result) => {
-        if (result.isConfirmed) {
-          // Lógica para eliminar el kit
-          const res = await deleteKitByIdController(kitId);
-          if (!res) {
-            throw new Error(`Kit ${kitId} was not deleted`);
-          }
-          console.log(`Deleting kit with ID: ${kitId}`);
-          // Aquí llamarías a tu controlador de eliminación y actualizarías la lista de kits
-          await this.getKits();
-          this.$swal("¡Eliminado!", "El kit ha sido eliminado.", "success");
-        }
-      });
-    },
-    editKit(kitId) {
-      this.$router.push(`/admin/editKit/${kitId}`);
-      //console.log(`Editing kit: ${kit.metadata[0].metadata.title}`);
-    },
-    search() {
-      const searchTerm = this.$refs.searchInput.value;
-      this.kitsToShow = [];
-      this.kits.filter((kit) => {
-        if (
-          kit.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          kit.description.toLowerCase().includes(searchTerm.toLowerCase())
-        ) {
-          this.kitsToShow.push(kit);
-        } else {
-          console.log("No encontrado");
-        }
-      });
-    },
-  },
-  async mounted() {
-    this.getKits();
-  },
-};
-</script>
 <template>
   <div>
     <statsComponent></statsComponent>
     <div class="containerKits" style="padding: 2rem">
       <h2 style="margin-bottom: 1.5rem">Kits</h2>
       <div class="input-group mb-3">
-        <span
-          class="input-group-text"
-          @click="goToListView"
-          style="
-            cursor: pointer;
-            font-size: 1.2rem;
-            color: #000;
-            font-weight: bold;
-          "
-        >
-          <i class="bi bi-table"></i>
-        </span>
         <span
           class="input-group-text"
           @click="goToCreateKit"
@@ -194,6 +98,89 @@ export default {
     </div>
   </div>
 </template>
+
+<script>
+import statsComponent from "@/components/admin/statsComponent.vue";
+import rewardContainerComponent from "@/components/rewardContainerComponent.vue";
+import cardsCarrouselComponent from "@/components/cardsCarrouselComponent.vue";
+import {
+  getKitsController,
+  deleteKitByIdController,
+} from "@/controllers/kitsController";
+import VueSweetalert2 from "vue-sweetalert2";
+import "sweetalert2/dist/sweetalert2.min.css";
+
+export default {
+  components: {
+    rewardContainerComponent,
+    statsComponent,
+    cardsCarrouselComponent,
+    VueSweetalert2,
+  },
+  data() {
+    return {
+      logIn: true,
+      kits: [],
+      kitsToShow: [],
+    };
+  },
+  methods: {
+    goToCreateKit() {
+      this.$router.push("/admin/createKit");
+    },
+    async getKits() {
+      this.kits = await getKitsController();
+      this.kitsToShow = JSON.parse(JSON.stringify(this.kits));
+    },
+    async deleteKit(kitId) {
+      this.$swal({
+        title: "¿Estás seguro?",
+        text: "¡No podrás revertir esto!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Sí, eliminarlo",
+        cancelButtonText: "Cancelar",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          // Lógica para eliminar el kit
+          const res = await deleteKitByIdController(kitId);
+          if (!res) {
+            throw new Error(`Kit ${kitId} was not deleted`);
+          }
+          console.log(`Deleting kit with ID: ${kitId}`);
+          // Aquí llamarías a tu controlador de eliminación y actualizarías la lista de kits
+          await this.getKits();
+          this.$swal("¡Eliminado!", "El kit ha sido eliminado.", "success");
+        }
+      });
+    },
+    editKit(kitId) {
+      this.$router.push(`/admin/editKit/${kitId}`);
+      //console.log(`Editing kit: ${kit.metadata[0].metadata.title}`);
+    },
+    search() {
+      const searchTerm = this.$refs.searchInput.value;
+      this.kitsToShow = [];
+      this.kits.filter((kit) => {
+        if (
+          kit.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          kit.description.toLowerCase().includes(searchTerm.toLowerCase())
+        ) {
+          this.kitsToShow.push(kit);
+        } else {
+          console.log("No encontrado");
+        }
+      });
+    },
+  },
+  async mounted() {
+    this.getKits();
+  },
+};
+</script>
+
 
 <style>
 .containerKits {

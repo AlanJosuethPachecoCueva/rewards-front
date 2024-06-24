@@ -219,9 +219,9 @@ const reedemRewardController = async (data) => {
 
 const modifyRewardController = async (data) => {
   try {
-    console.log("data in modifyRewardController: ", data);
+    //console.log("data in modifyRewardController: ", data);
     const resp = await modifyReward(data);
-    console.log("resp in modifyRewardController: ", resp);
+    //console.log("resp in modifyRewardController: ", resp);
     if (!resp) {
       console.error("Error modifiying reward");
       return false;
@@ -236,9 +236,9 @@ const modifyRewardController = async (data) => {
 
 const modifyProductController = async (data) => {
   try {
-    console.log("data in modifyProduct: ", data);
+    //console.log("data in modifyProduct: ", data);
     const resp = await modifyProduct(data);
-    console.log("resp in modifyProduct: ", resp);
+    console.log("resp in modifyProductController: ", resp);
     if (!resp) {
       console.error("Error modifiying product");
       return false;

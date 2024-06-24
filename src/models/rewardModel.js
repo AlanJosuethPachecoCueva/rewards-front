@@ -280,7 +280,8 @@ const getAllKits_Rewards = async () => {
 };
 
 const reedemReward = async (data) => {
-  const { fileName, type, uid, associatedKit } = data;
+  const { fileName, type, uid, associatedKit, names, email, cellphone, city, street, description } = data;
+  
   try {
     const response = await fetch(`${RUTA_SERVIDOR}/rewards/reedemReward`, {
       method: "POST",
@@ -292,6 +293,7 @@ const reedemReward = async (data) => {
         type,
         associatedKit,
         uid,
+        names, email, cellphone, city, street, description
       }),
     });
 
@@ -307,7 +309,9 @@ const reedemReward = async (data) => {
 };
 
 const modifyReward = async (data) => {
-  const { type, fileName, newTitle, newDescription, newCostInPoints, newStock, newPrice } = data;
+  const {
+    type, fileName, newTitle, newDescription, newCostInPoints, newStock, newPrice,
+  } = data;
   try {
     const response = await fetch(`${RUTA_SERVIDOR}/rewards/updateReward`, {
       method: "PUT",
@@ -315,18 +319,14 @@ const modifyReward = async (data) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        type,
-        fileName,
-        newTitle,
-        newDescription,
-        newCostInPoints,
+        type, fileName, newTitle, newDescription, newCostInPoints,
       }),
     });
 
-    const resultModifyProduct = await modifyProduct({ price: newPrice, stock: newStock, fileName, costInPoints: newCostInPoints });
-    
+    //const resultModifyProduct = await modifyProduct({price: newPrice, stock: newStock, fileName, costInPoints: newCostInPoints,});
+
     console.log("response in modifyReward: ", response);
-    console.log("resultModifyProduct: ", resultModifyProduct);
+    //console.log("resultModifyProduct: ", resultModifyProduct);
     if (!response.ok) {
       throw new Error("Error modifiying reward");
     }
@@ -339,9 +339,8 @@ const modifyReward = async (data) => {
   }
 };
 
-
 const modifyProduct = async (data) => {
-  const { price, stock, fileName, costInPoints } = data;
+  const { price, stock, fileName, newCostInPoints } = data;
   try {
     const response = await fetch(`${RUTA_SERVIDOR}/rewards/updateProduct`, {
       method: "PUT",
@@ -349,12 +348,15 @@ const modifyProduct = async (data) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        price, stock, fileName, costInPoints
+        price,
+        stock,
+        fileName,
+        costInPoints: newCostInPoints,
       }),
     });
-    console.log("response in modifyReward: ", response);
+    //console.log("response in modifyReward: ", response);
     if (!response.ok) {
-      throw new Error("Error modifiying reward");
+      console.error("Error modifiying product in modifyProduct Model: ", response);
     }
 
     //const data = await response.json();
@@ -394,5 +396,5 @@ export {
   reedemReward,
   modifyReward,
   modifyProduct,
-  getProduct
+  getProduct,
 };

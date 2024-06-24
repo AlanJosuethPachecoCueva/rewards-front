@@ -20,6 +20,46 @@
                 <multiselect v-model="selectedKit" :options="kits" label="title" track-by="id" :multiple="false"
                     mode="tags" placeholder="Selecciona los kits"></multiselect>
             </div>
+
+            <!-- Para productos -->
+            <div v-if="reward.type == 'pr'">
+                <!-- Input for Names -->
+                <div class="form-group">
+                    <label for="names">Nombre Completo:</label>
+                    <input class="form-control" type="text" id="names" v-model="names" required>
+                </div>
+
+                <!-- Input for Email -->
+                <div class="form-group">
+                    <label for="email">Correo Electrónico:</label>
+                    <input class="form-control" type="email" id="email" v-model="email" required>
+                </div>
+
+                <!-- Input for Cellphone -->
+                <div class="form-group">
+                    <label for="cellphone">Número de Teléfono:</label>
+                    <input class="form-control" type="tel" id="cellphone" v-model="cellphone" required>
+                </div>
+
+                <!-- Input for City -->
+                <div class="form-group">
+                    <label for="city">Ciudad:</label>
+                    <input class="form-control" type="text" id="city" v-model="city" required>
+                </div>
+
+                <!-- Input for Street -->
+                <div class="form-group">
+                    <label for="street">Calle y Número:</label>
+                    <input class="form-control" type="text" id="street" v-model="street" required>
+                </div>
+
+                <!-- Input for Description -->
+                <div class="form-group">
+                    <label for="description">Descripción del Producto:</label>
+                    <textarea class="form-control" id="description" v-model="description" required></textarea>
+                </div>
+            </div>
+
             <button @click="reedemReward()" class="redeembutton">Redimir</button>
         </div>
 
@@ -39,7 +79,13 @@ export default {
         return {
             reward: {},
             kits: [],
-            selectedKit: null
+            selectedKit: null,
+            names: "",
+            email: "",
+            cellphone: "",
+            city: "",
+            street: "",
+            description: ""
         };
     },
     components: {
@@ -62,20 +108,26 @@ export default {
     },
     methods: {
         async reedemReward() {
-            console.log("rerafegf");
             const parts = this.reward.metadata[0].name.split("/");
 
             // Toma el último elemento del array resultante
             let fileName = parts[parts.length - 1];
             console.log("fileNamee: ", fileName);
-            const rewardToSend = {
+            let rewardToSend = {
                 fileName, type: this.reward.type, uid: this.user.id, associatedKit: this.selectedKit.id
+            }
+
+            if (this.reward.type == "pr") {
+                rewardToSend = {
+                    ...rewardToSend,
+                    names: this.names, email: this.email, cellphone: this.cellphone, city: this.city, street: this.street, description: this.description
+                }
             }
             const res = await reedemRewardController(rewardToSend);
             console.log("res in reedem reward: ", res);
 
             if (!res.success) {
-                console.error("Ha ocurrido un error al redimir el sticker seleccionado: ", res);
+                console.error("Ha ocurrido un error al redimir el premio seleccionado: ", res);
                 await this.$swal({
                     title: 'No se ha redimido el premio',
                     text: "Ha ocurrido un error al redimir el premio seleccionado.",
@@ -86,13 +138,24 @@ export default {
                 return;
             }
 
-            await this.$swal({
-                title: 'El premio ha sido redimido',
-                text: "El premio se redimió exitosamente, ahora está disponible en tu perfil.",
-                icon: "success",
-                showCancelButton: false,
-                confirmButtonText: "OK",
-            });
+            if (this.reward.type == "pr") {
+                await this.$swal({
+                    title: 'Premio físico redimido',
+                    text: "Estás redimiendo un producto físico de la tienda, la solicitud se enviará a los administradores y será procesada tan pronto como sea posible. Puedes observar el estado de la entrega desde tu perfil en la sección de premios.",
+                    icon: "success",
+                    showCancelButton: false,
+                    confirmButtonText: "OK",
+                });
+            } else {
+                await this.$swal({
+                    title: 'El premio ha sido redimido',
+                    text: "El premio se redimió exitosamente, ahora está disponible en tu perfil.",
+                    icon: "success",
+                    showCancelButton: false,
+                    confirmButtonText: "OK",
+                });
+            }
+
             this.$router.push({ name: 'userRewards' });
 
         }
@@ -151,6 +214,7 @@ export default {
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    margin: 30px 0px 0px 0px;
 }
 
 .redeem-button:hover {
