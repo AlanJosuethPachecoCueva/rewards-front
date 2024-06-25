@@ -49,6 +49,11 @@
               <input type="number" class="form-control" :class="{ 'is-invalid': pointsTouched && pointsValid }"
                 placeholder="Ingrese la cantidad de puntos" id="points" v-model="points" @blur="pointsTouched = true">
             </div>
+            <div class="form-group group">
+              <label class="label" for="points">Stock disponible</label>
+              <input type="number" class="form-control" :class="{ 'is-invalid': stockTouched && stockValid }"
+                placeholder="Ingrese la cantidad de productos disponible" id="points" v-model="stock" @blur="stockTouched = true">
+            </div>
           </div>
         </div>
       </div>
@@ -84,6 +89,9 @@ export default {
       pointsTouched: false,
       priceValid: true,
       pointsValid: true,
+      stock: 0,
+      stockValid: true,
+      stockTouched: false,
     };
   },
   setup() {
@@ -109,6 +117,9 @@ export default {
     },
     pointsValid() {
       return this.pointsTouched ? this.points && this.points > 0 : true;
+    },
+    stockValid() {
+      return this.stockTouched ? this.stock && this.stock > 0 : true;
     },
     async selectImageFromDevice(event) {
       this.file = event.target.files[0];
@@ -138,8 +149,9 @@ export default {
       const name = this.name
       const price = this.price;
       const costInPoints = this.points;
+      const stock = this.stock;
 
-      res = await saveProductController({ name, description, price, costInPoints, userId, image });
+      res = await saveProductController({ name, description, price, costInPoints, userId, image, stock });
       console.warn("Res al guardar producto: ", res)
 
       // Oculta el mensaje de carga

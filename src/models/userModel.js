@@ -45,7 +45,8 @@ async function registerWithFirebase(userData) {
 
 async function saveUserDataInFirebase(userData) {
   try {
-    const { email, name, surname, birthdate, direction, isAdmin, uid } = userData;
+    const { email, name, surname, birthdate, direction, isAdmin, uid } =
+      userData;
 
     //Cambiar ruta de api
     const response = await fetch(`${RUTA_SERVIDOR}/users/saveUserData`, {
@@ -153,7 +154,14 @@ const updateUser = async (id, userData) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ uid: id, email, name, surname, birthdate, direction }),
+      body: JSON.stringify({
+        uid: id,
+        email,
+        name,
+        surname,
+        birthdate,
+        direction,
+      }),
     });
 
     if (!response.ok) {
@@ -178,6 +186,21 @@ const getUserRewards = async (id) => {
   }
 };
 
+const getUserProduct = async (userId, fileName) => {
+  try {
+    const response = await fetch(
+      `${RUTA_SERVIDOR}/users/userProduct/${userId}/${fileName}`
+    );
+    if (!response.ok) {
+      throw new Error("Unable to get the user product.");
+    }
+    const userProduct = await response.json();
+    return userProduct;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export {
   registerWithFirebase,
   getAllUsers,
@@ -186,5 +209,6 @@ export {
   deleteUserById,
   sendEmail,
   saveUserDataInFirebase,
-  getUserRewards
+  getUserRewards,
+  getUserProduct
 };

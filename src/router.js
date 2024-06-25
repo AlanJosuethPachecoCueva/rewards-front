@@ -29,6 +29,7 @@ import reedemCode from "./views/admins/codes/reedemCode.vue";
 import showRewards from "./views/clients/showRewards.vue";
 import reedemReward from "./views/clients/redeemReward.vue";
 import userRewards from "./views/clients/userRewards.vue";
+import redeemedProductStatus from "./views/clients/redeemedProductStatus.vue";
 
 //Para la redirección
 import { useUserStore } from "./stores/userStore.js";
@@ -87,6 +88,13 @@ const router = createRouter({
       path: "/modifyReward",
       name: "modifyReward",
       component: modifyReward,
+      meta: { requiresAuth: true, requiresAdmin: true },
+      props: true,
+    },
+    {
+      path: "/redeemedProductStatus",
+      name: "redeemedProductStatus",
+      component: redeemedProductStatus,
       meta: { requiresAuth: true, requiresAdmin: true },
       props: true,
     },

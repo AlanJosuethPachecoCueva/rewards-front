@@ -193,7 +193,7 @@ async function assignRewardToKits(data) {
 
 async function saveProduct(productData) {
   try {
-    const { name, description, price, costInPoints, userId, image } =
+    const { name, description, price, costInPoints, userId, image, stock } =
       productData;
 
     const formData = new FormData();
@@ -203,6 +203,7 @@ async function saveProduct(productData) {
     formData.append("costInPoints", costInPoints);
     formData.append("userId", userId);
     formData.append("imageFile", image);
+    formData.append("stock", stock);
 
     const response = await fetch(`${RUTA_SERVIDOR}/rewards/saveProduct`, {
       method: "POST",

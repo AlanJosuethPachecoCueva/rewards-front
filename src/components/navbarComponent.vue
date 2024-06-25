@@ -57,112 +57,59 @@ export default {
 </script>
 
 <template>
-  <nav
-    class="navbar navbar-expand-lg navBarPersonalized marron-principal"
-    :style="{ backgroundColor: colors.principalBrown }"
-  >
+  <nav class="navbar navbar-expand-lg navBarPersonalized marron-principal"
+    :style="{ backgroundColor: colors.principalBrown }">
     <div class="container-fluid">
       <a class="navbar-brand" :style="{ color: textColor }" href="/">KVMI</a>
       <!-- Botón para ocultar -->
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-        :style="{ backgroundColor: textColor }"
-      >
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
+        :style="{ backgroundColor: textColor }">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div
-        class="collapse navbar-collapse"
-        id="navbarSupportedContent showPoints"
-      >
+      <div class="collapse navbar-collapse" id="navbarSupportedContent showPoints">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a
-              class="nav-link active navMenu"
-              aria-current="page"
-              href="/admin/manageKits"
-              :style="{ color: textColor }"
-              >{{ $t("ManageKits") }}</a
-            >
+            <a class="nav-link active navMenu" aria-current="page" href="/admin/manageKits"
+              :style="{ color: textColor }">{{ $t("ManageKits") }}</a>
           </li>
           <li class="nav-item dropdown">
-            <a
-              class="nav-link dropdown-toggle"
-              href="#"
-              id="navbarDropdown"
-              role="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-              :style="{ color: textColor }"
-              >{{ $t("Codes") }}
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false" :style="{ color: textColor }">{{ $t("Codes") }}
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
               <li>
-                <a
-                  class="dropdown-item"
-                  href="/admin/codes"
-                  :style="{ color: textColorContrast }"
-                  >{{ $t("ManageCodes") }}</a
-                >
+                <a class="dropdown-item" href="/admin/codes" :style="{ color: textColorContrast }">{{ $t("ManageCodes")
+                  }}</a>
               </li>
               <li>
                 <hr class="dropdown-divider" />
               </li>
               <li>
-                <a
-                  class="dropdown-item"
-                  href="/codes/reedemCode"
-                  :style="{ color: textColorContrast }"
-                  >{{ $t("Redeem") }}</a
-                >
+                <a class="dropdown-item" href="/codes/reedemCode" :style="{ color: textColorContrast }">{{ $t("Redeem")
+                  }}</a>
               </li>
             </ul>
           </li>
           <li class="nav-item dropdown">
-            <a
-              class="nav-link dropdown-toggle"
-              href="#"
-              id="navbarDropdown"
-              role="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-              :style="{ color: textColor }"
-              >{{ $t("Awards") }}
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false" :style="{ color: textColor }">{{ $t("Awards") }}
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
               <li>
-                <a
-                  class="dropdown-item"
-                  href="/rewards"
-                  :style="{ color: textColorContrast }"
-                  >{{ $t("ActiveAwards") }}</a
-                >
+                <a class="dropdown-item" href="/rewards" :style="{ color: textColorContrast }">{{ $t("ActiveAwards")
+                  }}</a>
               </li>
               <li v-if="user != null && user.isAdmin == true">
-                <a
-                  class="dropdown-item"
-                  href="/admin/rewards"
-                  :style="{ color: textColorContrast }"
-                >
-                  {{ $t("ManageAwards") }}</a
-                >
+                <a class="dropdown-item" href="/admin/rewards" :style="{ color: textColorContrast }">
+                  {{ $t("ManageAwards") }}</a>
               </li>
             </ul>
           </li>
 
           <li class="nav-item">
-            <a
-              class="nav-link active navMenu"
-              aria-current="page"
-              href="#"
-              :style="{ color: textColor }"
-              >{{ $t("Help") }}</a
-            >
+            <a class="nav-link active navMenu" aria-current="page" href="#" :style="{ color: textColor }">{{ $t("Help")
+              }}</a>
           </li>
           <!-- <li class="nav-item">
             <a
@@ -176,10 +123,7 @@ export default {
         </ul>
 
         <div id="divGoloso" v-if="user != null">
-          <ul
-            class="navbar-nav me-auto mb-2 mb-lg-0 d-flex dropdown-menu-right"
-            v-if="user.id != ''"
-          >
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex dropdown-menu-right" v-if="user.id != ''">
             <li class="nav-item"></li>
             <li id="pointsContainer">
               <div class="puntosCacao">
@@ -188,68 +132,49 @@ export default {
                 </a>
               </div>
               <i>
-                <img
-                  src="../assets//images//cacao.png"
-                  alt="Points Icon"
-                  style="
+                <img src="../assets//images//cacao.png" alt="Points Icon" style="
                     width: 32px;
                     height: 32px;
                     margin-left: 5px;
                     margin-right: 5px;
                     margin-left: 5px;
                     margin-right: 5px;
-                  "
-                />
+                  " />
               </i>
             </li>
 
             <li class="nav-item dropdown2">
-              <a
-                class="nav-link dropdown-toggle"
-                href="#"
-                id="navbarDropdown"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-                :style="{ color: textColor }"
-              >
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false" :style="{ color: textColor }">
                 {{ user.name }}
-                <i
-                  class="bi bi-person-fill"
-                  style="font-size: 2rem; color: #ffffff; font-weight: bold"
-                ></i>
+                <i class="bi bi-person-fill" style="font-size: 2rem; color: #ffffff; font-weight: bold"></i>
               </a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li>
-                  <a class="dropdown-item" href="#" @click="closeSession()">{{
-                    $t("LogOut")
-                  }}</a>
+                  <a class="dropdown-item" href="/userRewards" :style="{ color: textColorContrast }">{{ $t("Profile")
+                    }}</a>
                 </li>
                 <li>
                   <hr class="dropdown-divider" />
                 </li>
                 <li>
-                  <a
-                    class="dropdown-item"
-                    href="/userRewards"
-                    :style="{ color: textColorContrast }"
-                    >{{ $t("Profile") }}</a
-                  >
+                  <a class="dropdown-item" href="#" @click="closeSession()">{{
+      $t("LogOut")
+    }}</a>
+
+
                 </li>
               </ul>
             </li>
             <div>
               <!-- Ícono del globo -->
               <div class="globe" @click="toggleLanguageButtons">
-                <i
-                  class="bi bi-globe"
-                  style="
+                <i class="bi bi-globe" style="
                     font-size: 1.5rem;
                     color: #ffffff;
                     font-weight: bold;
                     margin-right: 15px;
-                  "
-                ></i>
+                  "></i>
               </div>
 
               <!-- Botones de idioma -->
@@ -264,35 +189,25 @@ export default {
         <form class="d-flex">
           <!-- <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">        
         <button class="btn btn-outline-success" type="submit">Search</button> -->
-          <button
-            v-if="user == null || user.id == ''"
-            class="btn d-flex align-items-center"
-            style="font-size: 1rem; color: #ffffff; font-weight: 400"
-            @click="goToLogin()"
-          >
+          <button v-if="user == null || user.id == ''" class="btn d-flex align-items-center"
+            style="font-size: 1rem; color: #ffffff; font-weight: 400" @click="goToLogin()">
             {{ $t("Login") }}
-            <i
-              class="bi bi-person-circle"
-              style="
+            <i class="bi bi-person-circle" style="
                 margin-left: 10px;
                 font-size: 2rem;
                 color: #ffffff;
                 font-weight: bold;
-              "
-            ></i>
+              "></i>
           </button>
         </form>
         <!-- Ícono del globo -->
         <div class="globe" @click="toggleLanguageButtons">
-          <i
-            class="bi bi-globe"
-            style="
+          <i class="bi bi-globe" style="
               font-size: 1.5rem;
               color: #ffffff;
               font-weight: bold;
               margin-right: 15px;
-            "
-          ></i>
+            "></i>
         </div>
 
         <!-- Botones de idioma -->
@@ -327,6 +242,7 @@ export default {
   border-radius: 20px;
   height: 10% !important;
 }
+
 /* #showPoints {
   background-color: red;
   display: flex;

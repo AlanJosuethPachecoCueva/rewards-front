@@ -1,4 +1,9 @@
-import { getUser, getUserRewards, deleteUserById } from "@/models/userModel";
+import {
+  getUser,
+  getUserRewards,
+  deleteUserById,
+  getUserProduct,
+} from "@/models/userModel";
 
 const getUserByIdController = async (id) => {
   try {
@@ -32,7 +37,6 @@ const deleteUserByIdController = async (id) => {
   }
 };
 
-
 const getUserRewardsController = async (id) => {
   try {
     const userRewards = await getUserRewards(id);
@@ -48,4 +52,25 @@ const getUserRewardsController = async (id) => {
     return false;
   }
 };
-export { getUserByIdController, getUserRewardsController, deleteUserByIdController };
+
+const getUserProductController = async (userId, fileName) => {
+  try {
+    const userProduct = await getUserProduct(userId, fileName);
+
+    if (!userProduct.status) {
+      console.error("Error getting user product.");
+      return userProduct.message;
+    }
+
+    return userProduct.data;
+  } catch (error) {
+    console.error(error);
+    return error;
+  }
+};
+export {
+  getUserByIdController,
+  getUserRewardsController,
+  deleteUserByIdController,
+  getUserProductController,
+};

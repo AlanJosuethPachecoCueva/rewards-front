@@ -23,37 +23,28 @@
         </div>
       </div>
       <p>{{ "If you want to erase your account press this button" }}</p>
-      <button
-        type="button"
-        class="btn btn-primary btnGenerateKit"
-        @click="deleteProfile()"
-      >
+      <button type="button" class="btn btn-primary btnGenerateKit" @click="deleteProfile()">
         Delete Profile
       </button>
     </div>
     <div class="rewards">
-      <h3>Recently Played</h3>
+      <h3>Redimidos</h3>
       <div class="reward-items-container">
-        <div
-          class="reward-item"
-          v-for="(item, index) in user.rewards"
-          :key="index"
-        >
-          <div v-if="item.type != '3d'">
+        <div class="reward-item" v-for="(item, index) in user.rewards" :key="index">
+
+          <div v-if="item.type != '3d'" class="rewardCard">
+            <div v-if="item.type == 'pr'" class="status-button">
+              <button id="status-button" @click="goToRedeemedProductStatus(item.fileName)">Status</button>
+            </div>
             <img :src="item.url" alt="Reward Image" />
             <p>{{ item.metadata[0].metadata.title }}</p>
           </div>
+
           <div v-else>
-            <model-viewer
-              :src="item.url"
-              alt="Modelo 3D"
-              disable-zoom
-              disable-pan
-              disable-touch-zoom
-              disable-rotate
-              auto-rotate="0"
-            ></model-viewer>
+            <model-viewer :src="item.url" alt="Modelo 3D" disable-zoom disable-pan disable-touch-zoom disable-rotate
+              auto-rotate="0"></model-viewer>
           </div>
+
         </div>
       </div>
     </div>
@@ -131,6 +122,15 @@ export default {
     return { user, rewards };
   },
   methods: {
+    goToRedeemedProductStatus(fileName){
+      console.log("goToRedeemedProductStatus fileName:", fileName);
+      console.log("goToRedeemedProductStatus this.user.id:", this.user.id);
+      const data={userId: this.user.id, fileName };
+      this.$router.push({
+        name: "redeemedProductStatus",
+        query: { data: JSON.stringify(data) },
+      });
+    },
     deleteProfile() {
       this.$swal({
         title: "¿Estás seguro de eliminar tu cuenta?",
@@ -170,6 +170,31 @@ export default {
 </script>
 
 <style scoped>
+.rewardCard {
+  position: relative;
+  display: inline-block;
+  border-radius: 10px;
+}
+
+.status-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  
+}
+
+#status-button{
+    background-color: #e69b0c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 6px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
 .user-profile {
   display: flex;
   flex-direction: column;
