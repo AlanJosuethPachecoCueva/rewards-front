@@ -1,7 +1,9 @@
 export default {
     es: {
         /*NAVBAR*/
+        Codes : "Códigos",
         Awards : "Premios", 
+        ManageKits : "Gestión Material Publicitario",
         Login : "Ingresar", 
         /*PAGINA LOGIN*/
         Slogan: "¡Somos Chocolate!",
@@ -41,6 +43,54 @@ export default {
         /*Select De Usuario*/
         LogOut: "Cerrar Sesión",
         Profile: "Perfil",
+        /*HOME*/
+        Title: "Material Publicitario Activo", 
+        /*CreateKIT*/
+        newPublicitaryContent: "Crear Material Publicitario" ,
+        publicitaryContentName :"Nombre", 
+        publicitaryContentNamePlaceholder: "Ingrese el nombre del material publicitario", 
+        publicitaryContentDescription :"Descripción",
+        publicitaryContentDescriptionPlaceholder :"Ingrese una descripción para su material publicitario", 
+        publicitaryContentSloganPlaceholder:"Cada slogan debe estar separado por el símbolo '|' ",
+        publicitaryContentStartDate : "Fecha Inicio", 
+        publicitaryContentEndDate : "Fecha Fin", 
+        publicitaryContentCreateButton : "Crear",
+        publicitaryContentTitleIA :"Generar con inteligencia artificial",
+        publicitaryContentPromptPlaceholder :"Describa en máximo 400 palabras de que trata la campaña, el enfoque que debe tener; el público objetivo (Edad, género y ubicación geográfica de su audiencia), características del producto. \n- Beneficios clave que ofrece el producto. \n - ¿Cuál es el problema que resuelve el producto? \n - ¿Cuál es el propósito principal de la campaña? (aumentar ventas, conciencia de marca, lanzamiento de un nuevo producto, etc.)",
+        publicitaryContentIaGenerateButton : "Generar con IA",
+        /*codes*/
+        codeMainTitle : "Códigos ", 
+        codesSearch : "Buscar por título o descripción", 
+        codesName:"Nómbre Código", 
+        codesPoints :" Puntos ", 
+        codesProducto : "Producto", 
+        codesRedeemQuestion:"¿Redimido?",
+        codesSelectedKit : "Material Publicitario Enlazado",  
+        codesStartDate : "Fecha Inicio", 
+        codesEndDate : "Fecha Fin", 
+        codeReturnButton : "Anterior", 
+        codeNextButton : "Siguiente",  
+        codeDeletMessage : "¿Desea eliminar el código seleccionado?", 
+        codeDelete2Messa : "Se eliminará el código permanente y ya no será accesible.",
+        /*createCode*/
+        createCode: "Generar Código",
+        createCodeName: "Nombre del Código",
+        createCodeQuantity: "Cantidad",
+        createCodeScores: "Puntaje/Valor", 
+        createCodeStartDate: "Fecha Inicio",  
+        createCodeEndDate: "Fecha Fin", 
+        createCodeAssociateMaterial : "Material Publicitario Asociado", 
+        createCodeAssociateProduct : "Asociar Producto",
+        createCodeSaveButton : "Guardar",
+        createCodeCancelButton : "Cancelar",
+
+
+
+
+
+
+
+
 
 
 
@@ -48,7 +98,9 @@ export default {
 
     en : {
         /*NAVBAR*/
+        Codes: "Codes", 
         Awards : "Awards",
+        ManageKits : "Manage Kits",
         Login : "Login", 
          /*PAGINA LOGIN*/
         Slogan: "We are Chocolate!", 
@@ -88,7 +140,46 @@ export default {
         /*Select De Usuario*/
         LogOut: "Logout",
         Profile: "Profile",
-
+        /*HOME*/
+        Title: "Active Publicitary Content",
+         /*createKIT*/
+        newPublicitaryContent: "Create new publicitary content" ,
+        publicitaryContentName :"Name", 
+        publicitaryContentNamePlaceholder: "Enter the name of the advertising material", 
+        publicitaryContentDescription :"Description",
+        publicitaryContentDescriptionPlaceholder :"Enter a description for your advertising material", 
+        publicitaryContentSloganPlaceholder:"Each slogan must be separated by the symbol | ",
+        publicitaryContentStartDate : "Start Date", 
+        publicitaryContentEndDate : "End Date",
+        publicitaryContentCreateButton : "Create",
+        publicitaryContentTitleIA :"IA Generator",
+        publicitaryContentPromptPlaceholder :"Describe in 400 words maximum what the campaign is about, the focus it should have; the target audience (age, gender and geographic location of your audience), product features. \n - Key benefits offered by the product. \n - What is the problem the product solves? \n - What is the main purpose of the campaign (increase sales, brand awareness, launch a new product, etc.)?",
+        publicitaryContentIaGenerateButton : "Generate with AI",
+        /*codes*/
+        codeMainTitle : "Codes ",
+        codesSearch : "Search by title or description", 
+        codesName:"Name", 
+        codesPoints :" Points ", 
+        codesProducto : "Product", 
+        codesRedeemQuestion:"Redeemed?",
+        codesSelectedKit : "Selected Publicitary Content",  
+        codesStartDate : "Start Date",  
+        codesEndDate : "End Date",  
+        codeReturnButton : "Back", 
+        codeNextButton : "Next", 
+        codeDeletMessage : "Do you want to delete the selected code?", 
+        codeDelete2Messa : "The code will be removed and will no longer be accessible.",
+         /*createCode*/
+         createCode: "Generate Code",
+         createCodeName: "Code Name",
+         createCodeQuantity: "Quantity",
+         createCodeScores: "Score/Value", 
+         createCodeStartDate: "Start Date",  
+         createCodeEndDate: "End Date",  
+         createCodeAssociateMaterial : "Associate Publicitary Material", 
+         createCodeAssociateProduct : "Associate Product",
+         createCodeSaveButton : "Save",
+         createCodeCancelButton : "Cancel",
  
     }
 }

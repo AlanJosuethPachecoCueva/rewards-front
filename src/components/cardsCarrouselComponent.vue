@@ -9,7 +9,7 @@
             <p class="card-text">
               {{ kit.shortDesc }}
             </p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
+            <a href="#" class="btn btn-primary">Ir</a>
           </div>
 
         </div>
