@@ -83,6 +83,16 @@ export default {
         createCodeAssociateProduct : "Asociar Producto",
         createCodeSaveButton : "Guardar",
         createCodeCancelButton : "Cancelar",
+        /*redeemCode*/
+        redeemCode: "Redención de códigos",
+        entercode : "Ingresa tu código: ", 
+        placeholderEnterCode: "Ingresa tu código aquí", 
+        redeemButton: "Redimir", 
+        messageredeemCode: "Ingresa un código válido para redimir", 
+        errorMessagesRedeem: "Error: El código no se ha podido redimir", 
+
+
+
 
 
 
@@ -180,6 +190,17 @@ export default {
          createCodeAssociateProduct : "Associate Product",
          createCodeSaveButton : "Save",
          createCodeCancelButton : "Cancel",
+         /*redeemCode*/
+         redeemCode: "Redeem your codes",
+         entercode : "Enter your code : ", 
+         placeholderEnterCode: "Enter your code here...", 
+         redeemButton: "Redeem", 
+         messageredeemCode: "Please enter a code to redeem.", 
+         errorMessagesRedeem: "Error: The code could not be redeemed", 
+
+
+          
+
  
     }
 }
