@@ -1,6 +1,6 @@
 <template>
   <div class="text-center m-4">
-    <h1>Campañas Publicitarias Activas</h1>
+    <h1>{{ $t('Title')}}</h1>
   </div>
   <div>
     <div v-if="isLoading">Cargando...</div>
@@ -11,7 +11,7 @@
           :images="kit.images"></rewardContainerComponent>
         <!-- {{ kit.mainImageUrl }} -->
         <div v-if="kit.modifiedRewards.length > 0">
-        <h2 class="rewardsTitle">Premios del kit</h2>
+        <h2 class="rewardsTitle">Premios</h2>
           <carousel items-to-show="6" :paginationEnabled="true" class="carousel-container">
             <Slide v-for="reward in kit.modifiedRewards" :key="reward.rewardId" class="carousel-slide">
               <div v-if="reward.type != '3d'" class="custom-card-size">

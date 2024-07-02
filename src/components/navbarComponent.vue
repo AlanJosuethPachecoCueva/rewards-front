@@ -131,12 +131,12 @@ export default {
             <li class="nav-item"></li>
             <li id="pointsContainer">
               <div class="puntosCacao">
-                <a class="nav-link" href="#" :style="{ color: textColor }">
+                <a class="nav-link" href="#" :style="{ color: colors.lightyellow }">
                   {{ user.points }}
                 </a>
               </div>
               <i>
-                <img src="../assets//images//cacao.png" alt="Points Icon" style="
+                <img src="../assets//images//adaptive_icon.png" alt="Points Icon" style="
                     width: 32px;
                     height: 32px;
                     margin-left: 5px;
@@ -321,4 +321,10 @@ export default {
   display: flex;
   align-items: center;
 }
+
+/* styles.css */
+:root {
+  --color-gold: #CDA434; /* Definición del color gold */
+}
+
 </style>

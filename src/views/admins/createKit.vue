@@ -187,7 +187,7 @@ export default {
 
 <template>
   <div class="bigContainerKit">
-    <h2>Nuevo Material Publicitario</h2>
+    <h2>{{ $t("newPublicitaryContent") }}</h2>
     <div class="createKitContainer">
       <div class="createKitContainerLeft">
         <div class="containerLeft">
@@ -202,49 +202,47 @@ export default {
             </div>
 
             <div class="form-group group">
-              <label class="label" for="name">Nombre</label>
+              <label class="label" for="name">{{ $t("publicitaryContentName") }}</label>
               <input type="text" class="form-control"
                 :class="{ 'is-invalid': nameTouched && !nameValid, 'animate-border': animate }"
-                placeholder="Ingrese el nombre del material publicitario" id="name" v-model="name"
+                :placeholder="$t('publicitaryContentNamePlaceholder')"
+                id="name" 
+                v-model="name"
                 @blur="nameTouched = true">
             </div>
             <div class="form-group group">
-              <label class="label" for="description">Descripción</label>
+              <label class="label" for="description">{{ $t("publicitaryContentDescription") }}</label>
               <textarea class="form-control"
                 :class="{ 'is-invalid': descriptionTouched && !descriptionValid, 'animate-border': animate }" rows="3"
-                placeholder="Ingrese una descripción para su material publicitario" id="description"
+                :placeholder="$t('publicitaryContentDescriptionPlaceholder')"
+                id="description"
                 v-model="description" @blur="descriptionTouched = true"></textarea>
-            </div>
-
-            <!-- <div class="form-group group">
-              <label class="label" for="email">Email address</label>
-              <input type="text" class="form-control" :class="{ 'is-invalid': emailTouched && !emailValid }"
-                placeholder="Enter email" id="email" v-model="email" @blur="emailTouched = true">
-            </div> -->
+            </div>          
 
             <div class="form-group group">
               <label class="label" for="slogans">Slogans</label>
               <textarea class="form-control"
                 :class="{ 'is-invalid': slogansTouched && !slogansValid, 'animate-border': animate }" rows="3"
-                placeholder="Cada slogan debe estar separado por el símbolo '|'" id="slogans" v-model="slogans"
+                :placeholder="$t('publicitaryContentSloganPlaceholder')"
+                id="slogans" v-model="slogans"
                 @blur="slogansTouched = true"></textarea>
             </div>
 
             <div class="form-group group">
-              <label for="datePicker" class="label">Fecha inicio</label>
+              <label for="datePicker" class="label">{{ $t("publicitaryContentStartDate") }}</label>
               <input type="date" class="form-control" :class="{ 'is-invalid': initialDateTouched && !initialDateValid }"
                 @blur="initialDateTouched = true" id="datePicker" v-model="initialDate">
             </div>
 
             <div class="form-group group">
-              <label for="datePicker" class="label">Fecha fin</label>
+              <label for="datePicker" class="label">{{ $t("publicitaryContentEndDate") }}</label>
               <input type="date" class="form-control" id="datePicker"
                 :class="{ 'is-invalid': finalDateTouched && !finalDateValid }" @blur="finalDateTouched = true"
                 v-model="finalDate">
             </div>
 
             <button type="submit" class="btn btn-primary mb-3 btnGenerateKit"
-              :style="{ 'margin-left': 10 + '%' }">Crear</button>
+              :style="{ 'margin-left': 10 + '%' }">{{ $t("publicitaryContentCreateButton") }}</button>
 
           </form>
         </div>
@@ -253,14 +251,10 @@ export default {
       <div class="createKitContainerRight">
         <div class="card cardContainer">
           <div class="form-group generateKitIA">
-            <label class="label" for="exampleFormControlTextarea1">Generar con inteligencia artificial</label>
+            <label class="label" for="exampleFormControlTextarea1">{{ $t("publicitaryContentTitleIA") }}</label>
             <textarea v-model="aiPrompt" class="form-control" id="textAreaGenerateWithAI" rows="3"
-              placeholder="Describa en máximo 400 palabras de que trata la campaña, el enfoque que debe tener; el público objetivo (Edad, género y ubicación geográfica de su audiencia), características del producto.
-            - Beneficios clave que ofrece el producto.
-            - ¿Cuál es el problema que resuelve el producto?
-            - ¿Cuál es el propósito principal de la campaña? (aumentar ventas, conciencia de marca, lanzamiento de un nuevo producto, etc.)"></textarea>
-            <button type="button" class="btn btn-primary btnGenerateKit" @click="generateTextOpenAI()">Generar con IA
-            </button>
+              :placeholder="$t('publicitaryContentPromptPlaceholder')"></textarea>
+            <button type="button" class="btn btn-primary btnGenerateKit" @click="generateTextOpenAI()">{{ $t("publicitaryContentIaGenerateButton") }}</button>
           </div>
         </div>
       </div>

@@ -4,11 +4,11 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Códigos</h3>
+                        <h3 class="card-title">{{ $t("codeMainTitle")}}</h3>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <div>
+                            <div class="d-flex">
                                 <span class="searchButtons input-group-text" @click="goCreateCode()">
                                     <i class="bi bi-file-earmark-plus" style="
                                     font-size: 1.2rem;
@@ -16,20 +16,21 @@
                                     font-weight: bold;">
                                     </i>
                                 </span>
-                                <input type="text" v-model="searchTerm" placeholder="Buscar por título o descripción"
+                                <input type="text" v-model="searchTerm" 
+                                :placeholder="$t('codesSearch')"
                                     class="form-control">
                             </div>
                             <table class="table table-striped table-bordered">
                                 <thead>
                                     <tr>
                                         <th>ID</th>
-                                        <th>Name</th>
-                                        <th>Points</th>
-                                        <th>Product</th>
-                                        <th>¿Redeemed?</th>
-                                        <th>Selected Kits</th>
-                                        <th>Start Date</th>
-                                        <th>End Date</th>
+                                        <th>{{ $t("codesName") }}</th>
+                                        <th>{{ $t("codesPoints") }}</th>
+                                        <th>{{ $t("codesProducto") }}</th>
+                                        <th>{{ $t("codesRedeemQuestion") }}</th>
+                                        <th>{{ $t("codesSelectedKit") }}</th>
+                                        <th>{{ $t("codesStartDate") }}</th>
+                                        <th>{{ $t("codesEndDate") }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -86,11 +87,12 @@
                                 <span> (Total de items: {{ totalItems }})</span>
                             </div>
                             <div>
-                                <button @click="pagination.page--" :disabled="pagination.page === 1"
-                                    class="btn btn-secondary">Anterior</button>
-                                <button @click="pagination.page++" :disabled="pagination.page === totalPages"
-                                    class="btn btn-secondary">Siguiente</button>
-                            </div>
+    <button @click="pagination.page--" :disabled="pagination.page === 1"
+        class="btn btn-secondary" style="margin-right: 10px;">{{ $t("codeReturnButton") }}</button>
+    <button @click="pagination.page++" :disabled="pagination.page === totalPages"
+        class="btn btn-secondary">{{ $t("codeNextButton") }}</button>
+</div>
+
                         </div>
                     </div>
                 </div>
@@ -124,7 +126,7 @@ export default {
 
         console.log("codesRes: ", codesRes);
 
-        this.codes = codesRes;
+        this.codes = codesRes; 
         // codesRes.forEach(code => {
         //     if (code.metadata[0].metadata.title) {
         //         this.codes.push({
@@ -143,14 +145,15 @@ export default {
         this.totalPages = Math.ceil(this.codes.length / this.pagination.rowsPerPage);
         this.totalItems = this.codes.length;
     },
+     
     methods: {
         filterCodes() {
             if (!this.searchTerm) {
                 this.codesToShow = this.codes.slice(0, this.pagination.rowsPerPage);
             } else {
                 this.codesToShow = this.codes.filter(code =>
-                    code.title.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-                    code.description.toLowerCase().includes(this.searchTerm.toLowerCase())
+                    code.id.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+                    code.name.toLowerCase().includes(this.searchTerm.toLowerCase())
                 ).slice(0, this.pagination.rowsPerPage);
             }
             this.totalPages = Math.ceil(this.codesToShow.length / this.pagination.rowsPerPage);

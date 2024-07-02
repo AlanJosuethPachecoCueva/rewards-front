@@ -4,16 +4,17 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header" :style="{ backgroundColor: secondaryColor }">
-                        <h3>Generar Código</h3>
+                        <h3>{{ $t("createCode") }}</h3>
                     </div>
                     <div class="card-body">
                         <form @submit.prevent="generateCode">
                             <div class="mb-3">
-                                <label for="name" class="form-label">Nombre</label>
+                                <label for="name" class="form-label">{{ $t("createCodeName") }}</label>                                
                                 <input type="text" class="form-control" id="name" v-model="form.name" required>
                             </div>
+                            
                             <div class="mb-3">
-                                <label for="quantity" class="form-label">Cantidad</label>
+                                <label for="quantity" class="form-label">{{ $t("createCodeQuantity") }}</label>
                                 <div class="input-group">
                                     <input type="number" class="form-control" id="quantity" v-model="form.quantity"
                                         required>
@@ -24,7 +25,7 @@
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <label for="points" class="form-label">Puntaje</label>
+                                <label for="points" class="form-label">{{ $t("createCodeScores") }}</label>
                                 <div class="input-group">
                                     <input type="number" class="form-control" id="points" v-model="form.points"
                                         required>
@@ -35,26 +36,26 @@
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <label for="startDate" class="form-label">Fecha de Inicio</label>
+                                <label for="startDate" class="form-label">{{ $t("createCodeStartDate") }}</label>
                                 <input type="date" class="form-control" id="startDate" v-model="form.startDate"
                                     required>
                             </div>
                             <div class="mb-3">
-                                <label for="endDate" class="form-label">Fecha Fin</label>
+                                <label for="endDate" class="form-label">{{ $t("createCodeEndDate") }}</label>
                                 <input type="date" class="form-control" id="endDate" v-model="form.endDate" required>
                             </div>
                             <div class="mb-3">
-                                <label for="kit" class="form-label">Kit Asociado</label>
+                                <label for="kit" class="form-label">{{ $t("createCodeAssociateMaterial") }}</label>
                                 <multiselect v-model="form.selectedKits" :options="kits" label="title" track-by="id"
                                     :multiple="true" mode="tags" placeholder="Selecciona los kits"></multiselect>
                             </div>
                             <div class="mb-3">
-                                <label for="product" class="form-label">Producto Asociado</label>
+                                <label for="product" class="form-label">{{ $t("createCodeAssociateProduct") }}</label>
                                 <input type="text" class="form-control" id="product" v-model="form.product">
                             </div>
                             <button type="submit" :style="{ backgroundColor: buttonColor }"
-                                class="btn btn-success">Guardar</button>
-                            <button type="button" class="btn btn-danger" @click="clearForm">Cancelar</button>
+                                class="btn btn-success">{{ $t("createCodeSaveButton") }}</button>
+                            <button type="button" class="btn btn-danger" @click="clearForm">{{ $t("createCodeCancelButton") }}</button>
                         </form>
                     </div>
                 </div>
