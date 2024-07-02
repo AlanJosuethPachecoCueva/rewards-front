@@ -8,6 +8,7 @@ import manageKits from "./views/admins/manageKits.vue";
 import createKit from "./views/admins/createKit.vue";
 import editKit from "./views/admins/editKit.vue";
 import createKitMaterial from "./views/admins/createKitMaterial.vue";
+import manageRedeemedProducts from "./views/admins/rewards/manageRedeemedProducts.vue";
 //rewards
 import rewards from "./views/admins/rewards/rewards.vue";
 import modifyReward from "./views/admins/rewards/modifyReward.vue";
@@ -95,6 +96,13 @@ const router = createRouter({
       path: "/redeemedProductStatus",
       name: "redeemedProductStatus",
       component: redeemedProductStatus,
+      meta: { requiresAuth: true, requiresAdmin: true },
+      props: true,
+    },
+    {
+      path: "/admin/manageRedeemedProducts",
+      name: "manageRedeemedProducts",
+      component: manageRedeemedProducts,
       meta: { requiresAuth: true, requiresAdmin: true },
       props: true,
     },

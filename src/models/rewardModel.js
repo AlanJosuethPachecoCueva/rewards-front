@@ -381,6 +381,19 @@ const getProduct = async (id) => {
   }
 };
 
+const getRedeemedProducts = async (id) => {
+  try {
+    const response = await fetch(`${RUTA_SERVIDOR}/rewards/reedemedProducts`);
+    if (!response.ok) {
+      throw new Error(`Unable to get product ${id}`);
+    }
+    const products = await response.json();
+    return products;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export {
   generateStickerWithAI,
   saveSticker,
@@ -398,4 +411,5 @@ export {
   modifyReward,
   modifyProduct,
   getProduct,
+  getRedeemedProducts
 };

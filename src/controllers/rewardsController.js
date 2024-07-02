@@ -14,7 +14,8 @@ import {
   reedemReward,
   modifyReward,
   modifyProduct,
-  getProduct
+  getProduct,
+  getRedeemedProducts
 } from "../models/rewardModel.js";
 
 const generateStickerWithAIController = async (prompt, userID) => {
@@ -268,6 +269,22 @@ const getProductController = async (id) => {
   }
 };
 
+const getRedeemedProductsController = async (id) => {
+  try {
+    const products = await getRedeemedProducts(id);
+
+    if (!products) {
+      console.error("Error getting redeemed products.");
+      return false;
+    }
+
+    return products;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};
+
 export {
   generateStickerWithAIController,
   saveStickerController,
@@ -284,5 +301,6 @@ export {
   reedemRewardController,
   modifyRewardController,
   modifyProductController,
-  getProductController
+  getProductController,
+  getRedeemedProductsController
 };

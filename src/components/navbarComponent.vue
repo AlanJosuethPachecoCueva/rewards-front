@@ -104,6 +104,10 @@ export default {
                 <a class="dropdown-item" href="/admin/rewards" :style="{ color: textColorContrast }">
                   {{ $t("ManageAwards") }}</a>
               </li>
+              <li v-if="user != null && user.isAdmin == true">
+                <a class="dropdown-item" href="/admin/manageRedeemedProducts" :style="{ color: textColorContrast }">
+                  {{ $t("Manage Redeemed Products") }}</a>
+              </li>
             </ul>
           </li>
 
