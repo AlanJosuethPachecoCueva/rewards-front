@@ -25,6 +25,7 @@ import codes from "./views/admins/codes/codes.vue";
 import createCode from "./views/admins/codes/createCode.vue";
 import viewGeneratedCodes from "./views/admins/codes/viewGeneratedCodes.vue";
 import reedemCode from "./views/admins/codes/reedemCode.vue";
+import manageShipStatus from "./views/admins/rewards/manageShipStatus.vue";
 
 //Para usuarios no administradores
 import showRewards from "./views/clients/showRewards.vue";
@@ -215,6 +216,13 @@ const router = createRouter({
       component: reedemCode,
       props: true,
       meta: { requiresAuth: true, requiresAdmin: false },
+    },
+    {
+      path: "/admin/products/manageShippingStatus/:product",
+      name: "manageShippingStatus",
+      component: manageShipStatus,
+      props: true,
+      meta: { requiresAuth: true, requiresAdmin: true },
     },
   ],
 });
