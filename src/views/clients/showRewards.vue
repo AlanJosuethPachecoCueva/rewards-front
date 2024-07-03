@@ -1,6 +1,6 @@
 <template>
   <div class="titleContainer">
-    <h1>Premios Disponibles</h1>
+    <h1>{{ $t('showRewardsTitle') }}</h1>
   </div>
 
   <div class="containerShowRewards">
@@ -8,7 +8,7 @@
       <input
         type="text"
         v-model="searchQuery"
-        placeholder="Buscar por título o descripción"
+        :placeholder="$t('showRewardsSearchplaceholder')"
         class="search-bar"
       />
     </div>
@@ -40,7 +40,7 @@
             class="redeem-button"
             @click="reedem(reward.metadata[0].id, reward)"
           >
-            Redimir
+            {{ $t('showRewardRedeemButton') }}
           </button>
           <button class="award-cost" @click="">
             {{ reward.metadata[0].metadata.costInPoints }}

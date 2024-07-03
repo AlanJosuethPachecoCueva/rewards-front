@@ -1,74 +1,69 @@
 <template>
+  <div class="background-image"> <!-- Aplica el estilo background-image aquí -->
     <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header" :style="{ backgroundColor: secondaryColor }">
-                        <h3>{{ $t("createCode") }}</h3>
-                    </div>
-                    <div class="card-body">
-                        <form @submit.prevent="generateCode">
-                            <div class="mb-3">
-                                <label for="name" class="form-label">{{ $t("createCodeName") }}</label>                                
-                                <input type="text" class="form-control" id="name" v-model="form.name" required>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label for="quantity" class="form-label">{{ $t("createCodeQuantity") }}</label>
-                                <div class="input-group">
-                                    <input type="number" class="form-control" id="quantity" v-model="form.quantity"
-                                        required>
-                                    <button class="btn btn-outline-secondary" type="button"
-                                        @click="increment('quantity')">+</button>
-                                    <button class="btn btn-outline-secondary" type="button"
-                                        @click="decrement('quantity')">-</button>
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <label for="points" class="form-label">{{ $t("createCodeScores") }}</label>
-                                <div class="input-group">
-                                    <input type="number" class="form-control" id="points" v-model="form.points"
-                                        required>
-                                    <button class="btn btn-outline-secondary" type="button"
-                                        @click="increment('points')">+</button>
-                                    <button class="btn btn-outline-secondary" type="button"
-                                        @click="decrement('points')">-</button>
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <label for="startDate" class="form-label">{{ $t("createCodeStartDate") }}</label>
-                                <input type="date" class="form-control" id="startDate" v-model="form.startDate"
-                                    required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="endDate" class="form-label">{{ $t("createCodeEndDate") }}</label>
-                                <input type="date" class="form-control" id="endDate" v-model="form.endDate" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="kit" class="form-label">{{ $t("createCodeAssociateMaterial") }}</label>
-                                <multiselect v-model="form.selectedKits" :options="kits" label="title" track-by="id"
-                                    :multiple="true" mode="tags" placeholder="Selecciona los kits"></multiselect>
-                            </div>
-                            <div class="mb-3">
-                                <label for="product" class="form-label">{{ $t("createCodeAssociateProduct") }}</label>
-                                <input type="text" class="form-control" id="product" v-model="form.product">
-                            </div>
-                            <button type="submit" :style="{ backgroundColor: buttonColor }"
-                                class="btn btn-success">{{ $t("createCodeSaveButton") }}</button>
-                            <button type="button" class="btn btn-danger" @click="clearForm">{{ $t("createCodeCancelButton") }}</button>
-                        </form>
-                    </div>
-                </div>
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <div class="card">
+            <div class="card-header" :style="{ backgroundColor: secondaryColor }">
+              <h3>{{ $t("createCode") }}</h3>
             </div>
+            <div class="card-body">
+              <form @submit.prevent="generateCode">
+                <div class="mb-3">
+                  <label for="name" class="form-label">{{ $t("createCodeName") }}</label>                                
+                  <input type="text" class="form-control" id="name" v-model="form.name" required>
+                </div>
+                
+                <div class="mb-3">
+                  <label for="quantity" class="form-label">{{ $t("createCodeQuantity") }}</label>
+                  <div class="input-group">
+                    <input type="number" class="form-control" id="quantity" v-model="form.quantity" required>
+                    <button class="btn btn-outline-secondary" type="button" @click="increment('quantity')">+</button>
+                    <button class="btn btn-outline-secondary" type="button" @click="decrement('quantity')">-</button>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="points" class="form-label">{{ $t("createCodeScores") }}</label>
+                  <div class="input-group">
+                    <input type="number" class="form-control" id="points" v-model="form.points" required>
+                    <button class="btn btn-outline-secondary" type="button" @click="increment('points')">+</button>
+                    <button class="btn btn-outline-secondary" type="button" @click="decrement('points')">-</button>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="startDate" class="form-label">{{ $t("createCodeStartDate") }}</label>
+                  <input type="date" class="form-control" id="startDate" v-model="form.startDate" required>
+                </div>
+                <div class="mb-3">
+                  <label for="endDate" class="form-label">{{ $t("createCodeEndDate") }}</label>
+                  <input type="date" class="form-control" id="endDate" v-model="form.endDate" required>
+                </div>
+                <div class="mb-3">
+                  <label for="kit" class="form-label">{{ $t("createCodeAssociateMaterial") }}</label>
+                  <multiselect v-model="form.selectedKits" :options="kits" label="title" track-by="id" :multiple="true" mode="tags" placeholder="Selecciona los kits"></multiselect>
+                </div>
+                <div class="mb-3">
+                  <label for="product" class="form-label">{{ $t("createCodeAssociateProduct") }}</label>
+                  <input type="text" class="form-control" id="product" v-model="form.product">
+                </div>
+                <button type="submit" :style="{ backgroundColor: buttonColor }" class="btn btn-success">{{ $t("createCodeSaveButton") }}</button>
+                <button type="button" class="btn btn-danger" @click="clearForm">{{ $t("createCodeCancelButton") }}</button>
+              </form>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </template>
+
 
 <script>
 import { colors } from "/src/assets/colors.js";
 import { getKitsController, getImagesFromKitsController } from "@/controllers/kitsController";
 import { saveMultipleCodesController } from "@/controllers/codesController";
 import multiselect from 'vue-multiselect'
+import fondoCacao2 from "@/assets/images/fondoCacao2.jpeg"; // Importa la imagen
 
 export default {
     components: { multiselect },
@@ -82,10 +77,13 @@ export default {
                 endDate: '',
                 product: '',
                 selectedKits: [], // Para almacenar los IDs de los kits seleccionados
+                
             },
             kits: [],
             secondaryColor: colors.darkBrown,
             buttonColor: colors.principalBrown,
+            fondoCacao2, // Agrega la imagen a los datos
+
         };
     },
     async mounted() {
@@ -174,6 +172,15 @@ export default {
 
 
 <style scoped>
+
+.background-image {
+  background: url(@/assets/images/fondoCacao2.jpeg) no-repeat center center fixed;
+  background-size: cover;
+  height: 100vh; /* Asegura que ocupe toda la altura de la vista */
+  display: flex;
+  align-items: center; /* Centra verticalmente el contenido */
+}
+
 .container {
     margin-top: 50px;
 }
