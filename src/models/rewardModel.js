@@ -394,6 +394,33 @@ const getRedeemedProducts = async (id) => {
   }
 };
 
+const updateShippingProductStatus = async (userId, fileName, newStatus) => {
+  try {
+    const response = await fetch(`${RUTA_SERVIDOR}/rewards/shippingProducts/status`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        userId,
+        fileName,
+        newStatus,
+      }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(`Unable to update product status: ${errorData.message}`);
+    }
+
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
+
 export {
   generateStickerWithAI,
   saveSticker,
@@ -411,5 +438,6 @@ export {
   modifyReward,
   modifyProduct,
   getProduct,
-  getRedeemedProducts
+  getRedeemedProducts,
+  updateShippingProductStatus
 };

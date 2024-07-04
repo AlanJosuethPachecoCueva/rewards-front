@@ -15,7 +15,8 @@ import {
   modifyReward,
   modifyProduct,
   getProduct,
-  getRedeemedProducts
+  getRedeemedProducts,
+  updateShippingProductStatus
 } from "../models/rewardModel.js";
 
 const generateStickerWithAIController = async (prompt, userID) => {
@@ -285,6 +286,22 @@ const getRedeemedProductsController = async (id) => {
   }
 };
 
+const updateShippingProductStatusController = async (userId, fileName, newStatus) => {
+  try {
+    const res = await updateShippingProductStatus(userId, fileName, newStatus);
+
+    if (!res) {
+      console.error("Error updating shipping state.");
+      return false;
+    }
+
+    return res;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};
+
 export {
   generateStickerWithAIController,
   saveStickerController,
@@ -302,5 +319,6 @@ export {
   modifyRewardController,
   modifyProductController,
   getProductController,
-  getRedeemedProductsController
+  getRedeemedProductsController,
+  updateShippingProductStatusController
 };
