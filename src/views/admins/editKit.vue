@@ -1,6 +1,6 @@
 <template #addons>
   <div class="bigContainerKit">
-    <h2>Editando Material Publicitario</h2>
+    <h2>Editar Material Publicitario</h2>
     <div class="createKitContainer">
       <div class="createKitContainerLeft">
         <div class="containerLeft">
@@ -71,7 +71,7 @@
     </div>
   </div>
   <div class="bigContainerKit">
-    <h2>Asignar imágenes</h2>
+    <h2>Asignar Imágenes</h2>
     <div class="createKitContainer">
       <div class="createKitContainerLeft">
         <div class="newShowInformationLeft">

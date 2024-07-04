@@ -38,6 +38,7 @@ export default {
         ManagePublicitaryContent : "Gestionar Material Publicitario", 
         ActiveAwards : "Ver Premios Activos", 
         ManageAwards : "Gestionar Premios",
+        ManageRedeemedProducts :"Gestionar Productos Redimidos",
         Help :  "Ayuda",
         ManageCodes : "Gestionar Códigos", 
         /*Select De Usuario*/
@@ -45,6 +46,7 @@ export default {
         Profile: "Perfil",
         /*HOME*/
         Title: "Material Publicitario Activo", 
+        homeAwards : "Premios", 
         /*CreateKIT*/
         newPublicitaryContent: "Crear Material Publicitario" ,
         publicitaryContentName :"Nombre", 
@@ -90,6 +92,13 @@ export default {
         redeemButton: "Redimir", 
         messageredeemCode: "Ingresa un código válido para redimir", 
         errorMessagesRedeem: "Error: El código no se ha podido redimir", 
+        /*showRewards*/
+        showRewardsTitle: "Premios Disponibles",
+        showRewardsSearchplaceholder: "Buscar por título o descripción",
+        showRewardRedeemButton: "Redimir", 
+        /*Loading*/
+        loading : "Cargando...", 
+
 
 
 
@@ -145,6 +154,7 @@ export default {
           ManagePublicitaryContent : "Manage Publicitary Content", 
           ActiveAwards : "Active Awards", 
           ManageAwards : "Manage Awards",
+          ManageRedeemedProducts :"Manage Redeemed Products",  
           Help :  "Help",
           ManageCodes: "Manage Codes",
         /*Select De Usuario*/
@@ -152,6 +162,7 @@ export default {
         Profile: "Profile",
         /*HOME*/
         Title: "Active Publicitary Content",
+        homeAwards : "Awards", 
          /*createKIT*/
         newPublicitaryContent: "Create new publicitary content" ,
         publicitaryContentName :"Name", 
@@ -197,6 +208,13 @@ export default {
          redeemButton: "Redeem", 
          messageredeemCode: "Please enter a code to redeem.", 
          errorMessagesRedeem: "Error: The code could not be redeemed", 
+         /*showRewards*/
+         showRewardsTitle: "Available Rewards",
+         showRewardsSearchplaceholder: "Search by title or description",
+         showRewardRedeemButton: "Redeem", 
+         /*Loading*/
+        loading : "Loading...", 
+
 
 
           
