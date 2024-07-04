@@ -43,6 +43,7 @@ async function signInWithGoogle() {
     userToSave.city = userByController.city;
     userToSave.birthdate = userByController.birthdate;
     userToSave.points = userByController.points;
+    userToSave.isAdmin = userByController.isAdmin;
 
     userStore.setUser(userToSave);
     userStore.setIsLogued(true);
@@ -144,6 +145,7 @@ async function logInFirebase(userData) {
       userToSave.city = userByController.city;
       userToSave.birthdate = userByController.birthdate;
       userToSave.points = userByController.points;
+      userToSave.isAdmin = userByController.isAdmin;
 
       userStore.setUser(userToSave);
       userStore.setIsLogued(true);
