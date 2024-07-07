@@ -95,10 +95,11 @@ async function saveStickerByFile(stickerData) {
 
 async function save3DObjectByFile(objectData) {
   try {
-    const { file, title, description, userID, costInPoints } = objectData;
+    const { file, title, bundleFile, description, userID, costInPoints } = objectData;
 
     const formData = new FormData();
     formData.append("file", file);
+    formData.append("bundleName", bundleFile.name);
     formData.append("title", title);
     formData.append("description", description);
     formData.append("userID", userID);
@@ -109,8 +110,14 @@ async function save3DObjectByFile(objectData) {
       body: formData,
     });
 
+    formData.set("file", bundleFile);
+    const responseUnityAssets = await fetch(`${RUTA_SERVIDOR}/rewards/saveAssetBundle`, {
+      method: "POST",
+      body: formData,
+    });
+
     console.log("response saving 3D object by file: ", response);
-    if (!response.ok) {
+    if (!response.ok || !responseUnityAssets.ok) {
       throw new Error("Error saving 3D object by file.");
     }
 
@@ -282,7 +289,7 @@ const getAllKits_Rewards = async () => {
 
 const reedemReward = async (data) => {
   const { fileName, type, uid, associatedKit, names, email, cellphone, city, street, description } = data;
-  
+
   try {
     const response = await fetch(`${RUTA_SERVIDOR}/rewards/reedemReward`, {
       method: "POST",

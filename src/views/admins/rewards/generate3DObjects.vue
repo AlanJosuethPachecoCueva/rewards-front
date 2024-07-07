@@ -49,6 +49,11 @@
                             <input type="file" class="form-control" id="objectInput" @change="selectObjectFromDevice"
                                 ref="objectInput" accept=".gltf,.glb">
                         </div>
+                        <div class="mb-3">
+                            <label for="bundleInput" class="label">Selecciona el bundle creado en unity:</label>
+                            <input type="file" class="form-control" id="bundleInput" @change="selectBundleFile"
+                                ref="bundleInput" accept="*">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -70,6 +75,7 @@ export default {
         return {
             objectSrc: null,
             file: null,
+            bundleFile:null,
             title: "",
             description: "",
             titleTouched: false,
@@ -118,6 +124,30 @@ export default {
             }
 
         },
+        async selectBundleFile(event) {
+            try {
+                this.bundleFile = event.target.files[0];
+                if (this.bundleFile) {
+                    console.log("Se cargo correctamente el objeto")
+                }
+                await this.$swal({
+                    title: "¡El bundle ha sido cargado!",
+                    text: "Si no cargaste el archivo del bundle asociado al objeto 3D reemplázalo",
+                    icon: "success",
+                    showCancelButton: false,
+                    confirmButtonText: "OK",
+                });
+            } catch (error) {
+                await this.$swal({
+                    title: "¡Ocurrió un error!",
+                    text: "Por favor, revisa que el archivo del bundle, no esté corrupto e intenta nuevamente :(",
+                    icon: "error",
+                    showCancelButton: false,
+                    confirmButtonText: "OK",
+                });
+            }
+
+        },
         pointsValid() {
             return this.pointsTouched ? this.points && this.points > 0 : true;
         },
@@ -132,11 +162,12 @@ export default {
 
             const userID = this.user.id;
             const file = this.file;
+            const bundleFile = this.bundleFile
             const title = this.title;
             const description = this.description;
             const costInPoints = this.points;
 
-            const res = await save3DObjectByFileController({ file, title, description, userID, costInPoints });
+            const res = await save3DObjectByFileController({ file, title, bundleFile, description, userID, costInPoints });
 
             this.$swal.close();
 
