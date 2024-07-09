@@ -83,7 +83,10 @@ export default {
   },
   computed: {
     filteredRewards() {
+      console.log("this.rewards: ", this.rewards);
+      
       return this.rewards.filter((reward) => {
+        console.log("reward.metadata[0].metadata.title: ", reward.metadata[0].metadata.title);
         const title = reward.metadata[0].metadata.title.toLowerCase();
         const description =
           reward.metadata[0].metadata.description.toLowerCase();

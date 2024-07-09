@@ -1,61 +1,3 @@
-<script>
-import { computed } from "vue";
-import { colors } from "../assets/colors.js";
-import { useUserStore } from "../stores/userStore.js";
-import { logOut } from "../models/firebase/auth.js";
-
-export default {
-  data() {
-    return {
-      colors,
-      textColor: colors.primaryTextColor,
-      textColorContrast: colors.contastBlackColor,
-      showLanguageButtons: false,
-    };
-  },
-  components: {},
-  methods: {
-    goHome() {
-      this.$router.push("/");
-    },
-    handleContacts() {
-      //   this.$router.push("/contacts");
-    },
-    async closeSession() {
-      console.log("Close session");
-      try {
-        await logOut();
-        // this.userStatus = false;
-        // window.location.reload();
-      } catch (error) {
-        console.log(error);
-      }
-    },
-    goToLogin() {
-      this.$router.push("/login");
-    },
-    toggleLanguageButtons() {
-      this.showLanguageButtons = !this.showLanguageButtons;
-    },
-  },
-  setup() {
-    const store = useUserStore();
-    const user = computed(() => {
-      return store.getUser;
-    });
-    console.log("User at navBar: ", user);
-    return { user };
-  },
-  mounted() {
-    if (this.user != null) {
-      console.log("User at navBar mounted: ", this.user.isAdmin);
-    } else {
-      console.log("No logueado");
-    }
-  },
-};
-</script>
-
 <template>
   <nav class="navbar navbar-expand-lg navBarPersonalized marron-principal"
     :style="{ backgroundColor: colors.principalBrown }">
@@ -236,6 +178,67 @@ export default {
     <i @click="signOut()" class="mdi mdi-logout mdi-36px iconBtn"></i>
   </div> -->
 </template>
+
+<script>
+import { computed } from "vue";
+import { colors } from "../assets/colors.js";
+import { useUserStore } from "../stores/userStore.js";
+import { logOut } from "../models/firebase/auth.js";
+
+export default {
+  data() {
+    return {
+      colors,
+      textColor: colors.primaryTextColor,
+      textColorContrast: colors.contastBlackColor,
+      showLanguageButtons: false,
+    };
+  },
+  components: {},
+  methods: {
+    goHome() {
+      this.$router.push("/");
+    },
+    handleContacts() {
+      //   this.$router.push("/contacts");
+    },
+    async closeSession() {
+      console.log("Close session");
+      try {
+        await logOut();
+        // this.userStatus = false;
+        // window.location.reload();
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    goToLogin() {
+      this.$router.push("/login");
+    },
+    toggleLanguageButtons() {
+      this.showLanguageButtons = !this.showLanguageButtons;
+    },
+  },
+  setup() {
+    const store = useUserStore();
+    const user = computed(() => {
+      return store.getUser;
+    });
+    // const user = computed(() => store.getUser);
+    console.log("User at navBar: ", user);
+    return { user };
+  },
+  mounted() {
+    if (this.user != null) {
+      console.log("User at navBar mounted: ", this.user.isAdmin);
+    } else {
+      console.log("No logueado");
+    }
+  },
+};
+</script>
+
+
 
 <style>
 #pointsContainer {

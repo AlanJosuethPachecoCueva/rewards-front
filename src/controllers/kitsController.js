@@ -210,6 +210,24 @@ const getImagesFromKitsController = async (kits) => {
   }
 };
 
+const isTodayBetweenDatesController = (startDateStr, endDateStr) =>{
+  const today = new Date();
+
+  // Función para convertir una cadena de fecha en formato "DD/MM/YYYY" a un objeto Date
+  function parseDate(dateStr) {
+    const [day, month, year] = dateStr.split('/').map(Number);
+    return new Date(year, month - 1, day); // Restar 1 al mes porque los meses en Date empiezan desde 0
+  }
+
+  // Convertir las fechas de entrada y la fecha de hoy a solo fecha (sin tiempo)
+  const startDate = parseDate(startDateStr);
+  const endDate = parseDate(endDateStr);
+  const todayDateOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
+  // Verificar si la fecha de hoy está entre las dos fechas (inclusive)
+  return todayDateOnly >= startDate && todayDateOnly <= endDate;
+}
+
 
 export {
   getKitsController,
@@ -223,5 +241,6 @@ export {
   updateKitImagesController,
   uploadImageController,
   getImagesFromKitsController,
-  getAllKitsRewardsController
+  getAllKitsRewardsController,
+  isTodayBetweenDatesController
 };

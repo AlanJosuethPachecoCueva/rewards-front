@@ -99,7 +99,7 @@ async function logInWithGoogle() {
     const errorCode = error.code;
     const errorMessage = error.message;
     // The email of the user's account used.
-    const email = error.customData.email;
+    //const email = error.customData.email;
     // The AuthCredential type that was used.
     const credential = GoogleAuthProvider.credentialFromError(error);
     // ...
@@ -129,9 +129,9 @@ async function logInFirebase(userData) {
 
       const userStore = useUserStore();
       let userToSave = {
-        name: user.reloadUserInfo.displayName,
-        surname: "",
-        email: user.reloadUserInfo.email,
+        name: data.name,
+        surname: data.surname? data.surname:"",
+        email: data.email,
         city: "",
         birthdate: "",
         isAdmin: false,
@@ -139,6 +139,7 @@ async function logInFirebase(userData) {
         uid: user.uid,
         points: 0,
       };
+      
 
       let userByController = await getUserByIdController(user.uid);
       userToSave.surname = userByController.surname;
@@ -146,7 +147,7 @@ async function logInFirebase(userData) {
       userToSave.birthdate = userByController.birthdate;
       userToSave.points = userByController.points;
       userToSave.isAdmin = userByController.isAdmin;
-
+      console.log("userToSave: ", userToSave);
       userStore.setUser(userToSave);
       userStore.setIsLogued(true);
       console.log("userToSave: ", userToSave);

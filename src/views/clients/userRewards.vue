@@ -97,6 +97,7 @@ export default {
     const loadData = async () => {
       try {
         const userData = await getUserByIdController(userStored.value.id);
+        //console.log("userData loadDaadadata: ", userData);
         const rewardsWithUrls = await getUserRewardsController(
           userStored.value.id
         );
@@ -109,7 +110,7 @@ export default {
         rewards.silver = 2;
         rewards.bronze = 340;
         rewards.platinum = 1835;
-        console.log("User data loaded: ", user);
+        //console.log("User data loaded: ", user);
       } catch (error) {
         console.error("Error loading user data: ", error);
       }

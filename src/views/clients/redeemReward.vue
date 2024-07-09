@@ -73,6 +73,7 @@ import { reedemRewardController } from "../../controllers/rewardsController";
 import multiselect from 'vue-multiselect';
 import { useUserStore } from "../../stores/userStore";
 import '@google/model-viewer';
+import { getUserInformation } from "@/models/firebase/config";
 
 export default {
     data() {
@@ -123,6 +124,7 @@ export default {
                     names: this.names, email: this.email, cellphone: this.cellphone, city: this.city, street: this.street, description: this.description
                 }
             }
+            console.log("reward to redeem in redeem: ", rewardToSend);
             const res = await reedemRewardController(rewardToSend);
             console.log("res in reedem reward: ", res);
 
@@ -130,7 +132,7 @@ export default {
                 console.error("Ha ocurrido un error al redimir el premio seleccionado: ", res);
                 await this.$swal({
                     title: 'No se ha redimido el premio',
-                    text: "Ha ocurrido un error al redimir el premio seleccionado.",
+                    text: "Ha ocurrido un error al redimir el premio seleccionado. " + res.message,
                     icon: "error",
                     showCancelButton: false,
                     confirmButtonText: "OK",
@@ -156,6 +158,7 @@ export default {
                 });
             }
 
+            getUserInformation();
             this.$router.push({ name: 'userRewards' });
 
         }

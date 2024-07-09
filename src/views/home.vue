@@ -6,13 +6,14 @@
     <div v-if="isLoading">{{ $t("loading") }}</div>
     <div v-else>
       <div v-for="kit in kits" :key="kit.id">
-        <rewardContainerComponent :title="kit.title" :description="kit.description" :main-image-url="kit.mainImageUrl" :images="kit.images"></rewardContainerComponent>
+        <rewardContainerComponent :startDate="kit.startDate" :endDate="kit.endDate" :title="kit.title" :description="kit.description" :main-image-url="kit.mainImageUrl" :images="kit.images"></rewardContainerComponent>
         <div v-if="kit.modifiedRewards.length > 0">
           <h2 class="rewardsTitle">{{ $t('homeAwards') }}</h2>
           <div class="carousel-wrapper">
             <button @click="prev" class="carousel-nav left">‹</button>
             <carousel ref="carousel" items-to-show="5" :paginationEnabled="false" class="carousel-container">
               <Slide v-for="reward in kit.modifiedRewards" :key="reward.rewardId" class="carousel-slide">
+
                 <div v-if="reward.type != '3d'" class="custom-card-size">
                   <img :src="reward.url" class="image-card" alt="Image" />
                   <div class="card-body">
