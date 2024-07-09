@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div class="titleContainer">
     <h1>{{ $t('showRewardsTitle') }}</h1>
   </div>
@@ -60,82 +60,170 @@
       </div>
     </div>
   </div>
+</template> -->
+<template>
+  <div class="titleContainer">
+    <h1>{{ $t('showRewardsTitle') }}</h1>
+  </div>
+
+  <div class="containerShowRewards">
+    <div class="search-container">
+      <input type="text" v-model="searchQuery" :placeholder="$t('showRewardsSearchplaceholder')" class="search-bar" />
+    </div>
+
+    <div v-for="(kitData, kitId) in filteredKitsRewards" :key="kitId" class="kit-section" id="containerOfKitRewards">
+      <div id="containerOfKitRewardsTitle">
+        <h2>{{ kitData.kit.title }}</h2>
+      </div>
+
+      <div id="containerOfKitRewardsDescription">
+        <p>{{ kitData.kit.description }}</p>
+      </div>
+      
+
+      <div v-if="kitData.rewards.stickers.length > 0">
+        <h3>Stickers</h3>
+        <div class="card-grid">
+          <div v-for="sticker in kitData.rewards.stickers" :key="sticker" class="cardShowRewards">
+            <div class="card-image-container">
+              <img :src="getRewardUrl(sticker)" class="card-img" alt="Reward Image" />
+              <button class="redeem-button" @click="reedem(sticker, 'st', kitId)">
+                {{ $t('showRewardRedeemButton') }}
+              </button>
+              <button class="award-cost" @click="">
+                {{ getRewardCost(sticker) }}
+                <i>
+                  <img src="../../assets//images//cacao.png" alt="Points Icon" style="width: 20px; height: 20px" />
+                </i>
+              </button>
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">{{ getRewardTitle(sticker) }}</h5>
+              <p class="card-text">{{ getRewardDescription(sticker) }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div v-if="kitData.rewards.threeDObjects.length > 0">
+        <h3>3D Objects</h3>
+        <div class="card-grid">
+          <div v-for="threeDObject in kitData.rewards.threeDObjects" :key="threeDObject" class="cardShowRewards">
+            <div class="card-image-container custom-card-size">
+              <model-viewer :src="getRewardUrl(threeDObject)" alt="Modelo 3D" disable-zoom disable-pan
+                disable-touch-zoom disable-rotate auto-rotate="0"></model-viewer>
+              <button class="redeem-button" @click="reedem(threeDObject, '3d', kitId)">
+                {{ $t('showRewardRedeemButton') }}
+              </button>
+              <button class="award-cost" @click="">
+                {{ getRewardCost(threeDObject) }}
+                <i>
+                  <img src="../../assets//images//cacao.png" alt="Points Icon" style="width: 20px; height: 20px" />
+                </i>
+              </button>
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">{{ getRewardTitle(threeDObject) }}</h5>
+              <p class="card-text">{{ getRewardDescription(threeDObject) }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div v-if="kitData.rewards.products.length > 0">
+        <h3>Products</h3>
+        <div class="card-grid">
+          <div v-for="product in kitData.rewards.products" :key="product" class="cardShowRewards">
+            <div class="card-image-container">
+              <img :src="getRewardUrl(product)" class="card-img" alt="Reward Image" />
+              <button class="redeem-button" @click="reedem(product, 'pr', kitId)">
+                {{ $t('showRewardRedeemButton') }}
+              </button>
+              <button class="award-cost" @click="">
+                {{ getRewardCost(product) }}
+                <i>
+                  <img src="../../assets//images//cacao.png" alt="Points Icon" style="width: 20px; height: 20px" />
+                </i>
+              </button>
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">{{ getRewardTitle(product) }}</h5>
+              <p class="card-text">{{ getRewardDescription(product) }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
 </template>
 
 <script>
-import {
-  getStickersController,
-  get3DObjectsController,
-  getProductsImagesController,
-} from "../../controllers/rewardsController";
+import { getStickersController, get3DObjectsController, getProductsImagesController, getKitsRewardsController } from "../../controllers/rewardsController";
 import "@google/model-viewer";
+
 export default {
   components: {
-    // Registrar el componente importado
     "model-viewer": window.ModelViewer,
   },
   data() {
     return {
       logIn: true,
-      rewards: [],
+      kitsRewards: {},
       searchQuery: "",
     };
   },
   computed: {
-    filteredRewards() {
-      console.log("this.rewards: ", this.rewards);
-      
-      return this.rewards.filter((reward) => {
-        console.log("reward.metadata[0].metadata.title: ", reward.metadata[0].metadata.title);
-        const title = reward.metadata[0].metadata.title.toLowerCase();
-        const description =
-          reward.metadata[0].metadata.description.toLowerCase();
-        const query = this.searchQuery.toLowerCase();
-        return title.includes(query) || description.includes(query);
-      });
+    filteredKitsRewards() {
+      const query = this.searchQuery.toLowerCase();
+      const filteredKits = {};
+
+      for (const [kitId, kitData] of Object.entries(this.kitsRewards)) {
+        const kit = kitData.kit;
+        const rewards = kitData.rewards;
+
+        if (kit.title.toLowerCase().includes(query) || kit.description.toLowerCase().includes(query)) {
+          filteredKits[kitId] = kitData;
+          continue;
+        }
+
+        const filteredRewards = {
+          stickers: rewards.stickers.filter((sticker) => this.getRewardTitle(sticker).toLowerCase().includes(query)),
+          threeDObjects: rewards.threeDObjects.filter((threeDObject) => this.getRewardTitle(threeDObject).toLowerCase().includes(query)),
+          products: rewards.products.filter((product) => this.getRewardTitle(product).toLowerCase().includes(query)),
+        };
+
+        if (filteredRewards.stickers.length || filteredRewards.threeDObjects.length || filteredRewards.products.length) {
+          filteredKits[kitId] = { kit, rewards: filteredRewards };
+        }
+      }
+      console.log("filteredKits: ", filteredKits);
+      return filteredKits;
     },
   },
   async created() {
-    const stickers = await getStickersController();
-    const objects = await get3DObjectsController();
-    const products = await getProductsImagesController();
-
-    console.log("stickers in showRewards", stickers);
-    console.log("objects in showRewards", objects);
-    console.log("products in showRewards", products);
-
-    this.rewards = this.rewards.concat(stickers);
-    this.rewards = this.rewards.concat(objects);
-    this.rewards = this.rewards.concat(products);
-    this.rewards.shift();
-    console.log("rewards in showRewards", this.rewards);
+    const kitsRewardsResponse = await getKitsRewardsController();
+    if (kitsRewardsResponse.status) {
+      this.kitsRewards = kitsRewardsResponse.data;
+    }
   },
   methods: {
-    reedem(rewardType, reward) {
-      console.log("reedem rewardType: ", rewardType);
-
-      const isObject = rewardType.includes("3DObjects");
-      const isSticker = rewardType.includes("stickers");
-      //const isProduct = rewardType.includes('products');
-
-      let type = "";
-      if (isObject) {
-        type = "3d";
-      } else if (isSticker) {
-        type = "st";
-      } else {
-        type = "pr";
-      }
-
-      reward = {
-        ...reward,
-        type,
-      };
-      console.log("reward: ", reward);
-      console.log("type: ", type);
-
+    getRewardUrl(reward) {
+      return reward.url;
+    },
+    getRewardCost(reward) {
+      return reward.metadata[0].metadata.costInPoints;
+    },
+    getRewardTitle(reward) {
+      return reward.metadata[0].metadata.title;
+    },
+    getRewardDescription(reward) {
+      return reward.metadata[0].metadata.description;
+    },
+    reedem(reward, type, kitId) {
+      reward = { ...reward, type, kitId };
+      console.log("reward in redeeem: ", reward);
       const encodedReward = encodeURIComponent(JSON.stringify(reward));
-      console.log("encodedReward: ", encodedReward);
       this.$router.push({
         name: "reedemReward",
         query: { reward: JSON.stringify(reward) },
@@ -144,8 +232,36 @@ export default {
   },
 };
 </script>
-
 <style>
+#containerOfKitRewards {
+  background-color: rgba(222, 178, 111, 0.1);
+  margin: 40px;
+  padding: 30px;
+}
+
+#containerOfKitRewardsTitle {
+  display: flex;
+  background-color: rgb(227, 90, 90);
+  color:white;
+  height:fit-content;
+  justify-content: center;
+  align-items: center;
+}
+
+#containerOfKitRewardsDescription {
+  padding: 15px;
+  display: flex;
+  background: linear-gradient(87deg, rgb(236, 224, 160) 0, rgb(236, 221, 142) 50%) !important;
+  color:rgb(255, 255, 255);
+  height:fit-content;
+  justify-content: center;
+  align-items: center;
+  font-size:x-large;
+  font-weight: bolder !important;
+}
+
+
+
 .titleContainer {
   /* background-color: red; */
   display: flex;

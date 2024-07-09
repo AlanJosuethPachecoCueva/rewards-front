@@ -91,16 +91,12 @@ export default {
     const loadData = async () => {
       try {
         const userData = await getUserByIdController(userStored.value.id);
-<<<<<<< HEAD
+
         //console.log("userData loadDaadadata: ", userData);
-        const rewardsWithUrls = await getUserRewardsController(
-          userStored.value.id
-        );
-        user.avatar = userData.avatar || "default-avatar.png";
-=======
+       
         const rewardsWithUrls = await getUserRewardsController(userStored.value.id);
         user.avatar = userData.avatar || 'default-avatar.png';
->>>>>>> 6a8537b0b75218e516343722bc138e3fe8c1a645
+
         user.name = userData.name;
         user.surname = userData.surname;
         user.email = userData.email;
@@ -109,11 +105,9 @@ export default {
         rewards.silver = 2;
         rewards.bronze = 340;
         rewards.platinum = 1835;
-<<<<<<< HEAD
-        //console.log("User data loaded: ", user);
-=======
+
         console.log('User data loaded: ', user);
->>>>>>> 6a8537b0b75218e516343722bc138e3fe8c1a645
+
       } catch (error) {
         console.error('Error loading user data: ', error);
       }

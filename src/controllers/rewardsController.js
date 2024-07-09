@@ -16,7 +16,8 @@ import {
   modifyProduct,
   getProduct,
   getRedeemedProducts,
-  updateShippingProductStatus
+  updateShippingProductStatus,
+  getKitsRewards
 } from "../models/rewardModel.js";
 
 const generateStickerWithAIController = async (prompt, userID) => {
@@ -302,6 +303,26 @@ const updateShippingProductStatusController = async (userId, fileName, newStatus
   }
 };
 
+
+const getKitsRewardsController = async () => {
+  try {
+    const kitsRewards = await getKitsRewards();
+
+    if (!kitsRewards) {
+      console.error(`Unable to get kits rewards: `, kitsRewards.message);
+    }
+
+    return kitsRewards;
+  } catch (error) {
+    console.error(error);
+    return {
+      status: false,
+      message: "Unable to get kits rewards"
+    };
+  }
+};
+
+
 export {
   generateStickerWithAIController,
   saveStickerController,
@@ -320,5 +341,6 @@ export {
   modifyProductController,
   getProductController,
   getRedeemedProductsController,
-  updateShippingProductStatusController
+  updateShippingProductStatusController,
+  getKitsRewardsController
 };

@@ -427,6 +427,19 @@ const updateShippingProductStatus = async (userId, fileName, newStatus) => {
   }
 };
 
+const getKitsRewards = async () => {
+  try {
+    let response = await fetch(`${RUTA_SERVIDOR}/rewards/kits_rewards_categorized`);
+    console.log("response in getKitsRewards: ", response);
+    if (!response.ok) {
+      console.error(`Unable to get kits rewards: `, response.message);
+    }
+    response = await response.json();
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
 
 export {
   generateStickerWithAI,
@@ -446,5 +459,6 @@ export {
   modifyProduct,
   getProduct,
   getRedeemedProducts,
-  updateShippingProductStatus
+  updateShippingProductStatus,
+  getKitsRewards
 };

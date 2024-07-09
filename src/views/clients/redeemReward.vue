@@ -15,11 +15,6 @@
             </div>
             <p class="reward-type">Type: {{ reward.type }}</p>
             <p class="reward-type">Costo en puntos: {{ reward.metadata[0].metadata.costInPoints }}</p>
-            <div class="mb-3">
-                <label for="kit" class="form-label">Kit Asociado</label>
-                <multiselect v-model="selectedKit" :options="kits" label="title" track-by="id" :multiple="false"
-                    mode="tags" placeholder="Selecciona los kits"></multiselect>
-            </div>
 
             <!-- Para productos -->
             <div v-if="reward.type == 'pr'">
@@ -67,7 +62,6 @@
 </template>
 
 <script>
-import { getKitsController } from "../../controllers/kitsController";
 import { computed } from "vue";
 import { reedemRewardController } from "../../controllers/rewardsController";
 import multiselect from 'vue-multiselect';
@@ -79,8 +73,7 @@ export default {
     data() {
         return {
             reward: {},
-            kits: [],
-            selectedKit: null,
+           
             names: "",
             email: "",
             cellphone: "",
@@ -105,7 +98,6 @@ export default {
         this.reward = JSON.parse(this.$route.query.reward);
         console.log("this.reward: ", this.reward);
 
-        this.kits = await getKitsController();
     },
     methods: {
         async reedemReward() {
@@ -115,7 +107,7 @@ export default {
             let fileName = parts[parts.length - 1];
             console.log("fileNamee: ", fileName);
             let rewardToSend = {
-                fileName, type: this.reward.type, uid: this.user.id, associatedKit: this.selectedKit.id
+                fileName, type: this.reward.type, uid: this.user.id, associatedKit: this.reward.kitId
             }
 
             if (this.reward.type == "pr") {
