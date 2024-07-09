@@ -9,6 +9,7 @@ import {
 import { useUserStore } from "../../stores/userStore.js";
 import { getUserByIdController } from "@/controllers/usersController.js";
 // import router from "../../router/index.js";
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage"; // Importar Firebase Storage
 
 const firebaseConfig = {
   apiKey: `${import.meta.env.VITE_FB_APIKEY}`,
@@ -29,6 +30,13 @@ const authFirebase = getAuth(app);
 // Para inicio de sesión con google
 const provider = new GoogleAuthProvider();
 
+<<<<<<< HEAD
+=======
+//PUSE YO PARA cargar imagenes
+const storage = getStorage(app);
+
+
+>>>>>>> 6a8537b0b75218e516343722bc138e3fe8c1a645
 async function checkAuthState() {
   return new Promise((resolve) => {
     onAuthStateChanged(authFirebase, (user) => {
@@ -152,5 +160,14 @@ export {
   signInWithEmailAndPassword,
   signInWithPopup,
   onAuthStateChanged,
+<<<<<<< HEAD
   getUserInformation
+=======
+  /**/
+  storage,
+  getStorage, 
+  ref, 
+  uploadBytesResumable, 
+  getDownloadURL,
+>>>>>>> 6a8537b0b75218e516343722bc138e3fe8c1a645
 };

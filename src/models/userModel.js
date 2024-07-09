@@ -6,6 +6,7 @@
 
 const RUTA_SERVIDOR = `${import.meta.env.VITE_APP_RUTA_API}`;
 
+
 import { useUserStore } from "../stores/userStore";
 
 async function registerWithFirebase(userData) {
@@ -201,6 +202,34 @@ const getUserProduct = async (userId, fileName) => {
   }
 };
 
+const updateUserAvatar = async (userId, file) => {
+  try {
+    // Crea una referencia para el archivo en la carpeta de avatares del usuario
+    const storageRef = ref(storage, `avatars/${userId}/${file.name}`);
+    
+    // Sube el archivo a Firebase Storage
+    await uploadBytes(storageRef, file);
+    
+    // Obtiene la URL de descarga del archivo
+    const downloadURL = await getDownloadURL(storageRef);
+
+    // Guarda la URL en Firestore
+    const userDocRef = doc(db, 'users', userId);
+    await updateDoc(userDocRef, {
+      avatar: downloadURL
+    });
+
+    return downloadURL;
+  } catch (error) {
+    console.error('Error uploading file or saving URL to Firestore:', error);
+    throw error;
+  }
+};
+
+
+
+
+
 export {
   registerWithFirebase,
   getAllUsers,
@@ -210,5 +239,6 @@ export {
   sendEmail,
   saveUserDataInFirebase,
   getUserRewards,
-  getUserProduct
+  getUserProduct, 
+  updateUserAvatar
 };

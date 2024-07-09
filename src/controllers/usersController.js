@@ -2,7 +2,8 @@ import {
   getUser,
   getUserRewards,
   deleteUserById,
-  getUserProduct,
+  getUserProduct, 
+  updateUserAvatar 
 } from "@/models/userModel";
 
 const getUserByIdController = async (id) => {
@@ -68,9 +69,30 @@ const getUserProductController = async (userId, fileName) => {
     return error;
   }
 };
+
+
+
+const updateUserAvatarController = async (userId, avatarURL) => {
+  try {
+    const userProduct = await updateUserAvatar(userId, avatarURL); // Asegúrate de que esta función exista en tu archivo de modelos
+
+    if (!userProduct.status) {
+      console.error("Error updating user avatar.");
+      return userProduct.message;
+    }
+
+    return userProduct.data;
+  } catch (error) {
+    console.error(error);
+    return error;
+  }
+};
+
+
 export {
   getUserByIdController,
   getUserRewardsController,
   deleteUserByIdController,
   getUserProductController,
+  updateUserAvatarController,
 };
