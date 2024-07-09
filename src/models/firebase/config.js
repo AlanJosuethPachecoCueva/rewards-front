@@ -7,6 +7,7 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 // import router from "../../router/index.js";
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage"; // Importar Firebase Storage
 
 const firebaseConfig = {
   apiKey: `${import.meta.env.VITE_FB_APIKEY}`,
@@ -26,6 +27,9 @@ const authFirebase = getAuth(app);
 
 // Para inicio de sesión con google
 const provider = new GoogleAuthProvider();
+
+//PUSE YO PARA cargar imagenes
+const storage = getStorage(app);
 
 
 async function checkAuthState() {
@@ -94,4 +98,10 @@ export {
   signInWithEmailAndPassword,
   signInWithPopup,
   onAuthStateChanged,
+  /**/
+  storage,
+  getStorage, 
+  ref, 
+  uploadBytesResumable, 
+  getDownloadURL,
 };
