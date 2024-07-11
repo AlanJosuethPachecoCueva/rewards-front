@@ -61,7 +61,7 @@
 import { storage, ref, uploadBytesResumable, getDownloadURL } from '../../models/firebase/config.js';
 import { useUserStore } from '../../stores/userStore.js';
 import { computed, reactive } from 'vue';
-import { getUserByIdController, getUserRewardsController, deleteUserByIdController, updateUser } from '../../controllers/usersController';
+import { getUserByIdController, getUserRewardsController, deleteUserByIdController, updateUserController } from '../../controllers/usersController';
 import Swal from 'sweetalert2';
 import '@google/model-viewer';
 
@@ -127,11 +127,13 @@ export default {
     },
     async updateUserProfile() {
       try {
-        await updateUser(this.user.id, {
+        let data = {
           name: this.user.name,
           email: this.user.email,
           surname: this.user.surname,
-        });
+        };
+        console.log("data in update: ", data);
+        await updateUserController(this.user.id,data);
         this.isEditing = false;  // Deshabilitar la edición después de guardar los cambios
         Swal.fire('Success!', 'Your profile has been updated.', 'success');
       } catch (error) {
@@ -275,7 +277,8 @@ export default {
   width: 100px;
   height: 100px;
   object-fit: cover;
-  cursor: pointer; /* Cambiar el cursor a pointer para indicar que es clicable */
+  cursor: pointer;
+  /* Cambiar el cursor a pointer para indicar que es clicable */
 }
 
 .user-stats {
@@ -343,11 +346,13 @@ export default {
   width: 100px;
   height: 100px;
   object-fit: cover;
-  cursor: pointer; /* Cambiar el cursor a pointer para indicar que es clicable */
+  cursor: pointer;
+  /* Cambiar el cursor a pointer para indicar que es clicable */
 }
 
 #file-input {
-  display: none; /* Ocultar el input de archivo */
+  display: none;
+  /* Ocultar el input de archivo */
 }
 
 .user-profile {
@@ -365,17 +370,20 @@ export default {
 
 .user-stats {
   display: flex;
-  gap: 10px; /* Añadir espacio entre los elementos */
+  gap: 10px;
+  /* Añadir espacio entre los elementos */
 }
 
 .stat {
   display: flex;
   align-items: center;
-  gap: 5px; /* Añadir espacio entre el ícono y el texto */
+  gap: 5px;
+  /* Añadir espacio entre el ícono y el texto */
 }
 
 .trophy {
-  font-size: 24px; /* Ajustar el tamaño del ícono */
+  font-size: 24px;
+  /* Ajustar el tamaño del ícono */
 }
 
 .trophy.gold {
@@ -401,6 +409,7 @@ export default {
 .reward-items-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 15px; /* Espacio entre los ítems */
+  gap: 15px;
+  /* Espacio entre los ítems */
 }
 </style>

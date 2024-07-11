@@ -3,7 +3,8 @@ import {
   getUserRewards,
   deleteUserById,
   getUserProduct, 
-  updateUserAvatar 
+  updateUserAvatar,
+  updateUser
 } from "@/models/userModel";
 
 const getUserByIdController = async (id) => {
@@ -89,21 +90,19 @@ const updateUserAvatarController = async (userId, avatarURL) => {
   }
 };
 
-const updateUser = async (req, res) => {
+const updateUserController = async (id, data) => {
   try {
-    const { uid, email, name, surname } = req.body;
-
+    //const { email, name, surname } = data;
+    //console.log("data update user: ", data);
     // Llamar al método updateUser con los datos proporcionados
-    const result = await updateUser(uid, email, name, surname);
-
+    const result = await updateUser(id, data);
+    console.log("result: ", result);
     if (!result) {
-      return res.status(500).json({ message: 'Error updating user' });
+      //return res.status(500).json({ message: 'Error updating user' });
     }
 
-    res.status(200).json(result);
   } catch (error) {
     console.error('Error updating user profile:', error);
-    res.status(500).json({ message: 'Error updating user' });
   }
 };
 
@@ -118,6 +117,6 @@ export {
   deleteUserByIdController,
   getUserProductController,
   updateUserAvatarController,
-  updateUser,
+  updateUserController,
 
 };
