@@ -149,7 +149,7 @@ const getUser = async (id) => {
 
 const updateUser = async (id, userData) => {
   try {
-    const { email, name, surname, birthdate, direction } = userData;
+    const { email, name, surname} = userData;
     const response = await fetch(`${RUTA_SERVIDOR}/users/update`, {
       method: "PUT",
       headers: {
@@ -160,8 +160,6 @@ const updateUser = async (id, userData) => {
         email,
         name,
         surname,
-        birthdate,
-        direction,
       }),
     });
 
@@ -225,6 +223,8 @@ const updateUserAvatar = async (userId, file) => {
     throw error;
   }
 };
+
+
 
 
 

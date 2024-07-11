@@ -71,6 +71,7 @@ const getUserProductController = async (userId, fileName) => {
 };
 
 
+/*FUNCIONES CHRIS*/
 
 const updateUserAvatarController = async (userId, avatarURL) => {
   try {
@@ -88,6 +89,28 @@ const updateUserAvatarController = async (userId, avatarURL) => {
   }
 };
 
+const updateUser = async (req, res) => {
+  try {
+    const { uid, email, name, surname } = req.body;
+
+    // Llamar al método updateUser con los datos proporcionados
+    const result = await updateUser(uid, email, name, surname);
+
+    if (!result) {
+      return res.status(500).json({ message: 'Error updating user' });
+    }
+
+    res.status(200).json(result);
+  } catch (error) {
+    console.error('Error updating user profile:', error);
+    res.status(500).json({ message: 'Error updating user' });
+  }
+};
+
+
+
+
+
 
 export {
   getUserByIdController,
@@ -95,4 +118,6 @@ export {
   deleteUserByIdController,
   getUserProductController,
   updateUserAvatarController,
+  updateUser,
+
 };

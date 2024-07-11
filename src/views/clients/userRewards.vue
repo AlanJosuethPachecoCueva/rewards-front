@@ -2,33 +2,39 @@
   <div class="user-profile">
     <div class="user-info">
       <div class="avatar-container">
-        <!-- El círculo de previsualización de imagen es el área clicable para seleccionar una imagen -->
         <img class="avatar" :src="user.avatar" alt="User Avatar" @click="selectImage" />
       </div>
-      <h2>{{ user.name }} {{ user.surname }}</h2>
-      <p>{{ user.email }}</p>
-      <div class="user-stats">
-        <div class="stat">
-          <span class="trophy gold">🏆</span>
-          <span>{{ rewards.gold }}</span>
+      <form @submit.prevent="updateUserProfile">
+        <div class="form-group">
+          <label for="name">Name:</label>
+          <div class="d-flex">
+            <input v-model="user.name" id="name" type="text" :disabled="!isEditing" class="form-control" />
+            <button v-if="!isEditing" type="button" class="btn btn-link" @click="enableEditing">
+              <i class="bi bi-pencil"></i> <!-- Bootstrap Icons para el lápiz -->
+            </button>
+          </div>
         </div>
-        <div class="stat">
-          <span class="trophy silver">🏆</span>
-          <span>{{ rewards.silver }}</span>
+
+        <div class="form-group">
+          <label for="surname">Surname:</label>
+          <input v-model="user.surname" id="surname" type="text" :disabled="!isEditing" class="form-control" />
         </div>
-        <div class="stat">
-          <span class="trophy bronze">🏆</span>
-          <span>{{ rewards.bronze }}</span>
+
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input v-model="user.email" id="email" type="email" :disabled="!isEditing" class="form-control" />
         </div>
-        <div class="stat">
-          <span class="trophy platinum">🏆</span>
-          <span>{{ rewards.platinum }}</span>
+
+        <div v-if="isEditing">
+          <button type="submit" class="btn btn-primary" @click="updateUserProfile">Save Changes</button>
+          <button type="button" class="btn btn-secondary" @click="disableEditing">Cancel</button>
         </div>
-      </div>
-      <p>{{ "If you want to erase your account press this button" }}</p>
-      <button type="button" class="btn btn-primary btnGenerateKit" @click="deleteProfile()">
-        Delete Profile
-      </button>
+
+        <p>{{ "If you want to erase your account press this button" }}</p>
+        <button type="button" class="btn btn-primary btnGenerateKit" @click="confirmDeleteProfile">
+          Delete Profile
+        </button>
+      </form>
     </div>
     <div class="rewards">
       <h3>Redimidos</h3>
@@ -52,17 +58,17 @@
 </template>
 
 <script>
-import { storage, ref, uploadBytesResumable, getDownloadURL } from '../../models/firebase/config.js'; // Asegúrate de importar las funciones necesarias
+import { storage, ref, uploadBytesResumable, getDownloadURL } from '../../models/firebase/config.js';
 import { useUserStore } from '../../stores/userStore.js';
 import { computed, reactive } from 'vue';
-import { logOut } from '@/models/firebase/auth.js';
-import { getUserByIdController, getUserRewardsController, deleteUserByIdController } from '../../controllers/usersController';
+import { getUserByIdController, getUserRewardsController, deleteUserByIdController, updateUser } from '../../controllers/usersController';
+import Swal from 'sweetalert2';
 import '@google/model-viewer';
 
 export default {
   data() {
     return {
-      actualUser: null,
+      isEditing: false,  // Variable para controlar el estado de edición
     };
   },
   components: {
@@ -91,23 +97,18 @@ export default {
     const loadData = async () => {
       try {
         const userData = await getUserByIdController(userStored.value.id);
-
-        //console.log("userData loadDaadadata: ", userData);
-       
         const rewardsWithUrls = await getUserRewardsController(userStored.value.id);
         user.avatar = userData.avatar || 'default-avatar.png';
-
         user.name = userData.name;
         user.surname = userData.surname;
         user.email = userData.email;
         user.rewards = rewardsWithUrls.data;
-        rewards.gold = 272; // Asigna los valores reales
+        rewards.gold = 272;
         rewards.silver = 2;
         rewards.bronze = 340;
         rewards.platinum = 1835;
 
         console.log('User data loaded: ', user);
-
       } catch (error) {
         console.error('Error loading user data: ', error);
       }
@@ -118,6 +119,26 @@ export default {
     return { user, rewards };
   },
   methods: {
+    enableEditing() {
+      this.isEditing = true;
+    },
+    disableEditing() {
+      this.isEditing = false;
+    },
+    async updateUserProfile() {
+      try {
+        await updateUser(this.user.id, {
+          name: this.user.name,
+          email: this.user.email,
+          surname: this.user.surname,
+        });
+        this.isEditing = false;  // Deshabilitar la edición después de guardar los cambios
+        Swal.fire('Success!', 'Your profile has been updated.', 'success');
+      } catch (error) {
+        console.error('Error updating user profile:', error);
+        Swal.fire('Error!', 'There was a problem updating your profile.', 'error');
+      }
+    },
     async selectImage() {
       // Crear un nuevo input de archivo
       const fileInput = document.createElement('input');
@@ -183,6 +204,22 @@ export default {
         params: data,
       });
     },
+    async confirmDeleteProfile() {
+      const result = await Swal.fire({
+        title: 'Are you sure?',
+        text: 'Once deleted, you will not be able to recover your account!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'Cancel',
+      });
+
+      if (result.isConfirmed) {
+        this.deleteProfile();
+      }
+    },
     async deleteProfile() {
       try {
         await deleteUserByIdController(this.user.id);
@@ -206,19 +243,18 @@ export default {
   position: absolute;
   top: 8px;
   right: 8px;
-  
 }
 
-#status-button{
-    background-color: #e69b0c;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 5px 6px;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s;
+#status-button {
+  background-color: #e69b0c;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 5px 6px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
 .user-profile {
@@ -238,6 +274,8 @@ export default {
   border-radius: 50%;
   width: 100px;
   height: 100px;
+  object-fit: cover;
+  cursor: pointer; /* Cambiar el cursor a pointer para indicar que es clicable */
 }
 
 .user-stats {
@@ -293,6 +331,7 @@ export default {
   width: 250px;
   height: 250px;
   border-radius: 10px;
+}
 
 .avatar-container {
   position: relative;
@@ -363,10 +402,5 @@ export default {
   display: flex;
   flex-wrap: wrap;
   gap: 15px; /* Espacio entre los ítems */
-}
-
-
-
-
 }
 </style>
