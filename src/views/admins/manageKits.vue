@@ -133,6 +133,7 @@ export default {
       this.kitsToShow = JSON.parse(JSON.stringify(this.kits));
     },
     async deleteKit(kitId) {
+      console.log("kitId deleteKit: ", kitId);
       this.$swal({
         title: "¿Estás seguro?",
         text: "¡No podrás revertir esto!",
@@ -143,6 +144,7 @@ export default {
         confirmButtonText: "Sí, eliminarlo",
         cancelButtonText: "Cancelar",
       }).then(async (result) => {
+        console.log("REEESSSS result: ", result);
         if (result.isConfirmed) {
           // Lógica para eliminar el kit
           const res = await deleteKitByIdController(kitId);

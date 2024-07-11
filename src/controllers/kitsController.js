@@ -15,7 +15,7 @@ import {
 const createKitController = async (kitData) => {
   try {
     const res = await createKit(kitData);
-
+    console.log("res createKitController: ", res);
     if (!res) {
       console.error("Error creating kit.");
       return false;
@@ -125,8 +125,9 @@ const getKitByIdController = async (id) => {
 
 const deleteKitByIdController = async (id) => {
   try {
+    console.log("Entra a deleteKitByIdController");
     const msg = await deleteKit(id);
-
+    console.log("msg deleteKitByIdController: ", msg);
     if (!msg) {
       console.error("Error delettin kit.");
       return false;

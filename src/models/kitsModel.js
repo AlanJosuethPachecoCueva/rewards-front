@@ -57,7 +57,9 @@ const getAllKits = async () => {
 
 const getAllKitsRewards = async () => {
   try {
-    const response = await fetch(`${RUTA_SERVIDOR}/kits/getAllKitsWithRewards/`);
+    const response = await fetch(
+      `${RUTA_SERVIDOR}/kits/getAllKitsWithRewards/`
+    );
     if (!response.ok) {
       throw new Error("Error fetching kits");
     }
@@ -83,8 +85,11 @@ const getKit = async (id) => {
 
 const deleteKit = async (id) => {
   try {
-    const response = await fetch(`${RUTA_SERVIDOR}/kits/kit/${id}`,
-      { method: "DELETE", });
+    console.log("entrEa a deleteKit id: ", id);
+    const response = await fetch(`${RUTA_SERVIDOR}/kits/kit/${id}`, {
+      method: "DELETE",
+    });
+    console.log("response in deleteKit: ", response);
     if (!response.ok) {
       throw new Error(`Unable to get kit ${id}`);
     }
@@ -196,18 +201,15 @@ async function updateKitImages(kitId, imageIds) {
 
 async function updateKit(kitId, kitInfo) {
   try {
-    const response = await fetch(
-      `${RUTA_SERVIDOR}/kits/updateKit/${kitId}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          kitInfo,
-        }),
-      }
-    );
+    const response = await fetch(`${RUTA_SERVIDOR}/kits/updateKit/${kitId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        kitInfo,
+      }),
+    });
 
     if (!response.ok) {
       throw new Error("Error updating kit");
@@ -220,7 +222,6 @@ async function updateKit(kitId, kitInfo) {
   }
 }
 
-
 export {
   getAllKits,
   getKit,
@@ -232,5 +233,5 @@ export {
   getKitsImages,
   uploadKitImage,
   updateKitImages,
-  getAllKitsRewards
+  getAllKitsRewards,
 };
