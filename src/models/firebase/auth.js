@@ -129,9 +129,9 @@ async function logInFirebase(userData) {
 
       const userStore = useUserStore();
       let userToSave = {
-        name: data.name,
-        surname: data.surname? data.surname:"",
-        email: data.email,
+        name: userData.name,
+        surname: userData.surname ? userData.surname : "",
+        email: userData.email,
         city: "",
         birthdate: "",
         isAdmin: false,
@@ -139,7 +139,7 @@ async function logInFirebase(userData) {
         uid: user.uid,
         points: 0,
       };
-      
+
 
       let userByController = await getUserByIdController(user.uid);
       userToSave.surname = userByController.surname;
