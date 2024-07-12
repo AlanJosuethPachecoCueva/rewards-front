@@ -3,7 +3,8 @@ import {
   getUserRewards,
   deleteUserById,
   getUserProduct, 
-  updateUserAvatar 
+  updateUserAvatar,
+  updateUser
 } from "@/models/userModel";
 
 const getUserByIdController = async (id) => {
@@ -71,6 +72,7 @@ const getUserProductController = async (userId, fileName) => {
 };
 
 
+/*FUNCIONES CHRIS*/
 
 const updateUserAvatarController = async (userId, avatarURL) => {
   try {
@@ -88,6 +90,26 @@ const updateUserAvatarController = async (userId, avatarURL) => {
   }
 };
 
+const updateUserController = async (id, data) => {
+  try {
+    //const { email, name, surname } = data;
+    //console.log("data update user: ", data);
+    // Llamar al método updateUser con los datos proporcionados
+    const result = await updateUser(id, data);
+    console.log("result: ", result);
+    if (!result) {
+      //return res.status(500).json({ message: 'Error updating user' });
+    }
+
+  } catch (error) {
+    console.error('Error updating user profile:', error);
+  }
+};
+
+
+
+
+
 
 export {
   getUserByIdController,
@@ -95,4 +117,6 @@ export {
   deleteUserByIdController,
   getUserProductController,
   updateUserAvatarController,
+  updateUserController,
+
 };
