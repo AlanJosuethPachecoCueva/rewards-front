@@ -10,7 +10,7 @@ import {
 const getUserByIdController = async (id) => {
   try {
     const user = await getUser(id);
-
+    console.log("user getUserByIdController: ", user);
     if (!user) {
       console.error("Error getting user in controller.");
       return false;

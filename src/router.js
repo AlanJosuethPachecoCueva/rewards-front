@@ -84,7 +84,7 @@ const router = createRouter({
       path: "/userRewards",
       name: "userRewards",
       component: userRewards,
-      meta: { requiresAuth: true, requiresAdmin: false }
+      meta: { requiresAuth: true, requiresAdmin: false },
     },
     {
       path: "/modifyReward",
@@ -265,16 +265,17 @@ router.beforeEach(async (to, from, next) => {
     const user = store.getUser;
     console.log("User at router: ", user);
 
-    console.log("currentUser.state : ", currentUser.state);
-    console.log("user.isAdmin: ", user.isAdmin);
-    if (
-      (!currentUser.state && requiresAuth) ||
-      (!user.isAdmin && requiresAdmin)
-    ) {
-      next("/login");
-    } else {
-      next();
-    }
+    // console.log("currentUser.state : ", currentUser.state);
+    // console.log("user.isAdmin: ", user.isAdmin);
+    // if (
+    //   (!currentUser.state && requiresAuth) ||
+    //   (!user.isAdmin && requiresAdmin)
+    // ) {
+    //   console.log("to auth");
+    //   next("/auth");
+    // } else {
+    //   next("/auth");
+    // }
   } else {
     next();
   }

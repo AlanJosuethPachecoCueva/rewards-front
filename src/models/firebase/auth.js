@@ -39,11 +39,16 @@ async function signInWithGoogle() {
     };
 
     let userByController = await getUserByIdController(user.uid);
-    userToSave.surname = userByController.surname;
-    userToSave.city = userByController.city;
-    userToSave.birthdate = userByController.birthdate;
-    userToSave.points = userByController.points;
-    userToSave.isAdmin = userByController.isAdmin;
+    console.log("userByController: ", userByController);
+    if (!userByController) {
+      userByController = await saveUserDataInFirebase(userToSave);
+    } else {
+      userToSave.surname = userByController.surname;
+      userToSave.city = userByController.city;
+      userToSave.birthdate = userByController.birthdate;
+      userToSave.points = userByController.points;
+      userToSave.isAdmin = userByController.isAdmin;
+    }
 
     userStore.setUser(userToSave);
     userStore.setIsLogued(true);
@@ -129,9 +134,9 @@ async function logInFirebase(userData) {
 
       const userStore = useUserStore();
       let userToSave = {
-        name: data.name,
-        surname: data.surname? data.surname:"",
-        email: data.email,
+        name: userData.name,
+        surname: userData.surname ? userData.surname : "",
+        email: userData.email,
         city: "",
         birthdate: "",
         isAdmin: false,
@@ -139,7 +144,6 @@ async function logInFirebase(userData) {
         uid: user.uid,
         points: 0,
       };
-      
 
       let userByController = await getUserByIdController(user.uid);
       userToSave.surname = userByController.surname;

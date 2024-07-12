@@ -8,7 +8,7 @@ import {
 } from "firebase/auth";
 import { useUserStore } from "../../stores/userStore.js";
 import { getUserByIdController } from "@/controllers/usersController.js";
-// import router from "../../router/index.js";
+import router from "../../router.js";
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage"; // Importar Firebase Storage
 
 const firebaseConfig = {
@@ -60,48 +60,48 @@ async function checkAuthState() {
 //   }
 // }
 
-onAuthStateChanged(authFirebase, async (user) => {
-  //console.log("onAuthStateChanged user: ", user);
-  if (user != null) {
-    // El usuario está autenticado
-    // Aquí puedes acceder a la información del usuario en el objeto `user`
-    console.log("Usuario autenticado:", user.uid);
+// onAuthStateChanged(authFirebase, async (user) => {
+//   //console.log("onAuthStateChanged user: ", user);
+//   if (user != null) {
+//     // El usuario está autenticado
+//     // Aquí puedes acceder a la información del usuario en el objeto `user`
+//     console.log("Usuario autenticado:", user.uid);
 
-    // Verificar si la respuesta es exitosa
-    let data = user;
-    //const data = await response.json();
+//     // Verificar si la respuesta es exitosa
+//     let data = user;
+//     //const data = await response.json();
     
-    //console.log("dataaa act: ", data);
+//     //console.log("dataaa act: ", data);
 
-    const userStore = useUserStore();
-    let userToSave = {
-      name: data.displayName,
-      surname: data.surname ? data.surname : "",
-      email: data.email,
-      city: "",
-      birthdate: "",
-      isAdmin: false,
-      uid: user.uid,
-      points: 0,
-    };
+//     const userStore = useUserStore();
+//     let userToSave = {
+//       name: data.displayName,
+//       surname: data.surname ? data.surname : "",
+//       email: data.email,
+//       city: "",
+//       birthdate: "",
+//       isAdmin: false,
+//       uid: user.uid,
+//       points: 0,
+//     };
 
-    let userByController = await getUserByIdController(data.uid);
-    //console.log("userByController: ", userByController);
-    userToSave.surname = userByController.surname;
-    userToSave.city = userByController.city;
-    userToSave.birthdate = userByController.birthdate;
-    userToSave.points = userByController.points;
-    userToSave.isAdmin = userByController.isAdmin;
-    userStore.setUser(userToSave);
-    userStore.setIsLogued(true);
-    //console.log("userToSave: ", userToSave);
-  } else {
-    // El usuario no está autenticado
-    console.log("Usuario no autenticado");
-    //Si el usuario no está autenticado lo redirige automáticamente a la pestaña de inicio
-    router.push("/auth");
-  }
-});
+//     let userByController = await getUserByIdController(data.uid);
+//     //console.log("userByController: ", userByController);
+//     userToSave.surname = userByController.surname;
+//     userToSave.city = userByController.city;
+//     userToSave.birthdate = userByController.birthdate;
+//     userToSave.points = userByController.points;
+//     userToSave.isAdmin = userByController.isAdmin;
+//     userStore.setUser(userToSave);
+//     userStore.setIsLogued(true);
+//     //console.log("userToSave: ", userToSave);
+//   } else {
+//     // El usuario no está autenticado
+//     console.log("Usuario no autenticado");
+//     //Si el usuario no está autenticado lo redirige automáticamente a la pestaña de inicio
+//     router.push("/auth");
+//   }
+// });
 
 
 function getUserInformation(){
