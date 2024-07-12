@@ -1,6 +1,5 @@
 <template>
   <div>
-    <statsComponent></statsComponent>
     <div class="containerKits" style="padding: 2rem">
       <h2 style="margin-bottom: 1.5rem">Kits</h2>
       <div class="input-group mb-3">
@@ -51,7 +50,7 @@
             <button
               @click="editKit(kit.id)"
               style="
-                font-size: 1rem;
+                font-size: 0.8rem;
                 background-color: rgb(65, 39, 39);
                 color: rgb(247, 246, 246);
                 padding: 5px 10px;
@@ -59,21 +58,37 @@
                 border-radius: 5px;
                 cursor: pointer;
               "
+              class="option-btn"
             >
               <i
-                class="bi bi-pencil-square"
-                style="
-                  font-size: 1.5rem;
-                  color: rgb(247, 246, 246);
-                  margin-right: 5px;
-                "
+                class="bi bi-file-bar-graph-fill"
+                style="font-size: 1rem; color: rgb(247, 246, 246)"
               ></i>
               Editar
             </button>
             <button
+              @click="goToKitAnalysis(kit.id)"
+              style="
+                font-size: 0.8rem;
+                background-color: rgb(237 176 21);
+                color: rgb(247, 246, 246);
+                padding: 5px 10px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+              "
+              class="option-btn"
+            >
+              <i
+                class="bi bi-pencil-square"
+                style="font-size: 1rem; color: rgb(247, 246, 246)"
+              ></i>
+              Análisis
+            </button>
+            <button
               @click="deleteKit(kit.id)"
               style="
-                font-size: 1rem;
+                font-size: 0.8rem;
                 background-color: rgb(204, 0, 0);
                 color: rgb(247, 246, 246);
                 padding: 5px 10px;
@@ -81,14 +96,11 @@
                 border-radius: 5px;
                 cursor: pointer;
               "
+              class="option-btn"
             >
               <i
                 class="bi bi-trash"
-                style="
-                  font-size: 1.5rem;
-                  color: rgb(247, 246, 246);
-                  margin-right: 5px;
-                "
+                style="font-size: 1rem; color: rgb(247, 246, 246)"
               ></i>
               Eliminar
             </button>
@@ -162,6 +174,9 @@ export default {
       this.$router.push(`/admin/editKit/${kitId}`);
       //console.log(`Editing kit: ${kit.metadata[0].metadata.title}`);
     },
+    goToKitAnalysis(id) {
+      this.$router.push(`/admin/analysisKit/${id}`);
+    },
     search() {
       const searchTerm = this.$refs.searchInput.value;
       this.kitsToShow = [];
@@ -183,8 +198,12 @@ export default {
 };
 </script>
 
-
 <style>
+.option-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .containerKits {
   padding: 2rem;
 }
@@ -218,7 +237,7 @@ export default {
 
 .card-buttons {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   padding: 0.5rem;
 }
 

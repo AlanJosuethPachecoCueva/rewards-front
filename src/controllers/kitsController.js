@@ -9,7 +9,8 @@ import {
   getKitsImages,
   uploadKitImage,
   updateKitImages,
-  getAllKitsRewards
+  getAllKitsRewards,
+  getKitOpinionsAnalysis
 } from "../models/kitsModel";
 
 const createKitController = async (kitData) => {
@@ -123,6 +124,22 @@ const getKitByIdController = async (id) => {
   }
 };
 
+const getKitAnalysisIdController = async (id) => {
+  try {
+    const analysis = await getKitOpinionsAnalysis(id);
+
+    if (!analysis) {
+      console.error("Error getting kit analysis.");
+      return false;
+    }
+
+    return analysis;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};
+
 const deleteKitByIdController = async (id) => {
   try {
     console.log("Entra a deleteKitByIdController");
@@ -211,7 +228,7 @@ const getImagesFromKitsController = async (kits) => {
   }
 };
 
-const isTodayBetweenDatesController = (startDateStr, endDateStr) =>{
+const isTodayBetweenDatesController = (startDateStr, endDateStr) => {
   const today = new Date();
 
   // Función para convertir una cadena de fecha en formato "DD/MM/YYYY" a un objeto Date
@@ -243,5 +260,6 @@ export {
   uploadImageController,
   getImagesFromKitsController,
   getAllKitsRewardsController,
-  isTodayBetweenDatesController
+  isTodayBetweenDatesController,
+  getKitAnalysisIdController
 };
