@@ -29,35 +29,37 @@ async function signInWithGoogle() {
     const userStore = useUserStore();
     let userToSave = {
       name: user.reloadUserInfo.displayName,
-      surname: "",
+      surname: " ",
       email: user.reloadUserInfo.email,
-      city: "",
-      birthdate: "",
+      city: " ",
+      birthdate: " ",
       isAdmin: false,
       uid: user.uid,
       points: 0,
+      direction: " "
     };
 
-    let userByController = await getUserByIdController(user.uid);
-    console.log("userByController: ", userByController);
-    if (!userByController) {
-      userByController = await saveUserDataInFirebase(userToSave);
-    } else {
-      userToSave.surname = userByController.surname;
-      userToSave.city = userByController.city;
-      userToSave.birthdate = userByController.birthdate;
-      userToSave.points = userByController.points;
-      userToSave.isAdmin = userByController.isAdmin;
-    }
+    // let userByController = await getUserByIdController(user.uid);
 
-    userStore.setUser(userToSave);
-    userStore.setIsLogued(true);
-    console.log("userToSave: ", userToSave);
+    // if (!userByController) {
+    //   userByController = await saveUserDataInFirebase(userToSave);
+    // } else {
+    //   userToSave.surname = userByController.surname;
+    //   userToSave.city = userByController.city;
+    //   userToSave.birthdate = userByController.birthdate;
+    //   userToSave.points = userByController.points;
+    //   userToSave.isAdmin = userByController.isAdmin;
+    // }
     try {
+      console.log("userToSave: ", userToSave);
       //se guarda el usuario en la db de firebase
-      await saveUserDataInFirebase(userToSave);
+      let userByController = await saveUserDataInFirebase(userToSave);
+      console.log("userByController: ", userByController);
+      userStore.setUser(userToSave);
+      userStore.setIsLogued(true);
     } catch (error) {
       console.log("Error saving user data in firebase: ", error);
+      return false;
     }
 
     // Si la autenticación fue exitosa, devuelve true.
