@@ -7,6 +7,7 @@ import auth from "./views/auth.vue";
 import manageKits from "./views/admins/manageKits.vue";
 import createKit from "./views/admins/createKit.vue";
 import editKit from "./views/admins/editKit.vue";
+import analysisKit from "./views/admins/analysisKit.vue"
 import createKitMaterial from "./views/admins/createKitMaterial.vue";
 import manageRedeemedProducts from "./views/admins/rewards/manageRedeemedProducts.vue";
 //rewards
@@ -124,6 +125,12 @@ const router = createRouter({
       path: "/admin/editKit/:kitID",
       name: "editKit",
       component: editKit,
+      meta: { requiresAuth: true, requiresAdmin: true },
+    },
+    {
+      path: "/admin/analysisKit/:kitID",
+      name: "analysisKit",
+      component: analysisKit,
       meta: { requiresAuth: true, requiresAdmin: true },
     },
     {

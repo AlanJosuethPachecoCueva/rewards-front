@@ -81,6 +81,19 @@ const getKit = async (id) => {
   }
 };
 
+const getKitOpinionsAnalysis = async (id) => {
+  try {
+    const response = await fetch(`${RUTA_SERVIDOR}/users/evaluation_analysis/${id}`);
+    if (!response.ok) {
+      throw new Error(`Unable to get kit ${id} opinions`);
+    }
+    const results = await response.json();
+    return results;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const deleteKit = async (id) => {
   try {
     const response = await fetch(`${RUTA_SERVIDOR}/kits/kit/${id}`,
@@ -232,5 +245,6 @@ export {
   getKitsImages,
   uploadKitImage,
   updateKitImages,
-  getAllKitsRewards
+  getAllKitsRewards,
+  getKitOpinionsAnalysis
 };
