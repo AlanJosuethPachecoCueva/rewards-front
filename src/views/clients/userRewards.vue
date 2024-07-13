@@ -52,18 +52,24 @@
     <div class="rewards">
       <h3>Redimidos</h3>
       <div class="reward-items-container">
-        <div class="reward-item" v-for="(item, index) in user.rewards" :key="index">
+        <div v-if="isEmptyArray(user.rewards)" id="sinRedimir">
+          Aún no has redimido ningún premio.
+          <a id="linkRewards" aria-current="page" href="/rewards">Mira los premios activos aquí</a>
+        </div>
+
+        <div v-else class="reward-item" v-for="(item, index) in user.rewards" :key="index">
           <div v-if="item.type != '3d'" class="rewardCard">
             <div v-if="item.type == 'pr'" class="status-button">
               <button id="status-button" @click="goToRedeemedProductStatus(item.fileName)">Status</button>
             </div>
             <img :src="item.url" alt="Reward Image" />
-            <p>{{ item.metadata[0].metadata.title }}</p>
+            
           </div>
           <div v-else>
-            <model-viewer :src="item.url" alt="Modelo 3D" disable-zoom disable-pan disable-touch-zoom disable-rotate
+            <model-viewer :src="item.url" id="rewardCardFor3d" alt="Modelo 3D" disable-zoom disable-pan disable-touch-zoom disable-rotate
               auto-rotate="0"></model-viewer>
           </div>
+          <p>{{ item.metadata[0].metadata.title }}</p>
         </div>
       </div>
     </div>
@@ -111,6 +117,10 @@ export default {
       platinum: 0,
     });
 
+    const isEmptyArray = (arr) => {
+      return arr.length === 0;
+    }
+
     const loadData = async () => {
       try {
         const userData = await getUserByIdController(userStored.value.id);
@@ -136,7 +146,7 @@ export default {
 
     loadData();
 
-    return { user, rewards };
+    return { user, rewards, isEmptyArray };
   },
   methods: {
     enableEditing() {
@@ -267,9 +277,23 @@ export default {
 </script>
 
 <style scoped>
-#btnsEdit{
+#linkRewards{
+  text-decoration: none !important;
+color: #00a0a0 !important;
+}
+
+#sinRedimir {
+  width: 100%;
+  height: 200px;
   display: flex;
-  justify-content:space-around
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#btnsEdit {
+  display: flex;
+  justify-content: space-around
 }
 
 #formEditUserInfo {
@@ -281,8 +305,8 @@ export default {
 
   display: flex;
   flex-direction: column;
-  justify-content :space-around;
-  
+  justify-content: space-around;
+
 }
 
 #editUserInfoBtn {
@@ -321,6 +345,12 @@ export default {
   position: relative;
   display: inline-block;
   border-radius: 10px;
+  
+}
+
+#rewardCardFor3d{
+  height: 250px;
+  background-color: #f3ffff13;
 }
 
 .status-button {
@@ -348,6 +378,7 @@ export default {
   color: white;
   background-color: #181818;
   padding: 20px;
+  height: 100%;
 }
 
 .user-info {
@@ -437,14 +468,7 @@ export default {
   /* Ocultar el input de archivo */
 }
 
-.user-profile {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  color: white;
-  background-color: #181818;
-  padding: 20px;
-}
+
 
 .user-info {
   text-align: center;

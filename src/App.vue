@@ -7,15 +7,24 @@ import navbarComponent from "./components/navbarComponent.vue";
 </script>
 
 <template>
-  <navbarComponent></navbarComponent>
-  <div class="border-main-content"> 
+  <div id="app">
+    <navbarComponent></navbarComponent>
+    <div class="border-main-content">
 
+    </div>
+    <RouterView></RouterView>
   </div>
-  <RouterView ></RouterView>
+
 </template>
 
 <style scoped>
- .border-main-content {
+#app {
+  /* background-color: aqua !important; */
+  height: 100vh;
+}
+
+.border-main-content {
   margin-top: 50px;
- }
+
+}
 </style>

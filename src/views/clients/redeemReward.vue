@@ -9,9 +9,9 @@
             <h1 class="reward-title">{{ reward.metadata[0].metadata.title }}</h1>
             <p class="reward-description">{{ reward.metadata[0].metadata.description }}</p>
             <div class="reward-image-container">
-                <img v-if="reward.type != '3d'" :src="reward.url" alt="Reward Image" class="reward-image" />
-                <model-viewer v-else :src="reward.url" alt="Modelo 3D" disable-zoom disable-pan disable-touch-zoom
-                    disable-rotate auto-rotate="0"></model-viewer>
+                <img v-if="reward.type != '3d'" :src="reward.url" id="rewardStPr" alt="Reward Image" class="reward-image" />
+                <model-viewer id="reward3d" v-else :src="reward.url" alt="Modelo 3D" disable-zoom disable-pan
+                    disable-touch-zoom disable-rotate auto-rotate="0"></model-viewer>
             </div>
             <p class="reward-type">Type: {{ reward.type }}</p>
             <p class="reward-type">Costo en puntos: {{ reward.metadata[0].metadata.costInPoints }}</p>
@@ -73,7 +73,7 @@ export default {
     data() {
         return {
             reward: {},
-           
+
             names: "",
             email: "",
             cellphone: "",
@@ -101,57 +101,82 @@ export default {
     },
     methods: {
         async reedemReward() {
-            const parts = this.reward.metadata[0].name.split("/");
+            let costInPoints = this.reward.metadata[0].metadata.costInPoints;
+            console.log("this.reward: ", costInPoints);
+            this.$swal({
+                title: "¿Estás seguro?",
+                text: "¡Vas a redimir este premio por " + costInPoints + " puntos!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Sí, canjear!",
+                cancelButtonText: "Cancelar",
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    const parts = this.reward.metadata[0].name.split("/");
 
-            // Toma el último elemento del array resultante
-            let fileName = parts[parts.length - 1];
-            console.log("fileNamee: ", fileName);
-            let rewardToSend = {
-                fileName, type: this.reward.type, uid: this.user.id, associatedKit: this.reward.kitId
-            }
+                    // Toma el último elemento del array resultante
+                    let fileName = parts[parts.length - 1];
+                    console.log("fileNamee: ", fileName);
+                    let rewardToSend = {
+                        fileName, type: this.reward.type, uid: this.user.id, associatedKit: this.reward.kitId
+                    }
 
-            if (this.reward.type == "pr") {
-                rewardToSend = {
-                    ...rewardToSend,
-                    names: this.names, email: this.email, cellphone: this.cellphone, city: this.city, street: this.street, description: this.description
+                    if (this.reward.type == "pr") {
+                        rewardToSend = {
+                            ...rewardToSend,
+                            names: this.names, email: this.email, cellphone: this.cellphone, city: this.city, street: this.street, description: this.description
+                        }
+                    }
+                    console.log("reward to redeem in redeem: ", rewardToSend);
+                    const res = await reedemRewardController(rewardToSend);
+                    console.log("res in reedem reward: ", res);
+
+                    if (!res.success) {
+                        console.error("Ha ocurrido un error al redimir el premio seleccionado: ", res);
+                        await this.$swal({
+                            title: 'No se ha redimido el premio',
+                            text: "Ha ocurrido un error al redimir el premio seleccionado. " + res.message,
+                            icon: "error",
+                            showCancelButton: false,
+                            confirmButtonText: "OK",
+                        });
+                        return;
+                    }
+
+                    if (this.reward.type == "pr") {
+                        await this.$swal({
+                            title: 'Premio físico redimido',
+                            text: "Estás redimiendo un producto físico de la tienda, la solicitud se enviará a los administradores y será procesada tan pronto como sea posible. Puedes observar el estado de la entrega desde tu perfil en la sección de premios.",
+                            icon: "success",
+                            showCancelButton: false,
+                            confirmButtonText: "OK",
+                        });
+                    } else {
+                        await this.$swal({
+                            title: 'El premio ha sido redimido',
+                            text: "El premio se redimió exitosamente, ahora está disponible en tu perfil.",
+                            icon: "success",
+                            showCancelButton: false,
+                            confirmButtonText: "OK",
+                        });
+                    }
+
+                    getUserInformation();
+                    this.$router.push({ name: 'userRewards' });
+                }else{
+                    await this.$swal({
+                            title: 'El premio no ha sido redimido',
+                            text: "No se te descontará ningún punto.",
+                            icon: "success",
+                            showCancelButton: false,
+                            confirmButtonText: "OK",
+                        });
                 }
-            }
-            console.log("reward to redeem in redeem: ", rewardToSend);
-            const res = await reedemRewardController(rewardToSend);
-            console.log("res in reedem reward: ", res);
+            });
 
-            if (!res.success) {
-                console.error("Ha ocurrido un error al redimir el premio seleccionado: ", res);
-                await this.$swal({
-                    title: 'No se ha redimido el premio',
-                    text: "Ha ocurrido un error al redimir el premio seleccionado. " + res.message,
-                    icon: "error",
-                    showCancelButton: false,
-                    confirmButtonText: "OK",
-                });
-                return;
-            }
 
-            if (this.reward.type == "pr") {
-                await this.$swal({
-                    title: 'Premio físico redimido',
-                    text: "Estás redimiendo un producto físico de la tienda, la solicitud se enviará a los administradores y será procesada tan pronto como sea posible. Puedes observar el estado de la entrega desde tu perfil en la sección de premios.",
-                    icon: "success",
-                    showCancelButton: false,
-                    confirmButtonText: "OK",
-                });
-            } else {
-                await this.$swal({
-                    title: 'El premio ha sido redimido',
-                    text: "El premio se redimió exitosamente, ahora está disponible en tu perfil.",
-                    icon: "success",
-                    showCancelButton: false,
-                    confirmButtonText: "OK",
-                });
-            }
-
-            getUserInformation();
-            this.$router.push({ name: 'userRewards' });
 
         }
     }
@@ -159,6 +184,16 @@ export default {
 </script>
 
 <style scoped>
+#reward3d {
+    width: 100%;
+    height: 100%;
+}
+
+#rewardStPr{
+    width: 100%;
+    
+}
+
 .reward-container {
     max-width: 600px;
     margin: 1% auto;
@@ -186,6 +221,8 @@ export default {
 
 .reward-image-container {
     text-align: center;
+    background-color: #fff8ed;
+    min-height: 300px;
 }
 
 .reward-image {

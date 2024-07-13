@@ -1,3 +1,80 @@
+<template>
+  <div class="bigContainerKit">
+    <h2>{{ $t("newPublicitaryContent") }}</h2>
+    <div class="createKitContainer">
+      <div class="createKitContainerLeft">
+        <div class="containerLeft">
+          <form id="formCreateKit" @submit.prevent="checkForm" action="" method="post">
+            <div class="errorsContainer">
+              <p v-if="errors.length" class="text-danger">
+                <b>Por favor, corrija lo siguiente:</b>
+              <ul>
+                <li v-for="error in errors" :key="error">{{ error }}</li>
+              </ul>
+              </p>
+            </div>
+
+            <div class="form-group group">
+              <label class="label" for="name">{{ $t("publicitaryContentName") }}</label>
+              <input type="text" class="form-control"
+                :class="{ 'is-invalid': nameTouched && !nameValid, 'animate-border': animate }"
+                :placeholder="$t('publicitaryContentNamePlaceholder')"
+                id="name" 
+                v-model="name"
+                @blur="nameTouched = true">
+            </div>
+            <div class="form-group group">
+              <label class="label" for="description">{{ $t("publicitaryContentDescription") }}</label>
+              <textarea class="form-control"
+                :class="{ 'is-invalid': descriptionTouched && !descriptionValid, 'animate-border': animate }" rows="3"
+                :placeholder="$t('publicitaryContentDescriptionPlaceholder')"
+                id="description"
+                v-model="description" @blur="descriptionTouched = true"></textarea>
+            </div>          
+
+            <div class="form-group group">
+              <label class="label" for="slogans">Slogans</label>
+              <textarea class="form-control"
+                :class="{ 'is-invalid': slogansTouched && !slogansValid, 'animate-border': animate }" rows="3"
+                :placeholder="$t('publicitaryContentSloganPlaceholder')"
+                id="slogans" v-model="slogans"
+                @blur="slogansTouched = true"></textarea>
+            </div>
+
+            <div class="form-group group">
+              <label for="datePicker" class="label">{{ $t("publicitaryContentStartDate") }}</label>
+              <input type="date" class="form-control" :class="{ 'is-invalid': initialDateTouched && !initialDateValid }"
+                @blur="initialDateTouched = true" id="datePicker" v-model="initialDate">
+            </div>
+
+            <div class="form-group group">
+              <label for="datePicker" class="label">{{ $t("publicitaryContentEndDate") }}</label>
+              <input type="date" class="form-control" id="datePicker"
+                :class="{ 'is-invalid': finalDateTouched && !finalDateValid }" @blur="finalDateTouched = true"
+                v-model="finalDate">
+            </div>
+
+            <button type="submit" class="btn btn-primary mb-3 btnGenerateKit"
+              :style="{ 'margin-left': 10 + '%' }">{{ $t("publicitaryContentCreateButton") }}</button>
+
+          </form>
+        </div>
+      </div>
+
+      <div class="createKitContainerRight">
+        <div class="card cardContainer">
+          <div class="form-group generateKitIA">
+            <label class="label" for="exampleFormControlTextarea1">{{ $t("publicitaryContentTitleIA") }}</label>
+            <textarea v-model="aiPrompt" class="form-control" id="textAreaGenerateWithAI" rows="3"
+              :placeholder="$t('publicitaryContentPromptPlaceholder')"></textarea>
+            <button type="button" class="btn btn-primary btnGenerateKit" @click="generateTextOpenAI()">{{ $t("publicitaryContentIaGenerateButton") }}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
 <script>
 import { generateKitWithAIController, createKitController } from "../../controllers/kitsController.js";
 import { useUserStore } from "../../stores/userStore.js"
@@ -185,82 +262,7 @@ export default {
 };
 </script>
 
-<template>
-  <div class="bigContainerKit">
-    <h2>{{ $t("newPublicitaryContent") }}</h2>
-    <div class="createKitContainer">
-      <div class="createKitContainerLeft">
-        <div class="containerLeft">
-          <form id="formCreateKit" @submit.prevent="checkForm" action="" method="post">
-            <div class="errorsContainer">
-              <p v-if="errors.length" class="text-danger">
-                <b>Por favor, corrija lo siguiente:</b>
-              <ul>
-                <li v-for="error in errors" :key="error">{{ error }}</li>
-              </ul>
-              </p>
-            </div>
 
-            <div class="form-group group">
-              <label class="label" for="name">{{ $t("publicitaryContentName") }}</label>
-              <input type="text" class="form-control"
-                :class="{ 'is-invalid': nameTouched && !nameValid, 'animate-border': animate }"
-                :placeholder="$t('publicitaryContentNamePlaceholder')"
-                id="name" 
-                v-model="name"
-                @blur="nameTouched = true">
-            </div>
-            <div class="form-group group">
-              <label class="label" for="description">{{ $t("publicitaryContentDescription") }}</label>
-              <textarea class="form-control"
-                :class="{ 'is-invalid': descriptionTouched && !descriptionValid, 'animate-border': animate }" rows="3"
-                :placeholder="$t('publicitaryContentDescriptionPlaceholder')"
-                id="description"
-                v-model="description" @blur="descriptionTouched = true"></textarea>
-            </div>          
-
-            <div class="form-group group">
-              <label class="label" for="slogans">Slogans</label>
-              <textarea class="form-control"
-                :class="{ 'is-invalid': slogansTouched && !slogansValid, 'animate-border': animate }" rows="3"
-                :placeholder="$t('publicitaryContentSloganPlaceholder')"
-                id="slogans" v-model="slogans"
-                @blur="slogansTouched = true"></textarea>
-            </div>
-
-            <div class="form-group group">
-              <label for="datePicker" class="label">{{ $t("publicitaryContentStartDate") }}</label>
-              <input type="date" class="form-control" :class="{ 'is-invalid': initialDateTouched && !initialDateValid }"
-                @blur="initialDateTouched = true" id="datePicker" v-model="initialDate">
-            </div>
-
-            <div class="form-group group">
-              <label for="datePicker" class="label">{{ $t("publicitaryContentEndDate") }}</label>
-              <input type="date" class="form-control" id="datePicker"
-                :class="{ 'is-invalid': finalDateTouched && !finalDateValid }" @blur="finalDateTouched = true"
-                v-model="finalDate">
-            </div>
-
-            <button type="submit" class="btn btn-primary mb-3 btnGenerateKit"
-              :style="{ 'margin-left': 10 + '%' }">{{ $t("publicitaryContentCreateButton") }}</button>
-
-          </form>
-        </div>
-      </div>
-
-      <div class="createKitContainerRight">
-        <div class="card cardContainer">
-          <div class="form-group generateKitIA">
-            <label class="label" for="exampleFormControlTextarea1">{{ $t("publicitaryContentTitleIA") }}</label>
-            <textarea v-model="aiPrompt" class="form-control" id="textAreaGenerateWithAI" rows="3"
-              :placeholder="$t('publicitaryContentPromptPlaceholder')"></textarea>
-            <button type="button" class="btn btn-primary btnGenerateKit" @click="generateTextOpenAI()">{{ $t("publicitaryContentIaGenerateButton") }}</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
 
 <style>
 .errorsContainer {
@@ -302,7 +304,7 @@ export default {
 
 .createKitContainer {
   display: flex;
-  /* background-color: red; */
+  flex-direction: row !important;
 }
 
 .createKitContainerLeft {

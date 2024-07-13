@@ -51,7 +51,7 @@
             </div>
           </div>
         </div>
-        <div class="containerLeft">
+        <!-- <div class="containerLeft">
           <carousel :items-to-show="cardsToShow" :paginationEnabled="true">
             <Slide
               v-for="image in kitsImages"
@@ -68,6 +68,18 @@
               </div>
             </Slide>
           </carousel>
+        </div> -->
+        <div class="containerLeftImages">
+          <div class="newGridContainer">
+            <div
+              class="newGridItem"
+              v-for="image in kitsImages"
+              :key="image.id"
+              @click="selectKitImage(image)"
+            >
+              <img :src="image.url" class="newImageCardTest" alt="Image" />
+            </div>
+          </div>
         </div>
       </div>
       <div class="createKitContainerRight">
@@ -254,6 +266,14 @@ export default {
     async getKitsImages() {
       var res = await getKitsImagesController();
       this.kitsImages = res;
+      this.kitsImages.reverse();
+      this.totalCards = this.kitsImages.length;
+    },
+    async refreshKitsImages() {
+      var res = await getKitsImagesController();
+      this.kitsImages.reverse();
+      this.kitsImages.push(res[res.length - 1]);
+      this.kitsImages.reverse();
       this.totalCards = this.kitsImages.length;
     },
     async getKit() {
@@ -287,7 +307,7 @@ export default {
           this.user.id
         );
         console.log("response imagen generada: ", response);
-        this.getKitsImages();
+        this.refreshKitsImages();
         console.log("this.kitsImages: ", this.kitsImages);
         // Oculta el mensaje de carga
         this.$swal.close();
