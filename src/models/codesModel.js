@@ -3,7 +3,7 @@ const RUTA_SERVIDOR = `${import.meta.env.VITE_APP_RUTA_API}`;
 
 async function saveMultipleCodes(data) {
   try {
-    const {
+    let {
       name,
       quantity,
       points,
@@ -13,6 +13,9 @@ async function saveMultipleCodes(data) {
       selectedKits,
     } = data;
 
+    if(product == ""){
+      product = " "
+    }
     const response = await fetch(`${RUTA_SERVIDOR}/codes/saveMultipleCodes`, {
       method: "POST",
       headers: {

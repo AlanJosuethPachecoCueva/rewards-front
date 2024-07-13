@@ -72,23 +72,7 @@ const getUserProductController = async (userId, fileName) => {
 };
 
 
-/*FUNCIONES CHRIS*/
 
-const updateUserAvatarController = async (userId, avatarURL) => {
-  try {
-    const userProduct = await updateUserAvatar(userId, avatarURL); // Asegúrate de que esta función exista en tu archivo de modelos
-
-    if (!userProduct.status) {
-      console.error("Error updating user avatar.");
-      return userProduct.message;
-    }
-
-    return userProduct.data;
-  } catch (error) {
-    console.error(error);
-    return error;
-  }
-};
 
 const updateUserController = async (id, data) => {
   try {
@@ -103,6 +87,20 @@ const updateUserController = async (id, data) => {
 
   } catch (error) {
     console.error('Error updating user profile:', error);
+  }
+};
+
+/*FUNCIONES CHRIS*/
+
+const updateUserAvatarController = async (userId, avatarURL) => {
+  try {
+    const response = await updateUserAvatar(userId, avatarURL); // Asegúrate de que esta función exista en tu archivo de modelos
+
+
+    return response;
+  } catch (error) {
+    console.error(error);
+    return error;
   }
 };
 

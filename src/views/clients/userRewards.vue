@@ -1,17 +1,30 @@
 <template>
   <div class="user-profile">
     <div class="user-info">
-      <div class="avatar-container">
-        <img class="avatar" :src="user.avatar" alt="User Avatar" @click="selectImage" />
+
+
+      <div class="user-card">
+        <div class="avatar-container">
+          <div v-if="user.avatar">
+            <img class="avatar" :src="user.avatar" alt="User Avatar" @click="selectImage" />
+          </div>
+          <div v-else>
+            <img class="avatar" src="../../assets/images/no-user-image-icon-27.png" alt="User Avatar"
+              @click="selectImage" />
+          </div>
+        </div>
+        <h2 class="user-name">{{ user.name }}</h2>
+        <p class="user-email">{{ user.email }}</p>
+        <button type="button" id="editUserInfoBtn" class="btn btn-link" @click="enableEditing">
+          <i class="bi bi-pencil" style="font-size: 1rem;"></i> <!-- Bootstrap Icons para el lápiz -->
+        </button>
       </div>
-      <form @submit.prevent="updateUserProfile">
+      <form @submit.prevent="updateUserProfile" v-if="isEditing" id="formEditUserInfo">
         <div class="form-group">
           <label for="name">Name:</label>
           <div class="d-flex">
             <input v-model="user.name" id="name" type="text" :disabled="!isEditing" class="form-control" />
-            <button v-if="!isEditing" type="button" class="btn btn-link" @click="enableEditing">
-              <i class="bi bi-pencil"></i> <!-- Bootstrap Icons para el lápiz -->
-            </button>
+
           </div>
         </div>
 
@@ -20,12 +33,12 @@
           <input v-model="user.surname" id="surname" type="text" :disabled="!isEditing" class="form-control" />
         </div>
 
-        <div class="form-group">
-          <label for="email">Email:</label>
-          <input v-model="user.email" id="email" type="email" :disabled="!isEditing" class="form-control" />
-        </div>
+        <!-- <div class="form-group">
+            <label for="email">Email:</label>
+            <input v-model="user.email" id="email" type="email" :disabled="!isEditing" class="form-control" />
+          </div> -->
 
-        <div v-if="isEditing">
+        <div v-if="isEditing" id="btnsEdit">
           <button type="submit" class="btn btn-primary" @click="updateUserProfile">Save Changes</button>
           <button type="button" class="btn btn-secondary" @click="disableEditing">Cancel</button>
         </div>
@@ -61,7 +74,7 @@
 import { storage, ref, uploadBytesResumable, getDownloadURL } from '../../models/firebase/config.js';
 import { useUserStore } from '../../stores/userStore.js';
 import { computed, reactive } from 'vue';
-import { getUserByIdController, getUserRewardsController, deleteUserByIdController, updateUserController } from '../../controllers/usersController';
+import { getUserByIdController, getUserRewardsController, deleteUserByIdController, updateUserController, updateUserAvatarController } from '../../controllers/usersController';
 import Swal from 'sweetalert2';
 import '@google/model-viewer';
 
@@ -80,11 +93,15 @@ export default {
 
     const user = reactive({
       id: userStored.value.id,
-      avatar: 'default-avatar.png',
       name: '',
       surname: '',
       email: '',
       rewards: [],
+      user: {
+        name: "John Smith",
+        email: "john@example.com",
+        avatar: "null" // Reemplaza con la URL de la imagen real
+      }
     });
 
     const rewards = reactive({
@@ -97,8 +114,11 @@ export default {
     const loadData = async () => {
       try {
         const userData = await getUserByIdController(userStored.value.id);
+        console.log("userData: ", userData);
         const rewardsWithUrls = await getUserRewardsController(userStored.value.id);
-        user.avatar = userData.avatar || 'default-avatar.png';
+        console.log("rewardsWithUrls: ", rewardsWithUrls);
+        user.avatar = userData.avatar;
+        console.log("user.avatar:", user.avatar);
         user.name = userData.name;
         user.surname = userData.surname;
         user.email = userData.email;
@@ -120,7 +140,7 @@ export default {
   },
   methods: {
     enableEditing() {
-      this.isEditing = true;
+      this.isEditing = !this.isEditing;
     },
     disableEditing() {
       this.isEditing = false;
@@ -133,7 +153,7 @@ export default {
           surname: this.user.surname,
         };
         console.log("data in update: ", data);
-        await updateUserController(this.user.id,data);
+        await updateUserController(this.user.id, data);
         this.isEditing = false;  // Deshabilitar la edición después de guardar los cambios
         Swal.fire('Success!', 'Your profile has been updated.', 'success');
       } catch (error) {
@@ -172,20 +192,32 @@ export default {
                 this.user.avatar = downloadURL;
 
                 // Actualiza el avatar en tu base de datos
-                const response = await fetch(`/api/users/${this.user.id}/avatar`, {
-                  method: 'PUT',
-                  headers: {
-                    'Content-Type': 'application/json',
-                  },
-                  body: JSON.stringify({ avatar: downloadURL }),
-                });
 
-                if (!response.ok) {
-                  throw new Error('Failed to update avatar');
+
+                const result = await updateUserAvatarController(this.user.id, downloadURL);
+
+
+
+
+                console.log('Avatar updated:', result);
+                if (result.status) {
+                  await this.$swal({
+                    title: '¡Éxito!',
+                    text: "Foto de usuario actualizada correctamente.",
+                    icon: "success",
+                    showCancelButton: false,
+                    confirmButtonText: "OK",
+                  });
+                } else {
+                  await this.$swal({
+                    title: '¡Error!',
+                    text: result.message,
+                    icon: "error",
+                    showCancelButton: false,
+                    confirmButtonText: "OK",
+                  });
                 }
 
-                const result = await response.json();
-                console.log('Avatar updated:', result);
               }
             );
           } catch (error) {
@@ -235,6 +267,56 @@ export default {
 </script>
 
 <style scoped>
+#btnsEdit{
+  display: flex;
+  justify-content:space-around
+}
+
+#formEditUserInfo {
+  height: 350px;
+  margin: 20px 50px 20px 50px;
+  padding: 20px 50px 20px 50px;
+  background-color: #6e6a6a;
+  border-radius: 5%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content :space-around;
+  
+}
+
+#editUserInfoBtn {
+  background-color: rgb(216, 198, 198);
+
+}
+
+.user-card {
+  text-align: center;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.user-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.user-name {
+  margin: 10px 0 5px;
+  color: #00a0a0;
+  /* Cambia el color a tu preferencia */
+}
+
+.user-email {
+  color: #888;
+  font-size: 14px;
+}
+
 .rewardCard {
   position: relative;
   display: inline-block;

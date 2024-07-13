@@ -171,6 +171,8 @@
                     <!-- <button @click="goToModifyReward(product, 'pr')">Modificar</button> -->
                 </div>
             </Slide>
+
+
             <template #addons>
                 <navigation />
                 <pagination />
@@ -233,16 +235,19 @@ export default {
 
         //Productos
         const productRes = await getProductsImagesController();
+        console.log("productRes: ", productRes);
+        if (productRes) {
+            // Agrega cada objeto de res a this.stickers
+            productRes.forEach(object => {
+                // Verifica si el título existe y no es una cadena vacía
+                if (object.metadata[0].metadata.title) {
+                    this.products.push(object);
+                }
+            });
 
-        // Agrega cada objeto de res a this.stickers
-        productRes.forEach(object => {
-            // Verifica si el título existe y no es una cadena vacía
-            if (object.metadata[0].metadata.title) {
-                this.products.push(object);
-            }
-        });
+            this.productsToShow = JSON.parse(JSON.stringify(this.products));
+        }
 
-        this.productsToShow = JSON.parse(JSON.stringify(this.products));
     },
     methods: {
         goToModifyReward(reward, type) {

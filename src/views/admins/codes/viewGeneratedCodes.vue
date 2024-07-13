@@ -43,9 +43,23 @@ export default {
             // Tu lógica aquí
         },
         copyCode(code) {
-            navigator.clipboard.writeText(code).then(() => {
-                alert('Código copiado!');
-            }).catch(err => {
+            navigator.clipboard.writeText(code).then(async () => {
+                await this.$swal({
+                        title: '¡Éxito!',
+                        text: "El código se encuentra copiado en el portapapeles.",
+                        icon: "success",
+                        showCancelButton: false,
+                        confirmButtonText: "OK",
+                    });
+
+            }).catch( async err => {
+                await this.$swal({
+                        title: '¡Error!',
+                        text: "Ocurrió un error, no se pudo copiar el código.",
+                        icon: "error",
+                        showCancelButton: false,
+                        confirmButtonText: "OK",
+                    });
                 console.error('Error al copiar el código:', err);
             });
         },

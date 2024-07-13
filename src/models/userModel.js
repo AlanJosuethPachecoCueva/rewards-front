@@ -200,30 +200,34 @@ const getUserProduct = async (userId, fileName) => {
   }
 };
 
-const updateUserAvatar = async (userId, file) => {
+const updateUserAvatar = async (userId, downloadURL) => {
   try {
-    // Crea una referencia para el archivo en la carpeta de avatares del usuario
-    const storageRef = ref(storage, `avatars/${userId}/${file.name}`);
-    
-    // Sube el archivo a Firebase Storage
-    await uploadBytes(storageRef, file);
-    
-    // Obtiene la URL de descarga del archivo
-    const downloadURL = await getDownloadURL(storageRef);
 
-    // Guarda la URL en Firestore
-    const userDocRef = doc(db, 'users', userId);
-    await updateDoc(userDocRef, {
-      avatar: downloadURL
+    // Actualiza el avatar en tu base de datos
+    const response = await fetch(`${RUTA_SERVIDOR}/users/user/avatar`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ avatar: downloadURL, userId }),
     });
 
-    return downloadURL;
+    
+    if (!response.status) {
+      console.error('Failed to update avatar');
+      return {status: false, message: response.message};
+    }
+
+    const result = await response.json();
+    return result;
   } catch (error) {
     console.error('Error uploading file or saving URL to Firestore:', error);
-    throw error;
+    return {status: false, message: "Failed to update avatar: ", error};
   }
 };
 
+
+                
 
 
 
