@@ -133,7 +133,7 @@ fix this page order admin a client options of the navbar too
         <!-- Opciones usarios cliente -->
         <ul
           class="navbar-nav me-auto mb-2 mb-lg-0"
-          v-if="user != null && user.isAdmin == false"
+          v-if="user != null && user.isAdmin == false && user.id != ''"
         >
           <li class="nav-item">
             <a
