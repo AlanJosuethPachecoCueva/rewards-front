@@ -249,7 +249,7 @@ export default {
   width: 50%;
   height: 100%;
   /* background-image: linear-gradient(to right, rgb(89, 76, 66), rgb(65, 39, 39)); */
-  background: url(@/assets/images/login-bck.jpeg) no-repeat center center;
+  background: url(@/assets/images/lg-bck.png) no-repeat center center;
   background-size: cover;
   margin: 0px !important;
   border-radius: 0px 5px 5px 0px !important;

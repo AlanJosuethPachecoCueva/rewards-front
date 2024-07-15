@@ -1,4 +1,3 @@
-fix this page order admin a client options of the navbar too
 <template>
   <nav
     class="navbar navbar-expand-lg navBarPersonalized marron-principal"
@@ -256,8 +255,8 @@ fix this page order admin a client options of the navbar too
 
           <!-- Botones de idioma -->
           <div class="botones-idioma" v-if="showLanguageButtons">
-            <button @click="$i18n.locale = 'es'">ES</button>
-            <button @click="$i18n.locale = 'en'">EN</button>
+            <button @click="changeLanguage('es')">ES</button>
+            <button @click="changeLanguage('en')">EN</button>
           </div>
         </form>
       </div>
@@ -285,9 +284,6 @@ export default {
     goHome() {
       this.$router.push("/");
     },
-    handleContacts() {
-      //   this.$router.push("/contacts");
-    },
     async closeSession() {
       console.log("Close session");
       try {
@@ -303,6 +299,10 @@ export default {
     },
     toggleLanguageButtons() {
       this.showLanguageButtons = !this.showLanguageButtons;
+    },
+    changeLanguage(language) {
+      this.$i18n.locale = language;
+      this.$forceUpdate(); // Forzar actualización del componente
     },
   },
   setup() {
@@ -432,5 +432,39 @@ export default {
 /* styles.css */
 :root {
   --color-gold: #cda434; /* Definición del color gold */
+}
+
+.botones-idioma {
+  position: fixed;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.botones-idioma {
+  position: fixed;
+  top: 100px; /* Ajusta la distancia desde la parte superior */
+  right: 20px; /* Ajusta la distancia desde la derecha */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.botones-idioma button {
+  background-color: var(--lightgray);
+  border: none;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  font-size: 1em;
+  padding: 0.5em 1em;
+  margin: 0.2em 0; /* Ajusta el espacio entre los botones */
+  transition-duration: 0.4s;
+  cursor: pointer;
+  border-radius: 8px;
+}
+.botones-idioma button:hover {
+  background-color: #ccc;
 }
 </style>
