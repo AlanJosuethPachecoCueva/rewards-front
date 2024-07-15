@@ -1,7 +1,9 @@
 <!-- <template>
+
   <div class="titleContainer">
     <h1>{{ $t('showRewardsTitle') }}</h1>
   </div>
+  
 
   <div class="containerShowRewards">
     <div class="search-container">
@@ -65,6 +67,10 @@
   <div class="titleContainer">
     <h1>{{ $t('showRewardsTitle') }}</h1>
   </div>
+  <div v-if="isLoading" class="loading-container">
+      <div class="spinner"></div>
+      <div>{{ $t("loading") }}</div>
+    </div>
 
   <div class="containerShowRewards">
     <div class="search-container">
@@ -171,6 +177,7 @@ export default {
       logIn: true,
       kitsRewards: {},
       searchQuery: "",
+       isLoading: true, // Estado de carga
     };
   },
   computed: {
@@ -201,10 +208,16 @@ export default {
       return filteredKits;
     },
   },
-  async created() {
-    const kitsRewardsResponse = await getKitsRewardsController();
-    if (kitsRewardsResponse.status) {
-      this.kitsRewards = kitsRewardsResponse.data;
+   async created() {
+    try {
+      const kitsRewardsResponse = await getKitsRewardsController();
+      if (kitsRewardsResponse.status) {
+        this.kitsRewards = kitsRewardsResponse.data;
+      }
+    } catch (error) {
+      console.error("Error loading kits rewards:", error);
+    } finally {
+      this.isLoading = false; // Actualizar el estado de carga
     }
   },
   methods: {
@@ -371,5 +384,35 @@ export default {
 .card-text {
   font-size: 14px;
   color: #777;
+}
+
+
+/* Estilos para la animación de carga */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; /* Altura completa de la ventana */
+  background-color: rgba(255, 255, 255, 0.8); /* Fondo semitransparente */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+.spinner {
+  border: 8px solid #f3f3f3; /* Light grey */
+  border-top: 8px solid #CDA434; /* Blue */
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 </style>

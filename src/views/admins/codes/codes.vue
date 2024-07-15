@@ -1,5 +1,9 @@
 <template>
     <div class="container">
+      <div v-if="isLoading" class="loading-container">
+      <div class="spinner"></div>
+      <div>{{ $t("loading") }}</div>
+    </div>
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
@@ -119,31 +123,22 @@ export default {
             totalPages: 1,
             totalItems: 0,
             searchTerm: '', // Nuevo campo para almacenar el término de búsqueda
+            isLoading: true,
         };
     },
     async mounted() {
-        const codesRes = await getCodesController();
-
-        console.log("codesRes: ", codesRes);
-
-        this.codes = codesRes; 
-        // codesRes.forEach(code => {
-        //     if (code.metadata[0].metadata.title) {
-        //         this.codes.push({
-        //             id: code.metadata[0].id,
-        //             title: code.metadata[0].metadata.title,
-        //             description: code.metadata[0].metadata.description,
-        //             userID: code.metadata[0].metadata.userID,
-        //             image: code.url,
-        //             fileName: code.metadata[0].name.substring(9)
-        //         });
-        //     }
-        // });
-
-        this.filterCodes(); // Aplica la búsqueda al montar el componente
-        this.codesToShow = this.codes.slice(0, this.pagination.rowsPerPage);
-        this.totalPages = Math.ceil(this.codes.length / this.pagination.rowsPerPage);
-        this.totalItems = this.codes.length;
+        try {
+            const codesRes = await getCodesController();
+            this.codes = codesRes;
+            this.filterCodes();
+            this.codesToShow = this.codes.slice(0, this.pagination.rowsPerPage);
+            this.totalPages = Math.ceil(this.codes.length / this.pagination.rowsPerPage);
+            this.totalItems = this.codes.length;
+        } catch (error) {
+            console.error("Error fetching codes:", error);
+        } finally {
+            this.isLoading = false;
+        }
     },
      
     methods: {
