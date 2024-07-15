@@ -15,6 +15,7 @@ import { useUserStore } from "../../stores/userStore";
 import { saveUserDataInFirebase, getUser } from "../userModel.js";
 
 import { getUserByIdController } from "@/controllers/usersController.js";
+import router from "@/router.js";
 
 async function signInWithGoogle() {
   try {
@@ -192,6 +193,7 @@ async function logOut() {
       };
       console.log("Paradw");
       userStore.setUser(emptyUser);
+      router.push("/login")
     } else {
       console.error("Unable to log out.");
     }

@@ -146,7 +146,7 @@ export default {
 
         //Si el responde.admin es true quiere decir que es administrador entonces se le redirecciona al dashboard
         if (response.admin == "true") {
-          this.$router.push("/homeAdmin");
+          this.$router.push("/admin/manageKits");
         } else {
           this.$router.push("/");
         }

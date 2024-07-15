@@ -279,7 +279,7 @@ router.beforeEach(async (to, from, next) => {
       (!user.isAdmin && requiresAdmin)
     ) {
       console.log("to auth");
-      next("/auth");
+      next("/login");
     } else {
       next();
     }

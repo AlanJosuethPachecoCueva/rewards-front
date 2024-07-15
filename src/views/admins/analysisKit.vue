@@ -11,7 +11,7 @@
     >
       <button type="submit" class="button">Actualizar</button>
     </form> -->
-    <div class="createKitContainer">
+    <div class="analysisContainer">
       <div class="containerLeft">
         <div class="form-group group">
           <label class="subtitle" for="description">Resumen</label>
@@ -27,8 +27,8 @@
             :key="index"
             :class="['factor-card', getCardColor(index)]"
           >
-            <p class="label" v-html="factor.title"></p>
-            <p class="lead" v-html="factor.description"></p>
+            <p class="factor-title" v-html="factor.title"></p>
+            <p class="factor-text" v-html="factor.text"></p>
           </div>
         </div>
       </div>
@@ -75,15 +75,15 @@ export default {
   methods: {
     async getKitAnalysis(id) {
       try {
-        //const analysis = await getKitAnalysisIdController(id);
-        //console.log("Analisis " + analysis);
-        const resumen =
-          "****\n\nTras analizar las opiniones recibidas, se destaca que la mayoría de los usuarios percibieron las imágenes como artificiales y poco relacionadas con el tema. Estas críticas sugieren que la calidad visual del material gráfico utilizado no logra transmitir de manera efectiva el mensaje o la temática deseada. Este aspecto puede afectar la percepción general de la marca o del contenido promocionado, ya que la imagen juega un papel crucial en la atracción y retención del público objetivo. Es fundamental tomar en cuenta estas opiniones para mejorar la estrategia visual y garantizar una experiencia positiva para los consumidores.";
-        this.resumen = this.cleanText(resumen);
+        const analysis = await getKitAnalysisIdController(id);
+        console.log("Analisis " + JSON.stringify(analysis));
+        //const resumen =
+        //  "****\n\nTras analizar las opiniones recibidas, se destaca que la mayoría de los usuarios percibieron las imágenes como artificiales y poco relacionadas con el tema. Estas críticas sugieren que la calidad visual del material gráfico utilizado no logra transmitir de manera efectiva el mensaje o la temática deseada. Este aspecto puede afectar la percepción general de la marca o del contenido promocionado, ya que la imagen juega un papel crucial en la atracción y retención del público objetivo. Es fundamental tomar en cuenta estas opiniones para mejorar la estrategia visual y garantizar una experiencia positiva para los consumidores.";
+        this.resumen = this.cleanText(analysis.resumen);
         //console.log(this.cleanText(analysis.factores));
-        const factores =
-          "****\n\n1. **Calidad visual inadecuada:** La percepción de que las imágenes son artificiales sugiere una falta de autenticidad o realismo en el contenido visual. Esto puede generar desconfianza en la audiencia y afectar la credibilidad de la marca.\n\n2. **Relevancia con el tema:** La falta de conexión entre las imágenes y el tema tratado indica una posible discrepancia en la comunicación visual. Es esencial que el contenido gráfico se ajuste y refuerce el mensaje que se desea transmitir para evitar confusiones o malinterpretaciones.\n\n3. **Impacto emocional limitado:** Las imágenes artificiales tienden a carecer de la emotividad necesaria para generar un impacto significativo en la audiencia. La ausencia de una conexión emocional puede resultar en una menor resonancia y recordación de la publicidad o material promocional.\n\n4. **Coherencia visual:** La coherencia en el estilo, la paleta de colores y la estética general de las imágenes es fundamental para construir una identidad visual sólida y reconocible. La falta de cohesión visual puede afectar la percepción de la marca y dificultar la diferenciación en un mercado competitivo.\n\n5. **Optimización de la imagen:** Es importante considerar aspectos técnicos como la resolución, el formato y la adaptabilidad de las imágenes a diferentes plataformas y dispositivos. Una correcta optimización visual garantiza una experiencia uniforme y atractiva para los usuarios, así como una mejor visibilidad en entornos digitales.";
-        this.factorsList = this.extractFactors(factores);
+        //const factores =
+        //  "****\n\n1. **Calidad visual inadecuada:** La percepción de que las imágenes son artificiales sugiere una falta de autenticidad o realismo en el contenido visual. Esto puede generar desconfianza en la audiencia y afectar la credibilidad de la marca.\n\n2. **Relevancia con el tema:** La falta de conexión entre las imágenes y el tema tratado indica una posible discrepancia en la comunicación visual. Es esencial que el contenido gráfico se ajuste y refuerce el mensaje que se desea transmitir para evitar confusiones o malinterpretaciones.\n\n3. **Impacto emocional limitado:** Las imágenes artificiales tienden a carecer de la emotividad necesaria para generar un impacto significativo en la audiencia. La ausencia de una conexión emocional puede resultar en una menor resonancia y recordación de la publicidad o material promocional.\n\n4. **Coherencia visual:** La coherencia en el estilo, la paleta de colores y la estética general de las imágenes es fundamental para construir una identidad visual sólida y reconocible. La falta de cohesión visual puede afectar la percepción de la marca y dificultar la diferenciación en un mercado competitivo.\n\n5. **Optimización de la imagen:** Es importante considerar aspectos técnicos como la resolución, el formato y la adaptabilidad de las imágenes a diferentes plataformas y dispositivos. Una correcta optimización visual garantiza una experiencia uniforme y atractiva para los usuarios, así como una mejor visibilidad en entornos digitales.";
+        this.factorsList = analysis.factores;
         console.log(this.factorsList);
       } catch (error) {
         console.error("Unable to find kit:", error);
@@ -92,12 +92,12 @@ export default {
     },
     async getKit(id) {
       try {
-        const kit = await getKitByIdController(id);
-        if (!kit) {
-          throw new Error("Unable to find kit");
-        }
-        this.kit = kit;
-        this.pageTitle = "Análisis Kit Publicitario: \n" + kit.title;
+        // const kit = await getKitByIdController(id);
+        // if (!kit) {
+        //   throw new Error("Unable to find kit");
+        // }
+        // this.kit = kit;
+        this.pageTitle = "Análisis Kit Publicitario: \n"; // + kit.title;
         // this.user = Object.assign({}, user);
       } catch (error) {
         console.error("Unable to find kit:", error);
@@ -105,7 +105,8 @@ export default {
       }
     },
     cleanText(text) {
-      return text.replace(/^\*+/, "").trim();
+      if (text) return text.replace(/^\*+/, "").trim();
+      return text;
     },
     extractFactors(factores) {
       // Remove leading **** and split by pattern
@@ -176,7 +177,7 @@ export default {
   font-size: 1.5em;
 }
 
-.createKitContainer {
+.analysisContainer {
   display: flex;
   flex-direction: column;
   margin-top: 0px !important;
@@ -191,10 +192,28 @@ export default {
 
 .factor-card {
   padding: 40px 40px;
-  margin-bottom: 10px;
   border-radius: 8px;
-  max-width: 50%;
+  height: 300px;
+  width: 40%;
   color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
+}
+.factor-card::-webkit-scrollbar {
+  display: none;
+  overflow-y: auto;
+}
+.factor-text {
+  text-align: justify;
+}
+
+.factor-title {
+  align-self: center;
+  font-weight: 1000;
+  font-size: 1.2rem;
+  margin-bottom: 0px !important;
 }
 
 .color1 {
@@ -219,7 +238,9 @@ export default {
 
 .factors-container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 15px;
   justify-content: center;
   align-items: center;
 }

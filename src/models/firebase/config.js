@@ -70,7 +70,7 @@ async function checkAuthState() {
 //     // Verificar si la respuesta es exitosa
 //     let data = user;
 //     //const data = await response.json();
-    
+
 //     //console.log("dataaa act: ", data);
 
 //     const userStore = useUserStore();
@@ -104,20 +104,20 @@ async function checkAuthState() {
 // });
 
 
-function getUserInformation(){
+function getUserInformation() {
   onAuthStateChanged(authFirebase, async (user) => {
     //console.log("onAuthStateChanged user: ", user);
     if (user != null) {
       // El usuario está autenticado
       // Aquí puedes acceder a la información del usuario en el objeto `user`
       console.log("Usuario autenticado:", user.uid);
-  
+
       // Verificar si la respuesta es exitosa
       let data = user;
       //const data = await response.json();
-      
+
       //console.log("dataaa act: ", data);
-  
+
       const userStore = useUserStore();
       let userToSave = {
         name: data.displayName,
@@ -129,7 +129,7 @@ function getUserInformation(){
         uid: user.uid,
         points: 0,
       };
-  
+
       let userByController = await getUserByIdController(data.uid);
       //console.log("userByController: ", userByController);
       userToSave.surname = userByController.surname;
@@ -144,7 +144,7 @@ function getUserInformation(){
       // El usuario no está autenticado
       console.log("Usuario no autenticado");
       //Si el usuario no está autenticado lo redirige automáticamente a la pestaña de inicio
-      router.push("/auth");
+      router.push("/login");
     }
   });
 }
@@ -159,8 +159,8 @@ export {
   onAuthStateChanged,
   getUserInformation,
   storage,
-  getStorage, 
-  ref, 
-  uploadBytesResumable, 
+  getStorage,
+  ref,
+  uploadBytesResumable,
   getDownloadURL,
 };
