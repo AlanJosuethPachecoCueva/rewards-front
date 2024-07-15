@@ -1,20 +1,16 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterLink, RouterView } from "vue-router";
 
 import home from "./views/home.vue";
 import navbarComponent from "./components/navbarComponent.vue";
-
 </script>
 
 <template>
   <div id="app">
     <navbarComponent></navbarComponent>
-    <div class="border-main-content">
-
-    </div>
+    <div class="border-main-content"></div>
     <RouterView></RouterView>
   </div>
-
 </template>
 
 <style scoped>
@@ -25,6 +21,5 @@ import navbarComponent from "./components/navbarComponent.vue";
 
 .border-main-content {
   margin-top: 50px;
-
 }
 </style>

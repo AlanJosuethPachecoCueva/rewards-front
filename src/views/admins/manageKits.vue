@@ -57,18 +57,17 @@
                 font-size: 0.8rem;
                 background-color: rgb(65, 39, 39);
                 color: rgb(247, 246, 246);
-                padding: 5px 10px;
+                padding-inline: 15px;
                 border: none;
                 border-radius: 5px;
                 cursor: pointer;
               "
-              class="option-btn"
+              class="option-btn edit-button"
             >
               <i
-                class="bi bi-file-bar-graph-fill"
+                class="bi bi-pencil-square"
                 style="font-size: 1rem; color: rgb(247, 246, 246)"
               ></i>
-              Editar
             </button>
             <button
               @click="goToKitAnalysis(kit.id)"
@@ -81,13 +80,13 @@
                 border-radius: 5px;
                 cursor: pointer;
               "
-              class="option-btn"
+              class="analysis-btn"
             >
               <i
-                class="bi bi-pencil-square"
+                class="bi bi-pie-chart-fill"
                 style="font-size: 1rem; color: rgb(247, 246, 246)"
               ></i>
-              Análisis
+              Ver Análisis
             </button>
             <button
               @click="deleteKit(kit.id)"
@@ -95,18 +94,17 @@
                 font-size: 0.8rem;
                 background-color: rgb(204, 0, 0);
                 color: rgb(247, 246, 246);
-                padding: 5px 10px;
+                padding-inline: 10px;
                 border: none;
                 border-radius: 5px;
                 cursor: pointer;
               "
-              class="option-btn"
+              class="option-btn delete-button"
             >
               <i
                 class="bi bi-trash"
                 style="font-size: 1rem; color: rgb(247, 246, 246)"
               ></i>
-              Eliminar
             </button>
           </div>
         </div>
@@ -294,4 +292,21 @@ export default {
   100% { transform: rotate(360deg); }
 }
 
+.delete-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+.edit-button {
+  position: absolute;
+  top: 10px;
+  right: 60px;
+}
+
+.analysis-btn {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
 </style>
