@@ -96,6 +96,19 @@ const getKitOpinionsAnalysis = async (id) => {
   }
 };
 
+const getKitMetrics = async (id) => {
+  try {
+    const response = await fetch(`${RUTA_SERVIDOR}/kits/kitMetrics/${id}`);
+    if (!response.ok) {
+      throw new Error(`Unable to get kit ${id} metrics`);
+    }
+    const results = await response.json();
+    return results;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const deleteKit = async (id) => {
   try {
     console.log("entrEa a deleteKit id: ", id);
@@ -247,5 +260,6 @@ export {
   uploadKitImage,
   updateKitImages,
   getAllKitsRewards,
-  getKitOpinionsAnalysis
+  getKitOpinionsAnalysis,
+  getKitMetrics
 };

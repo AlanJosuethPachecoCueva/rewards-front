@@ -1,5 +1,5 @@
 <template #addons>
-  <statsComponent></statsComponent>
+  <statsComponent :statsData="metricsValues"></statsComponent>
   <div class="bigContainerKit">
     <h1 class="titulo-pagina">{{ pageTitle }}</h1>
     <!-- <form
@@ -44,6 +44,7 @@ import {
   getKitByIdController,
 } from "../../controllers/kitsController.js";
 import statsComponent from "@/components/admin/statsComponent.vue";
+import { getKitMetrics } from "@/models/kitsModel.js";
 
 export default {
   components: {
@@ -55,6 +56,7 @@ export default {
       pageTitle: null,
       factorsList: [],
       errors: [],
+      metricsValues: {},
       kit: null,
     };
   },
@@ -71,6 +73,7 @@ export default {
   async created() {
     await this.getKit(this.$route.params.kitID);
     await this.getKitAnalysis(this.$route.params.kitID);
+    await this.getMetrics(this.$route.params.kitID);
   },
   methods: {
     async getKitAnalysis(id) {
@@ -103,6 +106,15 @@ export default {
         console.error("Unable to find kit:", error);
         throw error;
       }
+    },
+    async getMetrics(id) {
+      try {
+        const metrics = await getKitMetrics(id);
+        if (!metrics) {
+          throw new Error("Unable to find kit metrics");
+        }
+        this.metricsValues = metrics;
+      } catch (error) {}
     },
     cleanText(text) {
       if (text) return text.replace(/^\*+/, "").trim();

@@ -124,6 +124,22 @@ const getKitByIdController = async (id) => {
   }
 };
 
+const getKitMetricsController = async (id) => {
+  try {
+    const metrics = await getKitMetrics(id);
+
+    if (!metrics) {
+      console.error("Error getting kit.");
+      return false;
+    }
+
+    return metrics;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};
+
 const getKitAnalysisIdController = async (id) => {
   try {
     const analysis = await getKitOpinionsAnalysis(id);
