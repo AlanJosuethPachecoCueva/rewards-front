@@ -1,5 +1,9 @@
 <template>
   <div>
+  <div v-if="isLoading" class="loading-container">
+      <div class="spinner"></div>
+      <div>{{ $t("loading") }}</div>
+    </div>
     <div class="containerKits" style="padding: 2rem">
       <h2 style="margin-bottom: 1.5rem">Kits</h2>
       <div class="input-group mb-3">
@@ -134,6 +138,7 @@ export default {
       logIn: true,
       kits: [],
       kitsToShow: [],
+      isLoading: true, // Estado de carga
     };
   },
   methods: {
@@ -141,8 +146,20 @@ export default {
       this.$router.push("/admin/createKit");
     },
     async getKits() {
-      this.kits = await getKitsController();
-      this.kitsToShow = JSON.parse(JSON.stringify(this.kits));
+      try {
+        this.isLoading = true;
+        const response = await getKitsController();
+        if (response && response.length) {
+          this.kits = response;
+          this.kitsToShow = JSON.parse(JSON.stringify(this.kits));
+        } else {
+          console.error("No kits found");
+        }
+      } catch (error) {
+        console.error("Error loading kits:", error);
+      } finally {
+        this.isLoading = false;
+      }
     },
     async deleteKit(kitId) {
       console.log("kitId deleteKit: ", kitId);
@@ -247,4 +264,34 @@ export default {
   justify-content: flex-end;
   padding: 0.5rem;
 }
+
+/* Estilos para la animación de carga */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; /* Altura completa de la ventana */
+  background-color: rgba(255, 255, 255, 0.8); /* Fondo semitransparente */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+.spinner {
+  border: 8px solid #f3f3f3; /* Light grey */
+  border-top: 8px solid #CDA434; /* Blue */
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 </style>
