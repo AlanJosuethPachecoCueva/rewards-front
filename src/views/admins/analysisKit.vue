@@ -2,15 +2,6 @@
   <statsComponent :statsData="metricsValues"></statsComponent>
   <div class="bigContainerKit">
     <h1 class="titulo-pagina">{{ pageTitle }}</h1>
-    <!-- <form
-      id="formEditKit"
-      @submit.prevent="getKitAnalysis(this.$route.params.kitID)"
-      action=""
-      class="form"
-      method="post"
-    >
-      <button type="submit" class="button">Actualizar</button>
-    </form> -->
     <div class="analysisContainer">
       <div class="containerLeft">
         <div class="form-group group">
@@ -22,11 +13,7 @@
       <div class="containerRight">
         <label class="subtitle" for="name">Factores</label>
         <div class="factors-container">
-          <div
-            v-for="(factor, index) in factorsList"
-            :key="index"
-            :class="['factor-card', getCardColor(index)]"
-          >
+          <div v-for="(factor, index) in factorsList" :key="index" :class="['factor-card', getCardColor(index)]">
             <p class="factor-title" v-html="factor.title"></p>
             <p class="factor-text" v-html="factor.text"></p>
           </div>
@@ -42,9 +29,10 @@ import { useUserStore } from "../../stores/userStore.js";
 import {
   getKitAnalysisIdController,
   getKitByIdController,
+  getKitMetricsController,
+  getKitRewardsMetricsController
 } from "../../controllers/kitsController.js";
 import statsComponent from "@/components/admin/statsComponent.vue";
-import { getKitMetrics } from "@/models/kitsModel.js";
 
 export default {
   components: {
@@ -74,6 +62,7 @@ export default {
     await this.getKit(this.$route.params.kitID);
     await this.getKitAnalysis(this.$route.params.kitID);
     await this.getMetrics(this.$route.params.kitID);
+    
   },
   methods: {
     async getKitAnalysis(id) {
@@ -95,11 +84,6 @@ export default {
     },
     async getKit(id) {
       try {
-        // const kit = await getKitByIdController(id);
-        // if (!kit) {
-        //   throw new Error("Unable to find kit");
-        // }
-        // this.kit = kit;
         this.pageTitle = "Análisis Kit Publicitario: \n"; // + kit.title;
         // this.user = Object.assign({}, user);
       } catch (error) {
@@ -109,12 +93,15 @@ export default {
     },
     async getMetrics(id) {
       try {
-        const metrics = await getKitMetrics(id);
+        const metrics = await getKitMetricsController(id);
         if (!metrics) {
           throw new Error("Unable to find kit metrics");
         }
+        console.log("metrics: ", metrics);
         this.metricsValues = metrics;
-      } catch (error) {}
+        const metricsRewards = await getKitRewardsMetricsController(id);
+        cosole.log("metricsRewards: ", metricsRewards);
+      } catch (error) { }
     },
     cleanText(text) {
       if (text) return text.replace(/^\*+/, "").trim();
@@ -146,6 +133,7 @@ export default {
 .titulo-pagina {
   font-weight: 1000;
 }
+
 .form {
   position: relative;
   padding: 0 5%;
@@ -213,10 +201,12 @@ export default {
   align-items: center;
   overflow-y: auto;
 }
+
 .factor-card::-webkit-scrollbar {
   display: none;
   overflow-y: auto;
 }
+
 .factor-text {
   text-align: justify;
 }

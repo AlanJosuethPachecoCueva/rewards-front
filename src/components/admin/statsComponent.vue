@@ -1,47 +1,4 @@
-<script>
-import rewardContainerComponent from "@/components/rewardContainerComponent.vue";
-import { getKitsController } from "@/controllers/kitsController";
-export default {
-  props: {
-    statsData: {
-      type: Object,
-      required: true,
-    },
-  },
-  components: {
-    rewardContainerComponent,
-  },
-  data() {
-    return {
-      logIn: true,
-      kits: [],
-      // cardItem:{
-      //   title: "Sinfonía del placer P1",
-      //   description:"Sumérgete en la exquisita sinfonía de placer con el nuevo Chocolate Dimple. Nuetra campaña 'Sinfonía de Placer' celebra la experiencia única que ofrece cada bocado de este delicioso chocolate.",
-      //   mainImageUrl: "https://firebasestorage.googleapis.com/v0/b/rewards-b63ba.appspot.com/o/kitImages%2FCamp1.webp?alt=media&token=c7fc8523-4d91-41a7-a5dc-63584f8100bc",
-      //   images:[
-      //     "https://firebasestorage.googleapis.com/v0/b/rewards-b63ba.appspot.com/o/kitImages%2Fcamp2.webp?alt=media&token=a7f7c59c-abb7-482e-a10e-3400abd8d6eb",
-      //     "https://firebasestorage.googleapis.com/v0/b/rewards-b63ba.appspot.com/o/kitImages%2Fcamp3.webp?alt=media&token=9eda9980-615b-43e0-a263-519275f41a10",
-      //     "https://firebasestorage.googleapis.com/v0/b/rewards-b63ba.appspot.com/o/kitImages%2Fcamp4.webp?alt=media&token=82f4c906-4c8e-4490-8607-b6e11ec4905d"
-      //   ]
-      // }
-    };
-  },
-  methods: {
-    // async chargekits() {
-    //   kits = await getKitsController();
-    // },
-  },
-  async mounted() {
-    this.kits = await getKitsController();
-  },
-};
-</script>
-
 <template>
-  <!-- <div class="text-center m-4">
-    <h1>Gestionar Material Publicitario</h1>
-  </div> -->
   <div class="bg-default">
     <div class="main-content">
       <div class="header bg-black pb-8 pt-5 pt-md-8">
@@ -58,22 +15,17 @@ export default {
                           Points Redeemed
                         </h5>
                         <span class="h2 font-weight-bold mb-0">{{
-                          statsData.totalCodes
+                          statsData.totalPoints
                         }}</span>
                       </div>
                       <div class="col-auto">
                         <!-- Este tiene el ícono -->
-                        <div
-                          class="icon icon-shape bg-danger text-white rounded-circle shadow"
-                        >
-                          <i
-                            class="bi bi-bar-chart-line-fill"
-                            style="
+                        <div class="icon icon-shape bg-danger text-white rounded-circle shadow">
+                          <i class="bi bi-bar-chart-line-fill" style="
                               font-size: 150%;
                               color: #ffffff;
                               font-weight: bold;
-                            "
-                          ></i>
+                            "></i>
                         </div>
                       </div>
                     </div>
@@ -89,22 +41,17 @@ export default {
                           Reedemed Codes
                         </h5>
                         <span class="h2 font-weight-bold mb-0">
-                          {{ statsData.totalPoints }}
+                          {{ statsData.totalCodes }}
                         </span>
                       </div>
                       <div class="col-auto">
                         <!-- Este tiene el ícono -->
-                        <div
-                          class="icon icon-shape bg-warning text-white rounded-circle shadow"
-                        >
-                          <i
-                            class="bi bi-pie-chart-fill"
-                            style="
+                        <div class="icon icon-shape bg-warning text-white rounded-circle shadow">
+                          <i class="bi bi-pie-chart-fill" style="
                               font-size: 150%;
                               color: #ffffff;
                               font-weight: bold;
-                            "
-                          ></i>
+                            "></i>
                         </div>
                       </div>
                     </div>
@@ -125,17 +72,12 @@ export default {
                       </div>
                       <div class="col-auto">
                         <!-- Este tiene el ícono -->
-                        <div
-                          class="icon icon-shape bg-yellow text-white rounded-circle shadow"
-                        >
-                          <i
-                            class="bi bi-people-fill"
-                            style="
+                        <div class="icon icon-shape bg-yellow text-white rounded-circle shadow">
+                          <i class="bi bi-people-fill" style="
                               font-size: 150%;
                               color: #ffffff;
                               font-weight: bold;
-                            "
-                          ></i>
+                            "></i>
                         </div>
                       </div>
                     </div>
@@ -156,17 +98,12 @@ export default {
                       </div>
                       <div class="col-auto">
                         <!-- Este tiene el ícono -->
-                        <div
-                          class="icon icon-shape bg-info text-white rounded-circle shadow"
-                        >
-                          <i
-                            class="bi bi-speedometer2"
-                            style="
+                        <div class="icon icon-shape bg-info text-white rounded-circle shadow">
+                          <i class="bi bi-speedometer2" style="
                               font-size: 150%;
                               color: #ffffff;
                               font-weight: bold;
-                            "
-                          ></i>
+                            "></i>
                         </div>
                       </div>
                     </div>
@@ -181,6 +118,33 @@ export default {
     </div>
   </div>
 </template>
+
+<script>
+import rewardContainerComponent from "@/components/rewardContainerComponent.vue";
+import { getKitsController } from "@/controllers/kitsController";
+export default {
+  props: {
+    statsData: {
+      type: Object,
+      required: true,
+    },
+  },
+  components: {
+    rewardContainerComponent,
+  },
+  data() {
+    return {
+      logIn: true,
+      kits: [],
+    };
+  },
+  methods: {
+    // async chargekits() {
+    //   kits = await getKitsController();
+    // },
+  },
+};
+</script>
 
 <style>
 @-ms-viewport {
@@ -199,6 +163,7 @@ export default {
     max-width: 25%;
     flex: 0 0 25%;
   }
+
   .col-xl-6 {
     max-width: 50%;
     flex: 0 0 50%;
@@ -230,6 +195,7 @@ export default {
   from {
     background-position: 1rem 0;
   }
+
   to {
     background-position: 0 0;
   }
@@ -259,26 +225,32 @@ export default {
 }
 
 @media print {
+
   *,
   *::before,
   *::after {
     box-shadow: none !important;
     text-shadow: none !important;
   }
+
   a:not(.btn) {
     text-decoration: underline;
   }
+
   p,
   h2 {
     orphans: 3;
     widows: 3;
   }
+
   h2 {
     page-break-after: avoid;
   }
+
   @page {
     size: a3;
   }
+
   body {
     min-width: 992px !important;
   }
@@ -297,20 +269,20 @@ button.bg-yellow:focus {
 
 /* Color de fondo backgroundColor */
 .bg-gradient-primary {
-  background: linear-gradient(
-    87deg,
-    rgb(214, 204, 156) 0,
-    rgb(214, 204, 156) 50%
-  ) !important;
+  background: linear-gradient(87deg,
+      rgb(214, 204, 156) 0,
+      rgb(214, 204, 156) 50%) !important;
 }
 
 @keyframes floating-lg {
   0% {
     transform: translateY(0px);
   }
+
   50% {
     transform: translateY(15px);
   }
+
   100% {
     transform: translateY(0px);
   }
@@ -320,9 +292,11 @@ button.bg-yellow:focus {
   0% {
     transform: translateY(0px);
   }
+
   50% {
     transform: translateY(10px);
   }
+
   100% {
     transform: translateY(0px);
   }
@@ -332,9 +306,11 @@ button.bg-yellow:focus {
   0% {
     transform: translateY(0px);
   }
+
   50% {
     transform: translateY(5px);
   }
+
   100% {
     transform: translateY(0px);
   }
@@ -387,15 +363,18 @@ button.bg-yellow:focus {
       transform: translate(0, 10px) perspective(200px) rotateX(-2deg);
       opacity: 0;
     }
+
     100% {
       transform: translate(0, 0);
       opacity: 1;
     }
   }
+
   @keyframes hide-navbar-dropdown {
     from {
       opacity: 1;
     }
+
     to {
       transform: translate(0, 10px);
       opacity: 0;
@@ -409,6 +388,7 @@ button.bg-yellow:focus {
     transform-origin: 100% 0;
     opacity: 0;
   }
+
   100% {
     transform: scale(1);
     opacity: 1;
@@ -421,6 +401,7 @@ button.bg-yellow:focus {
     transform-origin: 100% 0;
     opacity: 1;
   }
+
   to {
     transform: scale(0.95);
     opacity: 0;

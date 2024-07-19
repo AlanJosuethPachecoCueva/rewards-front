@@ -248,6 +248,20 @@ async function updateKit(kitId, kitInfo) {
   }
 }
 
+const getKitRewardsMetrics = async (id) => {
+  try {
+    const response = await fetch(`${RUTA_SERVIDOR}/kits/kitRewardsMetrics/${id}`);
+    if (!response.ok) {
+      throw new Error(`Unable to get kit rewards metrics for: ${id}`);
+    }
+    const results = await response.json();
+    console.log("results in getKitRewardsMetrics: ", results);
+    return results;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export {
   getAllKits,
   getKit,
@@ -261,5 +275,6 @@ export {
   updateKitImages,
   getAllKitsRewards,
   getKitOpinionsAnalysis,
-  getKitMetrics
+  getKitMetrics,
+  getKitRewardsMetrics
 };

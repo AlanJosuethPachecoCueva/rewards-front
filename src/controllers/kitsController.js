@@ -10,7 +10,9 @@ import {
   uploadKitImage,
   updateKitImages,
   getAllKitsRewards,
-  getKitOpinionsAnalysis
+  getKitOpinionsAnalysis,
+  getKitMetrics,
+  getKitRewardsMetrics
 } from "../models/kitsModel";
 
 const createKitController = async (kitData) => {
@@ -262,6 +264,21 @@ const isTodayBetweenDatesController = (startDateStr, endDateStr) => {
   return todayDateOnly >= startDate && todayDateOnly <= endDate;
 }
 
+const getKitRewardsMetricsController = async (id) => {
+  try {
+    const metrics = await getKitRewardsMetrics(id);
+
+    if (!metrics) {
+      console.error("Error getting kit rewards metrics.");
+      return false;
+    }
+
+    return metrics;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};
 
 export {
   getKitsController,
@@ -277,5 +294,7 @@ export {
   getImagesFromKitsController,
   getAllKitsRewardsController,
   isTodayBetweenDatesController,
-  getKitAnalysisIdController
+  getKitAnalysisIdController,
+  getKitMetricsController,
+  getKitRewardsMetricsController
 };
