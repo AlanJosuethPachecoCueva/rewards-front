@@ -150,6 +150,7 @@ export default {
         if (response && response.length) {
           this.kits = response;
           this.kitsToShow = JSON.parse(JSON.stringify(this.kits));
+          console.log("this.kitsToShow: ", this.kitsToShow);
         } else {
           console.error("No kits found");
         }
