@@ -95,11 +95,12 @@ async function saveStickerByFile(stickerData) {
 
 async function save3DObjectByFile(objectData) {
   try {
-    const { file, title, bundleFile, description, userID, costInPoints } = objectData;
+    const { file, title, androidBundleFile, iosBundleFile, description, userID, costInPoints } = objectData;
 
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("bundleName", bundleFile.name);
+    formData.append("androidBundleName", androidBundleFile.name);
+    formData.append("iosBundleName", iosBundleFile.name);
     formData.append("title", title);
     formData.append("description", description);
     formData.append("userID", userID);
@@ -110,14 +111,20 @@ async function save3DObjectByFile(objectData) {
       body: formData,
     });
 
-    formData.set("file", bundleFile);
+    formData.set("file", androidBundleFile);
     const responseUnityAssets = await fetch(`${RUTA_SERVIDOR}/rewards/saveAssetBundle`, {
       method: "POST",
       body: formData,
     });
 
+    formData.set("file", iosBundleFile);
+    const responseUnityAssetsIos = await fetch(`${RUTA_SERVIDOR}/rewards/saveAssetBundle`, {
+      method: "POST",
+      body: formData,
+    });
+
     console.log("response saving 3D object by file: ", response);
-    if (!response.ok || !responseUnityAssets.ok) {
+    if (!response.ok || !responseUnityAssets.ok || !responseUnityAssetsIos) {
       throw new Error("Error saving 3D object by file.");
     }
 

@@ -45,14 +45,19 @@
                 <div class="card cardContainer">
                     <div class="form-group generateKitIA">
                         <div class="mb-3">
-                            <label for="objectInput" class="label">Seleccionar del almacenamiento:</label>
+                            <label for="objectInput" class="label">Upload file from local storage:</label>
                             <input type="file" class="form-control" id="objectInput" @change="selectObjectFromDevice"
                                 ref="objectInput" accept=".gltf,.glb">
                         </div>
                         <div class="mb-3">
-                            <label for="bundleInput" class="label">Selecciona el bundle creado en unity:</label>
+                            <label for="bundleInput" class="label">Upload asset bundle file for Android:</label>
                             <input type="file" class="form-control" id="bundleInput" @change="selectBundleFile"
                                 ref="bundleInput" accept="*">
+                        </div>
+                        <div class="mb-3">
+                            <label for="iosbundleInput" class="label">Upload asset bundle file for Ios:</label>
+                            <input type="file" class="form-control" id="iosbundleInput" @change="selectIosBundleFile"
+                                ref="iosbundleInput" accept="*">
                         </div>
                     </div>
                 </div>
@@ -75,7 +80,8 @@ export default {
         return {
             objectSrc: null,
             file: null,
-            bundleFile:null,
+            androidBundleFile:null,
+            iosBundleFile: null,
             title: "",
             description: "",
             titleTouched: false,
@@ -126,8 +132,32 @@ export default {
         },
         async selectBundleFile(event) {
             try {
-                this.bundleFile = event.target.files[0];
-                if (this.bundleFile) {
+                this.androidBundleFile = event.target.files[0];
+                if (this.androidBundleFile) {
+                    console.log("Se cargo correctamente el objeto")
+                }
+                await this.$swal({
+                    title: "¡El bundle ha sido cargado!",
+                    text: "Si no cargaste el archivo del bundle asociado al objeto 3D reemplázalo",
+                    icon: "success",
+                    showCancelButton: false,
+                    confirmButtonText: "OK",
+                });
+            } catch (error) {
+                await this.$swal({
+                    title: "¡Ocurrió un error!",
+                    text: "Por favor, revisa que el archivo del bundle, no esté corrupto e intenta nuevamente :(",
+                    icon: "error",
+                    showCancelButton: false,
+                    confirmButtonText: "OK",
+                });
+            }
+
+        },
+        async selectIosBundleFile(event) {
+            try {
+                this.iosBundleFile = event.target.files[0];
+                if (this.iosBundleFile) {
                     console.log("Se cargo correctamente el objeto")
                 }
                 await this.$swal({
@@ -162,12 +192,13 @@ export default {
 
             const userID = this.user.id;
             const file = this.file;
-            const bundleFile = this.bundleFile
+            const androidBundleFile = this.androidBundleFile
+            const iosBundleFile = this.iosBundleFile
             const title = this.title;
             const description = this.description;
             const costInPoints = this.points;
 
-            const res = await save3DObjectByFileController({ file, title, bundleFile, description, userID, costInPoints });
+            const res = await save3DObjectByFileController({ file, title, androidBundleFile,iosBundleFile,description, userID, costInPoints });
 
             this.$swal.close();
 
@@ -195,6 +226,17 @@ export default {
                 }
                 if (!this.pointsValid || this.points == null) {
                     this.errors.push("La precio en puntos debe ser mayor que cero.");
+                }
+                if (this.file == null) {
+                    this.errors.push("Debe cargarse un archivo 3D .glb .");
+                }
+
+                if (this.androidBundleFile == null) {
+                    this.errors.push("Debe cargarse el asset bundle generado en unity para android.");
+                }
+
+                if (this.iosBundleFile == null) {
+                    this.errors.push("Debe cargarse el asset bundle generado en unity para ios.");
                 }
 
                 if (this.errors.length === 0) {
