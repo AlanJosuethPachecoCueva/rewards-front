@@ -7,38 +7,46 @@ import { createPinia } from 'pinia'
 
 import router from "./router";
 
-// Boostrap
+// Bootstrap
 import 'bootstrap/dist/css/bootstrap.css'
 import bootstrap from "bootstrap/dist/js/bootstrap.bundle.js"
-//Iconos bootstrap
+// Iconos bootstrap
 import "bootstrap-icons/font/bootstrap-icons.css"
 
-
-//vueSweetAlert2
+// vueSweetAlert2
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
-// import { mdiAccount } from '@mdi/js'
-import './assets/base.css';
+
+// Importa los estilos de vue-multiselect
+import 'vue-multiselect/dist/vue-multiselect.css';
+
+// i18n
 import { createI18n } from 'vue-i18n';
 import dictionary from './dictionary';
 
-
 const i18n = createI18n({
-    messages: dictionary, 
+    messages: dictionary,
     fallbackFormat: 'en',
-    locale: navigator.language.startsWith('es') ? 'en' : 'en'
+    locale: navigator.language.startsWith('es') ? 'es' : 'en'
 })
 
 const app = createApp(App).use(i18n)
 
-import 'vue-multiselect/dist/vue-multiselect.css'; // Importa los estilos aquí
-
-
 app.use(VueSweetalert2);
-
 app.use(router)
 app.use(createPinia())
 // Registrar bootstrap-vue-3
 app.use(bootstrap);
+
+// Registrar el service worker
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js').then(registration => {
+            console.log('ServiceWorker registration successful with scope: ', registration.scope);
+        }, err => {
+            console.log('ServiceWorker registration failed: ', err);
+        });
+    });
+}
 
 app.mount('#app')

@@ -1,8 +1,5 @@
 <template>
-  <nav
-    class="navbar navbar-expand-lg navBarPersonalized marron-principal"
-    :style="{ backgroundColor: colors.principalBrown }"
-  >
+  <nav class="navbar navbar-expand-lg navBarPersonalized">
     <div class="container-fluid">
       <a class="navbar-brand" :style="{ color: textColor }" href="/">KVMI</a>
       <!-- Botón para ocultar -->
@@ -36,9 +33,9 @@
               >{{ $t("ManageKits") }}</a
             >
           </li>
-          <li class="nav-item dropdown">
+          <li class="dropdown nav-item">
             <a
-              class="nav-link dropdown-toggle"
+              class="nav-link dropdown-toggle navMenu"
               href="#"
               id="navbarDropdown"
               role="button"
@@ -71,7 +68,7 @@
           </li>
           <li class="nav-item dropdown">
             <a
-              class="nav-link dropdown-toggle"
+              class="nav-link dropdown-toggle navMenu"
               href="#"
               id="navbarDropdown"
               role="button"
@@ -109,25 +106,6 @@
               </li>
             </ul>
           </li>
-
-          <li class="nav-item">
-            <a
-              class="nav-link active navMenu"
-              aria-current="page"
-              href="#"
-              :style="{ color: textColor }"
-              >{{ $t("Help") }}</a
-            >
-          </li>
-          <!-- <li class="nav-item">
-            <a
-              class="nav-link disabled"
-              href="#"
-              tabindex="-1"
-              aria-disabled="true"
-              >Disabled</a
-            >
-          </li> -->
         </ul>
         <!-- Opciones usarios cliente -->
         <ul
@@ -150,16 +128,6 @@
               href="/rewards"
               :style="{ color: textColor }"
               >{{ $t("ActiveAwards") }}</a
-            >
-          </li>
-
-          <li class="nav-item">
-            <a
-              class="nav-link active navMenu"
-              aria-current="page"
-              href="#"
-              :style="{ color: textColor }"
-              >{{ $t("Help") }}</a
             >
           </li>
         </ul>
@@ -193,8 +161,7 @@
                 <a
                   class="nav-link"
                   href="#"
-                  :style="{ color: colors.lightyellow }"
-                  style="font-weight: bolder"
+                  style="font-weight: bolder; color: #820f13"
                 >
                   {{ user.points }}
                 </a>
@@ -383,6 +350,7 @@ export default {
   height: 60px;
   /* background-color: rgb(65, 39, 39); */
   color: white !important;
+  background-color: black;
   display: flex !important;
   align-items: center;
   position: fixed !important;
@@ -400,6 +368,7 @@ export default {
 
 .navMenu {
   background-color: none;
+  font-weight: 600 !important;
 }
 .user-name {
   padding: 0 !important;
@@ -423,7 +392,7 @@ export default {
   align-items: center;
 }
 
-.nav-item.dropdown2 {
+.nav-item .dropdown2 {
   height: 50px;
   display: flex;
   align-items: center;

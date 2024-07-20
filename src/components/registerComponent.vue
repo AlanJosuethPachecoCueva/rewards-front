@@ -165,192 +165,172 @@ export default {
 </script>
 
 <template>
-  <div class="container px-4 py-5 mx-auto">
-    <div class="card card0">
-      <div class="d-flex flex-lg-row flex-column-reverse containerCard">
-        <div class="card card3">
-          <div class="row justify-content-center my-auto">
-            <div class="col-md-12 col-12 my-5">
-              <div class="row justify-content-center px-3 mb-3">
-                <img
-                  id="logo"
-                  src="../assets/images/kvmi-en-blanco_redes-AzGj93a4EkuxVrkB.avif"
-                />
-              </div>
-              <h3 class="mb-5 text-center heading">{{ $t("Slogan") }}</h3>
-
-              <h6 class="msg-info">{{ $t("LabelRegistro") }}</h6>
-
-              <div class="form-group">
-                <label class="form-control-label text-muted"
-                  >{{ $t("Name") }}
-                </label>
-                <input
-                  type="text"
-                  id="nombres"
-                  name="nombres"
-                  :placeholder="$t('PlaceHolderName')"
-                  class="form-control"
-                  v-model="user.name"
-                />
-              </div>
-
-              <div class="form-group">
-                <label class="form-control-label text-muted"
-                  >{{ $t("LastName") }}
-                </label>
-                <input
-                  type="text"
-                  id="apellidos"
-                  name="apellidos"
-                  :placeholder="$t('PlaceholderLastName')"
-                  class="form-control"
-                  v-model="user.surname"
-                />
-              </div>
-
-              <div class="form-group">
-                <label class="form-control-label text-muted"
-                  >{{ $t("Address") }}
-                </label>
-                <input
-                  type="text"
-                  id="dirección"
-                  name="dirección"
-                  :placeholder="$t('PlaceholderAddress')"
-                  class="form-control"
-                  v-model="user.direction"
-                />
-              </div>
-
-              <div class="form-group">
-                <label class="form-control-label text-muted"
-                  >{{ $t("Mail") }}
-                </label>
-                <input
-                  type="text"
-                  id="email"
-                  name="email"
-                  placeholder="Email"
-                  class="form-control"
-                  v-model="user.email"
-                />
-              </div>
-
-              <div class="form-group">
-                <label class="form-control-label text-muted"
-                  >{{ $t("Password") }}
-                </label>
-                <input
-                  type="password"
-                  id="psw"
-                  name="psw"
-                  :placeholder="$t('PlaceholderPassword')"
-                  class="form-control"
-                  v-model="user.password"
-                />
-              </div>
-
-              <div class="row justify-content-center my-3 px-3">
-                <button class="btn-block btn-registrarse" @click="createUser()">
-                  {{ $t("RegisterButton") }}
-                </button>
-              </div>
-
-              <div class="row justify-content-center my-3 px-3">
-                <button class="gsi-material-button" @click="signInGoogle()">
-                  <div class="gsi-material-button-state"></div>
-                  <div class="gsi-material-button-content-wrapper">
-                    <div class="gsi-material-button-icon">
-                      <svg
-                        version="1.1"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 48 48"
-                        xmlns:xlink="http://www.w3.org/1999/xlink"
-                        style="display: block"
-                      >
-                        <path
-                          fill="#EA4335"
-                          d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"
-                        ></path>
-                        <path
-                          fill="#4285F4"
-                          d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"
-                        ></path>
-                        <path
-                          fill="#FBBC05"
-                          d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"
-                        ></path>
-                        <path
-                          fill="#34A853"
-                          d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"
-                        ></path>
-                        <path fill="none" d="M0 0h48v48H0z"></path>
-                      </svg>
-                    </div>
-                    <span class="gsi-material-button-contents">{{
-                      $t("GoogleButton")
-                    }}</span>
-                  </div>
-                </button>
-              </div>
-
-              <!-- <div class="row justify-content-center my-2">
-                <a href="#"
-                  ><small class="text-muted">¿Olvidaste la contraseña?</small></a
-                >
-              </div> -->
-            </div>
-          </div>
-          <div class="bottom text-center mb-5">
-            <p class="sm-text mx-auto mb-3">
-              {{ $t("AlreadyHaveAccount")
-              }}<button class="btn btn-white ml-2">
-                <a href="/login">{{ $t("EnterLogin") }}</a>
-              </button>
-            </p>
-          </div>
-        </div>
-
-        <div class="card card4">
+  <div class="register-page">
+    <div class="card1">
+      <div class="row justify-content-center px-3 mb-3">
+        <div class="row justify-content-center px-3 mb-3">
           <img
-            id="bannerRegister"
-            src="../assets/images/Banner Vertical Register.webp"
+            id="logo"
+            src="../assets/images/kvmi-en-blanco_redes-AzGj93a4EkuxVrkB.avif"
           />
-          <!-- <div class="my-auto mx-md-5 px-md-5 right">
-            <h3 class="text-white">KVMI, más que solo chocolate</h3>
-            <small class="text-white"
-              >Marca de chocolates de lujo elaborados con un raro grano de cacao amazónico. Creadores de mezclas exclusivas de temporada y experiencias alucinantes para tus cinco sentidos.</small
-            >
-          </div> -->
         </div>
+        <h3 class="mb-5 text-center heading">{{ $t("LabelRegistro") }}</h3>
+
+        <div class="form-group">
+          <label class="form-control-label text-muted">{{ $t("Name") }} </label>
+          <input
+            type="text"
+            id="nombres"
+            name="nombres"
+            :placeholder="$t('PlaceHolderName')"
+            class="form-control"
+            v-model="user.name"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label text-muted"
+            >{{ $t("LastName") }}
+          </label>
+          <input
+            type="text"
+            id="apellidos"
+            name="apellidos"
+            :placeholder="$t('PlaceholderLastName')"
+            class="form-control"
+            v-model="user.surname"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label text-muted"
+            >{{ $t("Address") }}
+          </label>
+          <input
+            type="text"
+            id="dirección"
+            name="dirección"
+            :placeholder="$t('PlaceholderAddress')"
+            class="form-control"
+            v-model="user.direction"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label text-muted">{{ $t("Mail") }} </label>
+          <input
+            type="text"
+            id="email"
+            name="email"
+            placeholder="Email"
+            class="form-control"
+            v-model="user.email"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label text-muted"
+            >{{ $t("Password") }}
+          </label>
+          <input
+            type="password"
+            id="psw"
+            name="psw"
+            :placeholder="$t('PlaceholderPassword')"
+            class="form-control"
+            v-model="user.password"
+          />
+        </div>
+
+        <div class="row justify-content-center my-3 px-3">
+          <button class="btn-block btn-registrarse" @click="createUser()">
+            {{ $t("RegisterButton") }}
+          </button>
+        </div>
+
+        <div class="row justify-content-center px-3">
+          <button class="gsi-material-button" @click="signInGoogle()">
+            <div class="gsi-material-button-state"></div>
+            <div
+              class="gsi-material-button-content-wrapper"
+              style="
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                gap: 10px;
+              "
+            >
+              <img src="../assets/images/google.png" width="24px" />
+              <span class="gsi-material-button-contents">{{
+                $t("GoogleButton")
+              }}</span>
+            </div>
+          </button>
+        </div>
+      </div>
+      <div class="bottom-options-register">
+        <p class="bottom-text-register">
+          {{ $t("AlreadyHaveAccount")
+          }}<button style="border: none; background: none">
+            <a href="/login">{{ $t("EnterLogin") }}</a>
+          </button>
+        </p>
+      </div>
+    </div>
+
+    <div class="card2">
+      <div class="my-auto mx-md-5 px-md-5 right">
+        <p class="card2-title">KVMI REWARDS</p>
+        <p class="card2-text">
+          Empieza a vivir una experiencia KVMI y descubre un mundo de premios
+          solo para ti.
+        </p>
       </div>
     </div>
   </div>
 </template>
 
 <style>
-.card {
-  border-radius: 0;
-  border: none;
+.bottom-options-register {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }
-
-.containerCard {
-  height: 900px !important;
+.register-page {
+  background: url(@/assets/images/banner_hor.png) no-repeat center center;
+  width: 100%;
+  height: 100vh;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: flex;
+  flex-direction: row;
   overflow: hidden;
+  background-size: cover;
 }
 
-.card3 {
-  width: 70%;
-  padding: 40px 30px 10px 30px;
+.section-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
 }
 
-.card4 {
-  width: 30%;
-  background-image: linear-gradient(to right, #ac9759, #675e36);
+.left-register-page {
+  background-color: white;
+  border-radius: 25px;
+  margin: 20px 10px;
+  padding: 10px 40px;
+  width: 50%;
 }
 
-#bannerRegister {
+.right-register-page {
+  width: 20%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.bottom-text-register {
+  color: black !important;
 }
 
 .heading {
@@ -465,7 +445,7 @@ export default {
 }
 
 .btn-registrarse {
-  background-color: var(--principalBrown);
+  background-color: black;
   color: white; /* Color del texto */
   padding: 14px 20px; /* Espacio interno */
   margin: 8px 0; /* Margen externo */

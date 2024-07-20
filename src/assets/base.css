@@ -1,16 +1,16 @@
 /* color palette from <https://github.com/vuejs/theme> */
 :root {
   /* Paleta colores principales */
-  --mediumyellow: #B28A00; /* Pantone 457 C */
-  --lightyellow: #F6D300; /* Pantone 3965 C */
-  --darkyellow: #CE8B00; /* Pantone 7555 C */
+  --mediumyellow: #b28a00; /* Pantone 457 C */
+  --lightyellow: #f6d300; /* Pantone 3965 C */
+  --darkyellow: #ce8b00; /* Pantone 7555 C */
   --principalBrown: #580012; /* Pantone 188 CP */
-  --darkBrown: #2E0800; /* Pantone 433 CP */
-  --lightblack: #9B9B97; /* Pantone Cool Gray 6 CP */
-  --darkgray: #9B9B97; /* Pantone Cool Gray 3 CP */
-  --lightgray: #580012; 
-  --color-boton-cafe: #C4C5BE; 
-
+  --darkBrown: #2e0800; /* Pantone 433 CP */
+  --lightblack: #9b9b97; /* Pantone Cool Gray 6 CP */
+  --darkgray: #9b9b97; /* Pantone Cool Gray 3 CP */
+  --lightgray: #580012;
+  --pointsbrawn: #820f13;
+  --color-boton-cafe: #c4c5be;
 
   /* Semantic color variables for this project */
   --color-background: var(--vt-c-white);
@@ -52,22 +52,10 @@ body {
   min-height: 100vh;
   color: var(--color-text);
   background: var(--color-background);
-  transition:
-    color 0.5s,
-    background-color 0.5s;
+  transition: color 0.5s, background-color 0.5s;
   line-height: 1.6;
-  font-family:
-    Inter,
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    Oxygen,
-    Ubuntu,
-    Cantarell,
-    'Fira Sans',
-    'Droid Sans',
-    'Helvetica Neue',
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   font-size: 15px;
   text-rendering: optimizeLegibility;

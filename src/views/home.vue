@@ -1,43 +1,29 @@
 <template>
-  <div class="text-center m-4">
-    <h1>{{ $t('Title') }}</h1>
-  </div>
-  <div>
-    <div v-if="isLoading" class="loading-container">
-      <div class="spinner"></div>
-      <div>{{ $t("loading") }}</div>
-    </div>
-    <div v-else>
-            
-      <div v-for="kit in kits" :key="kit.id">
-        <rewardContainerComponent :startDate="kit.startDate" :endDate="kit.endDate" :title="kit.title" :description="kit.description" :main-image-url="kit.mainImageUrl" :images="kit.images"></rewardContainerComponent>
-        <div v-if="kit.modifiedRewards.length > 0">
-          <h2 class="rewardsTitle">{{ $t('homeAwards') }}</h2>
-          <div class="carousel-wrapper">
-            <button @click="prev" class="carousel-nav left">‹</button>
-            <carousel ref="carousel" items-to-show="5" :paginationEnabled="false" class="carousel-container">C
-              <Slide v-for="reward in kit.modifiedRewards" :key="reward.rewardId" class="carousel-slide">
-
-                <div v-if="reward.type != '3d'" class="custom-card-size">
-                  <img :src="reward.url" class="image-card" alt="Image" loading="lazyload" rel="preload" src="https://static.vecteezy.com/system/resources/previews/011/125/843/non_2x/loading-icons-load-indicator-sign-waiting-symbols-free-vector.jpg"/>
-                  <div class="card-body">
-                    <div class="min-content-card">
-                      <h5 class="card-title">{{ reward.metadata[0].metadata.title }}</h5>
-                    </div>
-                  </div>
-                </div>
-                <div v-else class="custom-card-size-3d">
-                  <model-viewer :src="reward.url" alt="Modelo 3D" disable-zoom disable-pan disable-touch-zoom disable-rotate auto-rotate="0"></model-viewer>
-                  <div class="card-body">
-                    <div class="min-content-card">
-                      <h5 class="card-title">{{ reward.metadata[0].metadata.title }}</h5>
-                    </div>
-                  </div>
-                </div>
-              </Slide>
-            </carousel>
-            <button @click="next" class="carousel-nav right">›</button>
-          </div>
+  <div class="page-container">
+    <!-- <h1 class="page-title">{{ $t("Title") }}</h1> -->
+    <div>
+      <div v-if="isLoading" class="loading-container">
+        <div class="spinner"></div>
+        <div>{{ $t("loading") }}</div>
+      </div>
+      <div v-else>
+        <!-- <rewardContainerComponent
+          :startDate="actualKit.startDate"
+          :endDate="actualKit.endDate"
+          :title="actualKit.title"
+          :description="actualKit.description"
+          :main-image-url="actualKit.mainImageUrl"
+          :images="actualKit.images"
+        ></rewardContainerComponent> -->
+        <div v-for="kit in kits" :key="kit.id">
+          <rewardContainerComponent
+            :startDate="kit.startDate"
+            :endDate="kit.endDate"
+            :title="kit.title"
+            :description="kit.description"
+            :main-image-url="kit.mainImageUrl"
+            :images="kit.images"
+          ></rewardContainerComponent>
         </div>
       </div>
     </div>
@@ -49,19 +35,20 @@ import rewardContainerComponent from "../components/rewardContainerComponent.vue
 import { getAllKitsRewardsController } from "@/controllers/kitsController";
 import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide } from "vue3-carousel";
-import '@google/model-viewer';
+import "@google/model-viewer";
 
 export default {
   components: {
     rewardContainerComponent,
     Carousel,
     Slide,
-    'model-viewer': window.ModelViewer,
+    "model-viewer": window.ModelViewer,
   },
   data() {
     return {
       logIn: true,
       kits: [],
+      actualKit: null,
       isLoading: true, // Estado de carga
     };
   },
@@ -76,27 +63,21 @@ export default {
         if (kit.description.length > 97) {
           shortDesc = shortDesc.slice(0, 97) + "...";
         }
-        return {
-          shortDesc,
-          ...kit
-        };
-      });
-
-      // Combinar los elementos de stickers, threeDObjects y products en un solo arreglo
-      this.kits = this.kits.map((kit) => {
         let modifiedRewards = [];
         modifiedRewards = modifiedRewards.concat(kit.rewards.stickers);
         modifiedRewards = modifiedRewards.concat(kit.rewards.threeDObjects);
         modifiedRewards = modifiedRewards.concat(kit.rewards.products);
         return {
+          shortDesc,
           ...kit,
-          modifiedRewards
+          modifiedRewards,
         };
       });
-
+      this.actualKit = this.kits[0];
+      this.isLoading = false;
       console.log("this.kitsede: ", this.kits);
     } catch (error) {
-      console.error(error)
+      console.error(error);
       this.isLoading = false;
     } finally {
       this.isLoading = false;
@@ -115,6 +96,17 @@ export default {
 </script>
 
 <style>
+.page-container {
+  padding-top: 0px;
+  background: black;
+}
+
+.page-title {
+  font-weight: 900;
+  text-align: center;
+  color: white;
+}
+
 .rewardsTitle {
   display: flex;
   justify-content: center;
@@ -133,7 +125,6 @@ export default {
   transition: transform 0.5s ease;
   display: flex;
   justify-content: center;
-  
 }
 
 .carousel-nav {
@@ -222,7 +213,7 @@ export default {
 
 .spinner {
   border: 8px solid #f3f3f3; /* Light grey */
-  border-top: 8px solid #CDA434; /* Blue */
+  border-top: 8px solid #cda434; /* Blue */
   border-radius: 50%;
   width: 60px;
   height: 60px;
@@ -230,7 +221,11 @@ export default {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 </style>
