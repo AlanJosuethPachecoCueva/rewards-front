@@ -11,7 +11,7 @@ import { useUserStore } from "../stores/userStore";
 
 async function registerWithFirebase(userData) {
   try {
-    const { email, name, surname, birthdate, direction, password, isAdmin } =
+    const { email, name, surname, birthdate, direction, password, isAdmin, acceptedTyC } =
       userData;
 
     //Cambiar ruta de api
@@ -28,6 +28,7 @@ async function registerWithFirebase(userData) {
         direction,
         password,
         isAdmin,
+        acceptedTyC
       }),
     });
 
@@ -149,7 +150,7 @@ const getUser = async (id) => {
 
 const updateUser = async (id, userData) => {
   try {
-    const { email, name, surname} = userData;
+    const { email, name, surname } = userData;
     const response = await fetch(`${RUTA_SERVIDOR}/users/update`, {
       method: "PUT",
       headers: {
@@ -212,22 +213,22 @@ const updateUserAvatar = async (userId, downloadURL) => {
       body: JSON.stringify({ avatar: downloadURL, userId }),
     });
 
-    
+
     if (!response.status) {
       console.error('Failed to update avatar');
-      return {status: false, message: response.message};
+      return { status: false, message: response.message };
     }
 
     const result = await response.json();
     return result;
   } catch (error) {
     console.error('Error uploading file or saving URL to Firestore:', error);
-    return {status: false, message: "Failed to update avatar: ", error};
+    return { status: false, message: "Failed to update avatar: ", error };
   }
 };
 
 
-                
+
 
 
 
@@ -243,6 +244,6 @@ export {
   sendEmail,
   saveUserDataInFirebase,
   getUserRewards,
-  getUserProduct, 
+  getUserProduct,
   updateUserAvatar
 };

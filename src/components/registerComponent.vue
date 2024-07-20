@@ -83,6 +83,7 @@ Estos términos y condiciones proporcionan un marco básico para el manejo de da
         direction: "",
         birthdate: "",
         isAdmin: false,
+        acceptedTyC: false,
       },
       verifyPassword: {
         password: "",
@@ -242,7 +243,10 @@ Estos términos y condiciones proporcionan un marco básico para el manejo de da
         cancelButtonText: "Not",
       });
       if (result.isConfirmed) {
-        const res = await registerWithFirebase(this.user);
+        const res = await registerWithFirebase({
+          ...this.user,
+          acceptedTyC: this.acceptTerms,
+        });
 
         //Valida si el usuario se creó correctamente
         if (!res) {
