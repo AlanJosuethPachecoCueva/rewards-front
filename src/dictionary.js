@@ -136,7 +136,7 @@ export default {
                 SloganEnterprise: "KVMI, more than a chocolate",
                 DescripcionEmpresa: "Luxury chocolates made with a rare Amazonian cocoa bean. Creators of exclusive seasonal blends and mind-blowing experiences for your five senses.",
                 /* Componentes Registro*/
-                LabelRegistro: "Register now:",
+                LabelRegistro: "REGISTER NOW",
                 Name: "Name:*",
                 PlaceHolderName: "Enter your name",
                 LastName: "Lastname:*",
@@ -147,6 +147,8 @@ export default {
                 Password: "Password:*",
                 PlaceholderPassword: "Enter your password",
                 RegisterButton: "Register",
+                TermsAndConditions: "Terms and Conditions",
+                AcceptTerms: "I have read and accept ",
                 AlreadyHaveAccount: "Already have account?",
                 EnterLogin: "Login",
                 /*MENU DE PREMIOS NAVBAR*/

@@ -196,19 +196,20 @@ export default {
 <style>
 .login-page-container {
   width: 100%;
-  height: 100vh;
+  height: 100%;
   margin: 0 !important;
   padding: 0 !important;
+  padding-bottom: 5%;
   display: flex;
   flex-direction: row;
-  overflow: hidden;
   background: url(@/assets/images/lg-bck.png) no-repeat center center;
   background-size: cover;
 }
 
 .card1 {
   width: 50%;
-  margin: 40px 10px 30px 40px;
+  height: 100%;
+  margin: 30px 10px 70px 30px;
   background-color: white;
   padding: 20px 30px;
   border-radius: 25px;

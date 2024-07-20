@@ -8,6 +8,72 @@ import { colors } from "/src/assets/colors.js";
 export default {
   data() {
     return {
+      terminosCondiciones: `1. Introducción \n
+Bienvenido a KVMI Rewards. Al utilizar nuestro sistema, usted acepta los siguientes términos y condiciones relacionados con el manejo y protección de sus datos personales, de acuerdo con la Ley Orgánica de Protección de Datos Personales de Ecuador.\n
+\n
+2. Recolección de Datos\n
+\n
+Recopilamos los siguientes datos personales para el correcto funcionamiento de nuestro sistema:\n
+\n
+- Nombre\n
+- Correo electrónico\n
+- Información de contacto\n
+- Datos de autenticación (contraseña, preguntas de seguridad)\n
+- Actividad en la aplicación (participación en campañas, redención de códigos, uso del videojuego)\n
+- Información de ubicación (para personalización del juego, a través de la API de clima)\n
+\n
+3. Uso de los Datos\n
+\n
+Los datos personales recopilados se utilizarán para:\n
+\n
+- Gestionar el registro y la autenticación de usuarios.\n
+- Permitir la creación y gestión de campañas publicitarias.\n
+- Facilitar la participación en el videojuego móvil 3D.\n
+- Generar y redimir códigos asociados a productos.\n
+- Administrar premios y recompensas.\n
+- Proporcionar una experiencia de usuario personalizada.\n
+- Realizar análisis y métricas de uso para mejorar el sistema.\n
+- Proporcionar retroalimentación a los administradores del sistema.\n
+\n
+4. Protección de Datos\n
+\n
+Nos comprometemos a proteger sus datos personales mediante el uso de tecnologías de encriptación y medidas de seguridad adecuadas. Los datos serán almacenados de forma segura y solo accesibles por personal autorizado.\n
+\n
+5. Derechos del Usuario\n
+\n
+De acuerdo con la Ley Orgánica de Protección de Datos Personales, usted tiene derecho a:\n
+\n
+- Acceder a sus datos personales almacenados por nosotros.\n
+- Rectificar cualquier dato incorrecto o desactualizado.\n
+- Solicitar la eliminación de sus datos personales.\n
+- Oponerse al procesamiento de sus datos personales para ciertos fines.\n
+- Retirar su consentimiento en cualquier momento.\n
+\n
+6. Compartición de Datos\n
+\n
+No compartiremos sus datos personales con terceros, excepto cuando sea necesario para:\n
+\n
+- Cumplir con obligaciones legales.\n
+- Proteger la seguridad e integridad del sistema.\n
+- Proporcionar servicios esenciales relacionados con el funcionamiento del sistema, siempre bajo estrictas condiciones de confidencialidad.\n
+\n
+7. Retención de Datos\n
+\n
+Sus datos personales serán retenidos solo durante el tiempo necesario para cumplir con los fines mencionados en estos términos y condiciones, y de acuerdo con las disposiciones legales aplicables.\n
+\n
+8. Modificaciones\n
+\n
+Nos reservamos el derecho de modificar estos términos y condiciones en cualquier momento. Cualquier cambio será notificado a los usuarios a través de los canales adecuados y se publicará en nuestro sitio web.\n
+\n
+9. Contacto\n
+\n
+Para cualquier consulta, solicitud o reclamación relacionada con el manejo de sus datos personales, por favor contáctenos a través de kvmirewards@gmail.com .\n
+\n
+10. Aceptación de Términos\n
+\n
+Al utilizar nuestro sistema, usted confirma que ha leído y comprendido estos términos y condiciones, y que acepta el manejo de sus datos personales conforme a lo aquí establecido.\n
+\n
+Estos términos y condiciones proporcionan un marco básico para el manejo de datos personales, asegurando el cumplimiento con la Ley de Protección de Datos de Ecuador. Es recomendable que sean revisados y adaptados por un asesor legal especializado en protección de datos para garantizar su total conformidad con la legislación local.\n`,
       isFormatValid: false,
       user: {
         name: "",
@@ -33,6 +99,7 @@ export default {
       },
       showPassword: false,
       showPassword2: false,
+      acceptTerms: false,
     };
   },
   components: {},
@@ -68,6 +135,76 @@ export default {
         this.$router.push("/");
       }
     },
+    async showTerms() {
+      await this.$swal({
+        title: "Términos y Condiciones",
+        html: `
+      <h2>1. Introducción</h2>
+      <p>Bienvenido a KVMI Rewards. Al utilizar nuestro sistema, usted acepta los siguientes términos y condiciones relacionados con el manejo y protección de sus datos personales, de acuerdo con la Ley Orgánica de Protección de Datos Personales de Ecuador.</p>
+      
+      <h2>2. Recolección de Datos</h2>
+      <p>Recopilamos los siguientes datos personales para el correcto funcionamiento de nuestro sistema:</p>
+      <ul>
+        <li>Nombre</li>
+        <li>Correo electrónico</li>
+        <li>Información de contacto</li>
+        <li>Datos de autenticación (contraseña, preguntas de seguridad)</li>
+        <li>Actividad en la aplicación (participación en campañas, redención de códigos, uso del videojuego)</li>
+        <li>Información de ubicación (para personalización del juego, a través de la API de clima)</li>
+      </ul>
+
+      <h2>3. Uso de los Datos</h2>
+      <p>Los datos personales recopilados se utilizarán para:</p>
+      <ul>
+        <li>Gestionar el registro y la autenticación de usuarios.</li>
+        <li>Permitir la creación y gestión de campañas publicitarias.</li>
+        <li>Facilitar la participación en el videojuego móvil 3D.</li>
+        <li>Generar y redimir códigos asociados a productos.</li>
+        <li>Administrar premios y recompensas.</li>
+        <li>Proporcionar una experiencia de usuario personalizada.</li>
+        <li>Realizar análisis y métricas de uso para mejorar el sistema.</li>
+        <li>Proporcionar retroalimentación a los administradores del sistema.</li>
+      </ul>
+
+      <h2>4. Protección de Datos</h2>
+      <p>Nos comprometemos a proteger sus datos personales mediante el uso de tecnologías de encriptación y medidas de seguridad adecuadas. Los datos serán almacenados de forma segura y solo accesibles por personal autorizado.</p>
+
+      <h2>5. Derechos del Usuario</h2>
+      <p>De acuerdo con la Ley Orgánica de Protección de Datos Personales, usted tiene derecho a:</p>
+      <ul>
+        <li>Acceder a sus datos personales almacenados por nosotros.</li>
+        <li>Rectificar cualquier dato incorrecto o desactualizado.</li>
+        <li>Solicitar la eliminación de sus datos personales.</li>
+        <li>Oponerse al procesamiento de sus datos personales para ciertos fines.</li>
+        <li>Retirar su consentimiento en cualquier momento.</li>
+      </ul>
+
+      <h2>6. Compartición de Datos</h2>
+      <p>No compartiremos sus datos personales con terceros, excepto cuando sea necesario para:</p>
+      <ul>
+        <li>Cumplir con obligaciones legales.</li>
+        <li>Proteger la seguridad e integridad del sistema.</li>
+        <li>Proporcionar servicios esenciales relacionados con el funcionamiento del sistema, siempre bajo estrictas condiciones de confidencialidad.</li>
+      </ul>
+
+      <h2>7. Retención de Datos</h2>
+      <p>Sus datos personales serán retenidos solo durante el tiempo necesario para cumplir con los fines mencionados en estos términos y condiciones, y de acuerdo con las disposiciones legales aplicables.</p>
+
+      <h2>8. Modificaciones</h2>
+      <p>Nos reservamos el derecho de modificar estos términos y condiciones en cualquier momento. Cualquier cambio será notificado a los usuarios a través de los canales adecuados y se publicará en nuestro sitio web.</p>
+
+      <h2>9. Contacto</h2>
+      <p>Para cualquier consulta, solicitud o reclamación relacionada con el manejo de sus datos personales, por favor contáctenos a través de <a href="mailto:kvmirewards@gmail.com">kvmirewards@gmail.com</a>.</p>
+
+      <h2>10. Aceptación de Términos</h2>
+      <p>Al utilizar nuestro sistema, usted confirma que ha leído y comprendido estos términos y condiciones, y que acepta el manejo de sus datos personales conforme a lo aquí establecido.</p>
+
+      <p>Estos términos y condiciones proporcionan un marco básico para el manejo de datos personales, asegurando el cumplimiento con la Ley de Protección de Datos de Ecuador. Es recomendable que sean revisados y adaptados por un asesor legal especializado en protección de datos para garantizar su total conformidad con la legislación local.</p>
+    `,
+        icon: "info",
+        confirmButtonText: "Aceptar",
+      });
+    },
     async createUser() {
       //Validaciones
       this.isFormatValid = Object.values(this.validations).every(function (
@@ -75,18 +212,6 @@ export default {
       ) {
         return elemento.state === true;
       });
-
-      //Comprobar que las contraseñas sean iguales
-      // if (!this.verifyPassword.state) {
-      //   await this.$swal({
-      //     title:
-      //       "La contraseña y la confirmación de contraseña deben ser iguales.",
-      //     icon: "error",
-      //     showCancelButton: false,
-      //     confirmButtonText: "OK",
-      //   });
-      //   return;
-      // }
 
       if (!this.isFormatValid) {
         await this.$swal({
@@ -96,7 +221,16 @@ export default {
           showCancelButton: false,
           confirmButtonText: "OK",
         });
+        return;
+      }
 
+      if (!this.acceptTerms) {
+        await this.$swal({
+          title: "Debes aceptar los términos y condiciones para registrarte.",
+          icon: "error",
+          showCancelButton: false,
+          confirmButtonText: "OK",
+        });
         return;
       }
 
@@ -118,7 +252,6 @@ export default {
             showCancelButton: false,
             confirmButtonText: "OK",
           });
-
           return;
         }
 
@@ -166,15 +299,9 @@ export default {
 
 <template>
   <div class="register-page">
-    <div class="card1">
+    <div class="card1-register">
       <div class="row justify-content-center px-3 mb-3">
-        <div class="row justify-content-center px-3 mb-3">
-          <img
-            id="logo"
-            src="../assets/images/kvmi-en-blanco_redes-AzGj93a4EkuxVrkB.avif"
-          />
-        </div>
-        <h3 class="mb-5 text-center heading">{{ $t("LabelRegistro") }}</h3>
+        <h3 class="mb-2 text-center heading">{{ $t("LabelRegistro") }}</h3>
 
         <div class="form-group">
           <label class="form-control-label text-muted">{{ $t("Name") }} </label>
@@ -242,6 +369,21 @@ export default {
           />
         </div>
 
+        <div class="form-group terms-condition-container">
+          <input
+            type="checkbox"
+            class="form-check-input"
+            id="acceptTerms"
+            v-model="acceptTerms"
+          />
+          <label class="form-check-label" for="acceptTerms">
+            {{ $t("AcceptTerms") }}
+            <a href="#" @click.prevent="showTerms">{{
+              $t("TermsAndConditions")
+            }}</a>
+          </label>
+        </div>
+
         <div class="row justify-content-center my-3 px-3">
           <button class="btn-block btn-registrarse" @click="createUser()">
             {{ $t("RegisterButton") }}
@@ -278,7 +420,7 @@ export default {
       </div>
     </div>
 
-    <div class="card2">
+    <div class="card2-register">
       <div class="my-auto mx-md-5 px-md-5 right">
         <p class="card2-title">KVMI REWARDS</p>
         <p class="card2-text">
@@ -291,6 +433,43 @@ export default {
 </template>
 
 <style>
+.terms-condition-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 20px;
+  padding: 5px 10px;
+}
+
+.card1-register {
+  width: 50%;
+  height: fit-content;
+  margin: 40px 100px 20px 80px;
+  padding: 30px 35px;
+  background-color: white;
+  border-radius: 25px;
+  border: none !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.card2-register {
+  width: 50%;
+  height: 100%;
+  /* background-image: linear-gradient(to right, rgb(89, 76, 66), rgb(65, 39, 39)); */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 0px !important;
+  border-radius: 0px 5px 5px 0px !important;
+  background: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0),
+    rgba(0, 0, 0, 0.5),
+    rgba(0, 0, 0, 0.9)
+  );
+}
 .bottom-options-register {
   display: flex;
   flex-direction: row;
@@ -335,6 +514,11 @@ export default {
 
 .heading {
   margin-bottom: 60px !important;
+  font-weight: bolder;
+}
+
+.swal2-popup {
+  width: 80vw; /* Adjust this value as needed */
 }
 
 .gsi-material-button {
@@ -458,5 +642,8 @@ export default {
 
 .btn-registrarse:hover {
   background-color: var(--darkBrown); /* Color de fondo al pasar el mouse */
+}
+.form-group {
+  margin-top: 10px !important;
 }
 </style>
