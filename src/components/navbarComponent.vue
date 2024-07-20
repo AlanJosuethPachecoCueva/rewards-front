@@ -1,7 +1,9 @@
 <template>
   <nav class="navbar navbar-expand-lg navBarPersonalized">
-    <div class="container-fluid">
-      <a class="navbar-brand" :style="{ color: textColor }" href="/">KVMI</a>
+    <div class="container-fluid" style="padding-left: 30px">
+      <a class="navbar-brand" :style="{ color: textColor }" href="/"
+        ><img src="../assets/images/logo-kvmi.png" width="40px" height="38px"
+      /></a>
       <!-- Botón para ocultar -->
       <button
         class="navbar-toggler"
