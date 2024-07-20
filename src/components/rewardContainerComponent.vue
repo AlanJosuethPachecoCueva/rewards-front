@@ -13,8 +13,8 @@
             />
           </div>
           <div class="col-md-6 p-4">
-            <h1 class="display-5 fw-bolder">{{ title }}</h1>
-            <p class="lead">{{ description }}</p>
+            <h1 class="display-5 fw-bolder reward-title">{{ title }}</h1>
+            <div class="description-reward">{{ description }}</div>
             <div class="d-flex">
               <button class="btn btn-outline-light flex-shrink-0" type="button">
                 <i class="bi-cart-fill me-1"></i>
@@ -120,9 +120,11 @@ section {
 img.card-img-top {
   border-radius: 8px 0 0 8px; /* Añadir bordes redondeados a la izquierda */
 }
+.description-reward {
+  color: white;
+}
 
-h1,
-p {
+.reward-title {
   color: white !important;
 }
 </style>
