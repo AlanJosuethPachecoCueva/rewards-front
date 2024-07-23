@@ -38,7 +38,7 @@ import { updateShippingProductStatusController } from "@/controllers/rewardsCont
 
 import { useUserStore } from "../../../stores/userStore.js";
 import { computed, reactive } from "vue";
-import {getUserByIdController } from "../../../controllers/usersController";
+import { getUserByIdController } from "../../../controllers/usersController";
 
 export default {
   data() {
@@ -99,9 +99,28 @@ export default {
       console.log("this.user.id: ", this.user.id);
       console.log("this.product.deliveryStatus: ", this.product.deliveryStatus);
       console.log("New delivery status:", this.product.deliveryStatus);
-      
+
       const res = await updateShippingProductStatusController(this.user.id, fileName, this.product.deliveryStatus);
       console.log("res: ", res);
+
+      if (res.status) {
+        await this.$swal.fire({
+          title: '¡Éxito!',
+          text: 'El estado de entrega del producto ha sido actualizado exitosamente.',
+          icon: "success",
+          allowOutsideClick: false,
+          showConfirmButton: true,
+        });
+        this.$router.push({ name: "manageRedeemedProducts" });
+      }else{
+        await this.$swal.fire({
+          title: 'Error!',
+          text: 'No se ha podido actualizar el estado, contáctate con el administrador.',
+          icon: "error",
+          allowOutsideClick: false,
+          showConfirmButton: true,
+        });
+      }
     }
   }
 };

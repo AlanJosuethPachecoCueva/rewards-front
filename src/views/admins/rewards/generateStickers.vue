@@ -190,6 +190,7 @@ export default {
       console.log("rewardId mod: ", rewardId);
       await this.$swal.fire({
         title: '¡Éxito!',
+        icon: "success",
         text: 'Sticker generado correctamente.',
         allowOutsideClick: false,
         showConfirmButton: true,

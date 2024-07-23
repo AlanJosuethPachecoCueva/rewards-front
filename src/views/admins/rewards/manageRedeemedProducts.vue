@@ -1,9 +1,9 @@
 <template>
-  <div>
-    <h1>Get Redeemed Products</h1>
+  <div id="containerRedeemedProducts">
+    <h1 id="titleRedeemed">Get Redeemed Products</h1>
     <div class="cards-container">
       <div v-for="product in redeemedProducts" :key="product.fileName" class="card">
-        <h2>{{ product.type.toUpperCase() }}</h2>
+        <!-- <h2>{{ product.type.toUpperCase() }}</h2> -->
         <img :src="product.image" alt="Product Image" class="product-image" />
         <p><strong>Associated Kit:</strong> {{ product.associatedKit }}</p>
         <p><strong>Names:</strong> {{ product.deliveryInformation.names }}</p>
@@ -54,6 +54,26 @@ export default {
 </script>
 
 <style scoped>
+#titleRedeemed{
+  color: rgb(255, 255, 255);
+
+  background-color: rgba(39, 37, 37, 0.466);
+  padding: 20px;
+  border-radius: 20px;
+}
+
+#containerRedeemedProducts {
+  padding: 20px;
+  text-align: center;
+
+  background: url(/src/assets/images/fondoCacaoRedeem.jpeg) no-repeat center center fixed;
+  background-size: cover;
+  /* height: 100vh; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .cards-container {
   display: flex;
   flex-wrap: wrap;
