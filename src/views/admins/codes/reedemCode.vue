@@ -6,7 +6,9 @@
           <h2 class="card-title text-center">{{ $t("redeemCode") }}</h2>
           <form @submit.prevent="redeemCode">
             <div class="mb-3">
-              <label for="codeInput" class="form-label">{{ $t("entercode") }}</label>
+              <label for="codeInput" class="form-label">{{
+                $t("entercode")
+              }}</label>
               <input
                 type="text"
                 class="form-control"
@@ -19,11 +21,19 @@
               {{ $t("redeemButton") }}
             </button>
           </form>
-          <div v-if="responseData && responseData.status" class="alert alert-success mt-3" role="alert">
+          <div
+            v-if="responseData && responseData.status"
+            class="alert alert-success mt-3"
+            role="alert"
+          >
             {{ $t("name") }}: {{ responseData.codeData.name }}<br />
             {{ $t("points") }}: {{ responseData.codeData.points }}
           </div>
-          <div v-else-if="responseData && !responseData.status" class="alert alert-danger mt-3" role="alert">
+          <div
+            v-else-if="responseData && !responseData.status"
+            class="alert alert-danger mt-3"
+            role="alert"
+          >
             {{ $t("errorMessagesRedeem") }}
           </div>
           <div v-else class="alert alert-info mt-3" role="alert">
@@ -45,7 +55,7 @@ import fondoCacaoRedeem from "@/assets/images/fondoCacaoRedeem.jpeg"; // Importa
 export default {
   data() {
     return {
-      code: '',
+      code: "",
       responseData: null,
       fondoCacaoRedeem, // Agrega la imagen a los datos
     };
@@ -60,7 +70,10 @@ export default {
       let userId = this.user.id;
       let codee = this.code;
       const userStore = useUserStore();
-      this.responseData = await redeemCodeController({ codeId: codee, userId: userId });
+      this.responseData = await redeemCodeController({
+        codeId: codee,
+        userId: userId,
+      });
       let userByController = await getUserByIdController(this.user.id);
       userStore.setUser(userByController);
     },
@@ -71,7 +84,8 @@ export default {
 <style scoped>
 /* Fondo de la vista */
 .background-image {
-  background: url(@/assets/images/fondoCacaoRedeem.jpeg) no-repeat center center fixed;
+  background: url(@/assets/images/fondoCacaoRedeem.jpeg) no-repeat center center
+    fixed;
   background-size: cover;
   height: 100vh; /* Asegura que ocupe toda la altura de la vista */
   display: flex;
@@ -101,10 +115,12 @@ export default {
 
 /* Estilo del botón */
 .btn-redeem-code {
-  background-color: rgb(141, 82, 82); /* Color de fondo inicial (dark brown) */
+  background-color: #ce8b00; /* Color de fondo inicial (dark brown) */
   color: white;
   border: none;
-  border-radius: 20px;
+  border-radius: 10px;
+  padding: 10px 5px;
+  font-weight: bold;
 }
 
 .btn-redeem-code:hover {
