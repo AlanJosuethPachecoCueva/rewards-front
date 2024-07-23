@@ -6,7 +6,6 @@ import {
   provider,
   signInWithPopup,
 } from "../firebase/config.js";
-// import axios from "axios";
 
 const RUTA_SERVIDOR = `${import.meta.env.VITE_APP_RUTA_API}`;
 
@@ -40,17 +39,7 @@ async function signInWithGoogle() {
       direction: " "
     };
 
-    // let userByController = await getUserByIdController(user.uid);
-
-    // if (!userByController) {
-    //   userByController = await saveUserDataInFirebase(userToSave);
-    // } else {
-    //   userToSave.surname = userByController.surname;
-    //   userToSave.city = userByController.city;
-    //   userToSave.birthdate = userByController.birthdate;
-    //   userToSave.points = userByController.points;
-    //   userToSave.isAdmin = userByController.isAdmin;
-    // }
+ 
     try {
       console.log("userToSave: ", userToSave);
       //se guarda el usuario en la db de firebase
@@ -201,32 +190,5 @@ async function logOut() {
     console.error(error);
   }
 }
-
-// async function signOutGoogle() {
-//   try {
-//     // Cerrar la sesión en Google
-//     // google.accounts.id.disableAutoSelect();
-
-//     //google.accounts.id.cancel();
-//     google.accounts.id.disableAutoSelect();
-//     google.accounts.id.revoke();
-//     google.accounts.id.renderButton();
-//     return true;
-//     // //recargar la página (hará que mi código detecte que no hay usuario y por ende lo rediriga al auth)
-//     // location.reload();
-//     // // Abrir la URL de cierre de sesión en una nueva pestaña
-//     // var signOutTab = window.open(signOutUrl, "_blank");
-//     // // Asegurarte de que la pestaña de cierre de sesión se abrió correctamente
-//     // if (signOutTab) {
-//     //   // Si se abrió correctamente, cerrar la url que se abre (la de cerrar sesión de google)
-//     //   window.close();
-//     // }
-//     //console.log("response axios in model: ", response.data);
-//   } catch (error) {
-//     // Manejo de errores en caso de fallo al cerrar sesión
-//     console.log("Error en model");
-//     return false;
-//   }
-// }
 
 export { logInFirebase, logOut, logInWithGoogle, signInWithGoogle };
