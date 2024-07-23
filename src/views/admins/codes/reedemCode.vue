@@ -101,14 +101,14 @@ export default {
 
 /* Estilo del botón */
 .btn-redeem-code {
-  background-color: var(--principalBrown); /* Color de fondo inicial (dark brown) */
+  background-color: rgb(141, 82, 82); /* Color de fondo inicial (dark brown) */
   color: white;
   border: none;
   border-radius: 20px;
 }
 
 .btn-redeem-code:hover {
-  background-color: var(--darkBrown); /* Color de fondo al pasar el mouse (dark brown) */
+  background-color: rgb(80, 50, 50); /* Color de fondo inicial (dark brown) */
 }
 
 .alert {
