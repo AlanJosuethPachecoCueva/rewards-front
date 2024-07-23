@@ -1,100 +1,105 @@
 <template>
-  <div class="titleContainer">
-    <h1>{{ $t('showRewardsTitle') }}</h1>
-  </div>
-  <div v-if="isLoading" class="loading-container">
+  <div id="containerActiveRewards">
+
+
+    <div class="titleContainer">
+      <h1>{{ $t('showRewardsTitle') }}</h1>
+    </div>
+    <div v-if="isLoading" class="loading-container">
       <div class="spinner"></div>
       <div>{{ $t("loading") }}</div>
     </div>
 
-  <div class="containerShowRewards">
-    <div class="search-container">
-      <input type="text" v-model="searchQuery" :placeholder="$t('showRewardsSearchplaceholder')" class="search-bar" />
-    </div>
-
-    <div v-for="(kitData, kitId) in filteredKitsRewards" :key="kitId" class="kit-section" id="containerOfKitRewards">
-      <div id="containerOfKitRewardsTitle">
-        <h2>{{ kitData.kit.title }}</h2>
+    <div class="containerShowRewards">
+      <div class="search-container">
+        <input type="text" v-model="searchQuery" :placeholder="$t('showRewardsSearchplaceholder')" class="search-bar" />
       </div>
 
-      <div id="containerOfKitRewardsDescription">
-        <p>{{ kitData.kit.description }}</p>
-      </div>
-      
+      <div v-for="(kitData, kitId) in filteredKitsRewards" :key="kitId" class="kit-section" id="containerOfKitRewards">
+        <!-- {{ kitData }} -->
+        <div id="containerOfKitRewardsTitle">
+          <h2>{{ kitData.kit.title }}</h2>
+        </div>
 
-      <div v-if="kitData.rewards.stickers.length > 0">
-        <h3>Stickers</h3>
-        <div class="card-grid">
-          <div v-for="sticker in kitData.rewards.stickers" :key="sticker" class="cardShowRewards">
-            <div class="card-image-container">
-              <img :src="getRewardUrl(sticker)" class="card-img" alt="Reward Image" />
-              <button class="redeem-button" @click="reedem(sticker, 'st', kitId)">
-                {{ $t('showRewardRedeemButton') }}
-              </button>
-              <button class="award-cost" @click="">
-                {{ getRewardCost(sticker) }}
-                <i>
-                  <img src="../../assets//images//cacao.png" alt="Points Icon" style="width: 20px; height: 20px" />
-                </i>
-              </button>
-            </div>
-            <div class="card-body">
-              <h5 class="card-title">{{ getRewardTitle(sticker) }}</h5>
-              <p class="card-text">{{ getRewardDescription(sticker) }}</p>
+        <div id="containerOfKitRewardsDescription">
+          <p>{{ kitData.kit.description }}</p>
+        </div>
+
+
+        <div v-if="kitData.rewards.stickers.length > 0">
+          <h3 class="activeRewardsTitle">Stickers</h3>
+          <div class="card-grid">
+            <div v-for="sticker in kitData.rewards.stickers" :key="sticker" class="cardShowRewards">
+              <div class="card-image-container">
+                <img :src="getRewardUrl(sticker)" class="card-img" alt="Reward Image" />
+                <button class="redeem-button" @click="reedem(sticker, 'st', kitId)">
+                  {{ $t('showRewardRedeemButton') }}
+                </button>
+                <button class="award-cost" @click="">
+                  {{ getRewardCost(sticker) }}
+                  <i>
+                    <img src="../../assets//images//cacao.png" alt="Points Icon" style="width: 20px; height: 20px" />
+                  </i>
+                </button>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">{{ getRewardTitle(sticker) }}</h5>
+                <p class="card-text">{{ getRewardDescription(sticker) }}</p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div v-if="kitData.rewards.threeDObjects.length > 0">
-        <h3>3D Objects</h3>
-        <div class="card-grid">
-          <div v-for="threeDObject in kitData.rewards.threeDObjects" :key="threeDObject" class="cardShowRewards">
-            <div class="card-image-container custom-card-size">
-              <model-viewer :src="getRewardUrl(threeDObject)" alt="Modelo 3D" disable-zoom disable-pan
-                disable-touch-zoom disable-rotate auto-rotate="0"></model-viewer>
-              <button class="redeem-button" @click="reedem(threeDObject, '3d', kitId)">
-                {{ $t('showRewardRedeemButton') }}
-              </button>
-              <button class="award-cost" @click="">
-                {{ getRewardCost(threeDObject) }}
-                <i>
-                  <img src="../../assets//images//cacao.png" alt="Points Icon" style="width: 20px; height: 20px" />
-                </i>
-              </button>
-            </div>
-            <div class="card-body">
-              <h5 class="card-title">{{ getRewardTitle(threeDObject) }}</h5>
-              <p class="card-text">{{ getRewardDescription(threeDObject) }}</p>
+        <div v-if="kitData.rewards.threeDObjects.length > 0">
+          <h3 class="activeRewardsTitle">3D Objects</h3>
+          <div class="card-grid">
+            <div v-for="threeDObject in kitData.rewards.threeDObjects" :key="threeDObject" class="cardShowRewards">
+              <div class="card-image-container custom-card-size">
+                <model-viewer :src="getRewardUrl(threeDObject)" alt="Modelo 3D" disable-zoom disable-pan
+                  disable-touch-zoom disable-rotate auto-rotate="0"></model-viewer>
+                <button class="redeem-button" @click="reedem(threeDObject, '3d', kitId)">
+                  {{ $t('showRewardRedeemButton') }}
+                </button>
+                <button class="award-cost" @click="">
+                  {{ getRewardCost(threeDObject) }}
+                  <i>
+                    <img src="../../assets//images//cacao.png" alt="Points Icon" style="width: 20px; height: 20px" />
+                  </i>
+                </button>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">{{ getRewardTitle(threeDObject) }}</h5>
+                <p class="card-text">{{ getRewardDescription(threeDObject) }}</p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div v-if="kitData.rewards.products.length > 0">
-        <h3>Products</h3>
-        <div class="card-grid">
-          <div v-for="product in kitData.rewards.products" :key="product" class="cardShowRewards">
-            <div class="card-image-container">
-              <img :src="getRewardUrl(product)" class="card-img" alt="Reward Image" />
-              <button class="redeem-button" @click="reedem(product, 'pr', kitId)">
-                {{ $t('showRewardRedeemButton') }}
-              </button>
-              <button class="award-cost" @click="">
-                {{ getRewardCost(product) }}
-                <i>
-                  <img src="../../assets//images//cacao.png" alt="Points Icon" style="width: 20px; height: 20px" />
-                </i>
-              </button>
-            </div>
-            <div class="card-body">
-              <h5 class="card-title">{{ getRewardTitle(product) }}</h5>
-              <p class="card-text">{{ getRewardDescription(product) }}</p>
+        <div v-if="kitData.rewards.products.length > 0">
+          <h3 class="activeRewardsTitle">Products</h3>
+          <div class="card-grid">
+            <div v-for="product in kitData.rewards.products" :key="product" class="cardShowRewards">
+              <div class="card-image-container">
+                <img :src="getRewardUrl(product)" class="card-img" alt="Reward Image" />
+                <button class="redeem-button" @click="reedem(product, 'pr', kitId)">
+                  {{ $t('showRewardRedeemButton') }}
+                </button>
+                <button class="award-cost" @click="">
+                  {{ getRewardCost(product) }}
+                  <i>
+                    <img src="../../assets//images//cacao.png" alt="Points Icon" style="width: 20px; height: 20px" />
+                  </i>
+                </button>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">{{ getRewardTitle(product) }}</h5>
+                <p class="card-text">{{ getRewardDescription(product) }}</p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
+      </div>
     </div>
   </div>
 </template>
@@ -112,7 +117,7 @@ export default {
       logIn: true,
       kitsRewards: {},
       searchQuery: "",
-       isLoading: true, // Estado de carga
+      isLoading: true, // Estado de carga
     };
   },
   computed: {
@@ -143,7 +148,7 @@ export default {
       return filteredKits;
     },
   },
-   async created() {
+  async created() {
     try {
       const kitsRewardsResponse = await getKitsRewardsController();
       if (kitsRewardsResponse.status) {
@@ -181,17 +186,39 @@ export default {
 };
 </script>
 <style>
+#containerActiveRewards {
+  background: rgba(0, 0, 0, 0.849);
+}
+
+.activeRewardsTitle {
+  padding: 20px;
+  margin: 20px;
+  text-align: center;
+  font-weight: bolder;
+  color: white;
+  background-color: #33333385;
+  border-radius: 10px;
+}
+
 #containerOfKitRewards {
-  background-color: rgba(222, 178, 111, 0.1);
+
   margin: 40px;
-  padding: 30px;
+  padding: 50px;
+  border-radius: 30px;
+
+  background: url(/src/assets/images/lg-bck.png) no-repeat center center fixed;
+  background-size: cover;
+  /* height: 100vh; */
+  /* display: flex;
+  flex-direction: column; */
+  align-items: center;
 }
 
 #containerOfKitRewardsTitle {
   display: flex;
-  background-color: rgb(227, 90, 90);
-  color:white;
-  height:fit-content;
+  
+  color: white;
+  height: fit-content;
   justify-content: center;
   align-items: center;
 }
@@ -199,13 +226,16 @@ export default {
 #containerOfKitRewardsDescription {
   padding: 15px;
   display: flex;
-  background: linear-gradient(87deg, rgb(236, 224, 160) 0, rgb(236, 221, 142) 50%) !important;
-  color:rgb(255, 255, 255);
-  height:fit-content;
+  /* background: linear-gradient(87deg, rgb(236, 224, 160) 0, rgb(236, 221, 142) 50%) !important; */
+  background-color: #4d4d4dc2;
+  color: rgb(255, 255, 255);
+  height: fit-content;
   justify-content: center;
   align-items: center;
-  font-size:x-large;
-  font-weight: bolder !important;
+  
+  font-weight:bolder !important;
+
+  border-radius: 10px;
 }
 
 
@@ -215,7 +245,9 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 1% 0 1% 0;
+  padding: 60px 0 40px 0;
+  color: white;
+  font-weight: bolder;
 }
 
 .containerShowRewards {
@@ -255,6 +287,7 @@ export default {
   overflow: hidden;
   position: relative;
   transition: transform 0.2s;
+
 }
 
 .cardShowRewards:hover {
@@ -328,8 +361,10 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh; /* Altura completa de la ventana */
-  background-color: rgba(255, 255, 255, 0.8); /* Fondo semitransparente */
+  height: 100vh;
+  /* Altura completa de la ventana */
+  background-color: rgba(255, 255, 255, 0.8);
+  /* Fondo semitransparente */
   position: fixed;
   top: 0;
   left: 0;
@@ -338,8 +373,10 @@ export default {
 }
 
 .spinner {
-  border: 8px solid #f3f3f3; /* Light grey */
-  border-top: 8px solid #CDA434; /* Blue */
+  border: 8px solid #f3f3f3;
+  /* Light grey */
+  border-top: 8px solid #CDA434;
+  /* Blue */
   border-radius: 50%;
   width: 60px;
   height: 60px;
@@ -347,7 +384,12 @@ export default {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 </style>
